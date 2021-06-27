@@ -2,6 +2,8 @@ import Image from 'next/image'
 import { Layout } from '@components/Layout'
 import { Box, makeStyles, Typography } from '@material-ui/core'
 import clsx from 'clsx'
+import { Signup } from '@components/pages/Signup'
+import { Login } from '@components/pages/Login'
 
 const useStyles = makeStyles(theme => ({
   main: {
@@ -58,7 +60,7 @@ const IndexPage = () => {
               </Typography>
             </Box>
             <Typography
-              variant="h5"
+              variant="h6"
               component="h3"
               gutterBottom
               className={clsx(titles, subtitle)}
@@ -66,6 +68,17 @@ const IndexPage = () => {
               Manage all your budget easily and customize your incomes or
               expenses categories as you want
             </Typography>
+            <Box
+              mt={2}
+              mb={2}
+              display="grid"
+              gridGap="1rem"
+              gridTemplateColumns={{ sm: 'max-content max-content' }}
+              // justifyContent="center"
+            >
+              <Signup />
+              <Login />
+            </Box>
           </Box>
           <Box className={presentation}>
             <Image width={600} height={400} src="/banner.svg" />
