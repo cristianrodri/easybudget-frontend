@@ -17,7 +17,8 @@ interface Props {
 const useStyles = makeStyles(theme => ({
   card: {
     borderRadius: '1rem',
-    padding: theme.spacing(2)
+    padding: theme.spacing(2),
+    boxShadow: theme.shadows[5]
   },
   header: {
     padding: theme.spacing(4),
@@ -39,7 +40,7 @@ const useStyles = makeStyles(theme => ({
 export const CardItem = ({ title, description, avatar }: Props) => {
   const { card, header, cardContent, cardTitle } = useStyles()
   return (
-    <Grid item xs={10} sm={5} md={3}>
+    <Grid item xs={10} sm={5} md={4} lg={3}>
       <Card className={card}>
         <Box display="flex" justifyContent="center" alignItems="center">
           <CardHeader avatar={avatar} className={header} />
