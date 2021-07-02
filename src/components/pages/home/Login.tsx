@@ -3,13 +3,12 @@ import Link from 'next/link'
 
 const useStyles = makeStyles(theme => ({
   root: {
-    backgroundColor: theme.palette.primary.dark,
-    color: theme.palette.getContrastText(theme.palette.primary.dark),
-    borderColor: 'currentColor',
+    backgroundColor: theme.palette.common.white,
+    color: theme.palette.getContrastText(theme.palette.common.white),
     borderRadius: theme.shape.borderRadius * 4,
     '&:hover': {
-      backgroundColor: theme.palette.common.white,
-      color: theme.palette.getContrastText(theme.palette.common.white)
+      backgroundColor: theme.palette.primary.light,
+      color: theme.palette.getContrastText(theme.palette.primary.light)
     }
   }
 }))
