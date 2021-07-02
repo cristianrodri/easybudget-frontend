@@ -1,13 +1,10 @@
 import Image from 'next/image'
 import { Layout } from '@components/Layout'
-import { Box, makeStyles, Typography, Grid } from '@material-ui/core'
+import { Box, makeStyles, Typography } from '@material-ui/core'
 import clsx from 'clsx'
 import { Signup } from '@components/pages/home/Signup'
 import { Login } from '@components/pages/home/Login'
-import MonetizationOnIcon from '@material-ui/icons/MonetizationOn'
-import MoneyIcon from '@material-ui/icons/Money'
-import AccountBalanceWalletIcon from '@material-ui/icons/AccountBalanceWallet'
-import { CardItem } from '@components/pages/home/CardItem'
+import { CardContainer } from './../components/pages/home/CardContainer'
 
 const useStyles = makeStyles(theme => ({
   main: {
@@ -33,6 +30,7 @@ const useStyles = makeStyles(theme => ({
   },
   titles: {
     textAlign: 'left',
+    marginBottom: theme.spacing(2),
     [theme.breakpoints.down('xs')]: {
       textAlign: 'center'
     }
@@ -45,26 +43,6 @@ const useStyles = makeStyles(theme => ({
 
 const IndexPage = () => {
   const { main, presentation, titles, subtitle } = useStyles()
-  const features = [
-    {
-      title: 'Easy Management',
-      description:
-        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur voluptas eum quas quo voluptatem eius illo vitae consequatur repellat?',
-      avatar: <MonetizationOnIcon />
-    },
-    {
-      title: 'Easy Management',
-      description:
-        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur voluptas eum quas quo voluptatem eius illo vitae consequatur repellat?',
-      avatar: <MoneyIcon />
-    },
-    {
-      title: 'Easy Management',
-      description:
-        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur voluptas eum quas quo voluptatem eius illo vitae consequatur repellat?',
-      avatar: <AccountBalanceWalletIcon />
-    }
-  ]
 
   return (
     <Layout title="EasyBudget">
@@ -111,11 +89,7 @@ const IndexPage = () => {
           </Box>
         </Box>
       </main>
-      <Grid container spacing={4} justify="center">
-        {features.map((feature, i) => (
-          <CardItem key={i} {...feature} />
-        ))}
-      </Grid>
+      <CardContainer />
     </Layout>
   )
 }
