@@ -13,15 +13,15 @@ const useStyles = makeStyles(theme => ({
     height: '90vh',
     '&::before': {
       content: "''",
-      background: theme.palette.primary.main,
-      position: 'fixed',
+      background: `linear-gradient(${theme.palette.primary.main}, ${theme.palette.secondary.light})`,
+      position: 'absolute',
       top: '0',
       left: 0,
       width: '100%',
-      height: '100%',
+      height: '150%',
       zIndex: 'var(--zindex-bg)',
       [theme.breakpoints.up('sm')]: {
-        clipPath: 'polygon(100% 0, 100% 22%, 27% 120%, 0 72%, 0 0)'
+        clipPath: 'polygon(100% 0, 100% 20%, 29% 100%, 0 70%, 0 0)'
       }
     }
   },
