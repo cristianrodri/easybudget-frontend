@@ -7,24 +7,6 @@ import { Login } from '@components/pages/home/Login'
 import { CardContainer } from './../components/pages/home/CardContainer'
 
 const useStyles = makeStyles(theme => ({
-  main: {
-    display: 'flex',
-    alignItems: 'center',
-    height: '90vh',
-    '&::before': {
-      content: "''",
-      background: `linear-gradient(${theme.palette.primary.main}, ${theme.palette.secondary.light})`,
-      position: 'absolute',
-      top: '0',
-      left: 0,
-      width: '100%',
-      height: '150%',
-      zIndex: 'var(--zindex-bg)',
-      [theme.breakpoints.up('sm')]: {
-        clipPath: 'polygon(100% 0, 100% 20%, 29% 100%, 0 70%, 0 0)'
-      }
-    }
-  },
   presentation: {
     flex: '1 0 300px'
   },
@@ -42,11 +24,11 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const IndexPage = () => {
-  const { main, presentation, titles, subtitle } = useStyles()
+  const { presentation, titles, subtitle } = useStyles()
 
   return (
-    <Layout title="EasyBudget">
-      <main className={main}>
+    <Layout title="EasyBudget" backgroundPage="homepage">
+      <Box component="main" display="flex" alignItems="center" height="90vh">
         <Box
           display="flex"
           justifyContent="space-between"
@@ -88,7 +70,7 @@ const IndexPage = () => {
             <Image width={600} height={400} src="/banner.svg" />
           </Box>
         </Box>
-      </main>
+      </Box>
       <CardContainer />
     </Layout>
   )
