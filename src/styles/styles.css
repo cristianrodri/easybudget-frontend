@@ -2,6 +2,7 @@
 
 :root {
   --zindex-bg: -100;
+  --before-header: -50;
 }
 
 *,
