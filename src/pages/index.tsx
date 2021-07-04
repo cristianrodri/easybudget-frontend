@@ -1,10 +1,10 @@
 import Image from 'next/image'
-import { Layout } from '@components/Layout'
 import { Box, makeStyles, Typography } from '@material-ui/core'
 import clsx from 'clsx'
+import { Layout } from '@components/Layout'
 import { Signup } from '@components/pages/home/Signup'
 import { Login } from '@components/pages/home/Login'
-import { CardContainer } from './../components/pages/home/CardContainer'
+import { CardContainer } from '@components/pages/home/CardContainer'
 
 const useStyles = makeStyles(theme => ({
   presentation: {
