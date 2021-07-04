@@ -1,6 +1,6 @@
 import { Layout } from '@components/Layout'
 
-const login = () => {
+const Login = () => {
   return (
     <Layout title="Login">
       <h1>login</h1>
@@ -8,4 +8,4 @@ const login = () => {
   )
 }
 
-export default login
+export default Login
