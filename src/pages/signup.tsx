@@ -5,50 +5,68 @@ import {
   Button,
   makeStyles
 } from '@material-ui/core'
+import clsx from 'clsx'
 import { Layout } from '@components/Layout'
 
 const useStyles = makeStyles(theme => ({
   containerMessage: {
     backgroundColor: theme.palette.primary.main,
-    borderRadius: 16,
     transform: 'scale(1.1)',
-    boxShadow: theme.shadows[10]
+    boxShadow: theme.shadows[15]
   },
   containerForm: {
-    backgroundColor: theme.palette.grey[300],
-    borderRadius: 16
+    backgroundColor: theme.palette.grey[200],
+    boxShadow: theme.shadows[15]
+  },
+  text: {
+    color: theme.palette.grey[50]
+  },
+  title: {
+    textTransform: 'uppercase',
+    fontWeight: theme.typography.fontWeightBold
+  },
+  description: {
+    letterSpacing: 2
   }
 }))
 
 const Signup = () => {
-  const { containerMessage, containerForm } = useStyles()
+  const { containerMessage, containerForm, text, title, description } =
+    useStyles()
   return (
     <Layout title="Signup" backgroundPage="signup">
       <Box
         position="absolute"
         height="100%"
-        zIndex="var(--before-header)"
         display="flex"
         justifyContent="center"
         alignItems="center"
         flex="1"
       >
-        <Box width="min(100%, 700px)" display="flex">
+        <Box width="min(100%, 700px)" height="70%" display="flex">
           <Box
-            flex="1"
+            width="45%"
             display="flex"
             flexDirection="column"
             justifyContent="center"
             alignItems="start"
+            borderRadius={16}
             className={containerMessage}
-            p={4}
+            p={6}
           >
-            <Typography component="h3" variant="h4" gutterBottom>
+            <Typography
+              component="h3"
+              variant="h4"
+              gutterBottom
+              className={clsx(text, title)}
+            >
               Easy Budget
             </Typography>
-            <Typography>Manage all your incomes and expenses easily</Typography>
+            <Typography className={clsx(text, description)}>
+              Manage all your incomes and expenses easily
+            </Typography>
           </Box>
-          <Box flex="1" p={4} borderRadius={16} className={containerForm}>
+          <Box width="55%" p={6} borderRadius={16} className={containerForm}>
             <Typography component="h3" variant="h4">
               Sign up
             </Typography>
