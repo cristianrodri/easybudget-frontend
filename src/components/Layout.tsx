@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme => ({
   signup: {
     '&::before': {
       content: "''",
-      background: theme.palette.primary.light,
+      background: theme.palette.grey[50],
       position: 'absolute',
       top: '0',
       left: 0,

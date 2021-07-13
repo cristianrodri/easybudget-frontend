@@ -1,12 +1,7 @@
-import {
-  Box,
-  Typography,
-  TextField,
-  Button,
-  makeStyles
-} from '@material-ui/core'
+import { Box, Typography, makeStyles } from '@material-ui/core'
 import clsx from 'clsx'
 import { Layout } from '@components/Layout'
+import { Form } from '@components/pages/signup/Form'
 
 const useStyles = makeStyles(theme => ({
   containerMessage: {
@@ -23,7 +18,8 @@ const useStyles = makeStyles(theme => ({
   },
   title: {
     textTransform: 'uppercase',
-    fontWeight: theme.typography.fontWeightBold
+    fontWeight: theme.typography.fontWeightBold,
+    marginBottom: theme.spacing(2)
   },
   description: {
     letterSpacing: 2
@@ -31,19 +27,18 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const Signup = () => {
-  const { containerMessage, containerForm, text, title, description } =
-    useStyles()
+  const { containerMessage, text, title, description } = useStyles()
+
   return (
     <Layout title="Signup" backgroundPage="signup">
       <Box
-        position="absolute"
-        height="100%"
         display="flex"
         justifyContent="center"
         alignItems="center"
         flex="1"
+        mt="calc(var(--header-height) * -1)"
       >
-        <Box width="min(100%, 700px)" height="70%" display="flex">
+        <Box width="min(100%, 700px)" height="70vh" display="flex">
           <Box
             width="45%"
             display="flex"
@@ -66,19 +61,7 @@ const Signup = () => {
               Manage all your incomes and expenses easily
             </Typography>
           </Box>
-          <Box width="55%" p={6} borderRadius={16} className={containerForm}>
-            <Typography component="h3" variant="h4">
-              Sign up
-            </Typography>
-            <form>
-              <TextField label="Name" />
-              <TextField label="Email" />
-              <TextField label="Password" />
-              <Button type="submit" variant="contained" color="secondary">
-                sign up
-              </Button>
-            </form>
-          </Box>
+          <Form />
         </Box>
       </Box>
     </Layout>

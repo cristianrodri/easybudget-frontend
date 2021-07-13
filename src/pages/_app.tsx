@@ -1,6 +1,7 @@
 import { AppProps } from 'next/app'
 import { createMuiTheme } from '@material-ui/core'
 import { responsiveFontSizes, ThemeProvider } from '@material-ui/core/styles'
+import { purple } from '@material-ui/core/colors'
 import '../styles/styles.css'
 import { useEffect } from 'react'
 import JSONPretty from 'react-json-pretty'
@@ -9,7 +10,8 @@ import 'react-json-pretty/themes/monikai.css'
 export const theme = createMuiTheme({
   palette: {
     primary: {
-      main: '#9d3ff5'
+      main: purple[400]
+      // main: '#9d3ff5',
     }
   }
 })
