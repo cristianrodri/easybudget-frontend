@@ -48,9 +48,11 @@ export const Form = () => {
       boxShadow={theme.shadows[15]}
       display="grid"
     >
-      <Typography component="h3" variant="h4" color="primary">
-        Sign up
-      </Typography>
+      <Box clone alignSelf="center">
+        <Typography component="h3" variant="h4" color="primary">
+          Sign up
+        </Typography>
+      </Box>
       <Box clone display="grid">
         <form onSubmit={formik.handleSubmit}>
           <TextField
@@ -84,7 +86,6 @@ export const Form = () => {
           />
           <Box
             clone
-            // mt={3}
             justifySelf="start"
             alignSelf="center"
             style={{ borderRadius: 24, padding: theme.spacing(1.5, 5) }}
