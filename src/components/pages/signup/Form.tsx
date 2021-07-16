@@ -1,6 +1,8 @@
 import { TextField, Button, Box, Typography, useTheme } from '@material-ui/core'
+import axios from 'axios'
 import { useFormik } from 'formik'
 import { object, string, SchemaOf } from 'yup'
+import { URL } from '@config'
 
 interface FormTypes {
   username: string
@@ -29,13 +31,12 @@ export const Form = () => {
       password: ''
     },
     validationSchema,
-    onSubmit: (values, helpers) => {
-      console.log(values)
-      console.log(helpers.setSubmitting(true))
+    onSubmit: async () => {
+      // console.log(values)
+      // helpers.setSubmitting(true)
 
-      setTimeout(() => {
-        helpers.setSubmitting(false)
-      }, 5000)
+      const res = await axios.post(`${URL}/auth/local/register`)
+      console.log(res)
     }
   })
 
