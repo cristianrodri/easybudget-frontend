@@ -1,9 +1,8 @@
 import { TextField, Button, Box, Typography, useTheme } from '@material-ui/core'
-import axios from 'axios'
 import { useFormik } from 'formik'
 import { object, string, SchemaOf } from 'yup'
-import { URL } from '@config'
-
+import { useEffect, useRef } from 'react'
+import { axiosInstance as axios } from '@config/axios'
 interface FormTypes {
   username: string
   email: string
@@ -12,6 +11,11 @@ interface FormTypes {
 
 export const Form = () => {
   const theme = useTheme()
+  const inputRef = useRef<HTMLInputElement>()
+
+  useEffect(() => {
+    inputRef.current?.focus()
+  }, [])
 
   const validationSchema: SchemaOf<FormTypes> = object({
     username: string()
@@ -31,11 +35,11 @@ export const Form = () => {
       password: ''
     },
     validationSchema,
-    onSubmit: async () => {
-      // console.log(values)
-      // helpers.setSubmitting(true)
+    onSubmit: async (values, { setSubmitting }) => {
+      setSubmitting(true)
 
-      const res = await axios.post(`${URL}/auth/local/register`)
+      const res = await axios.post('/auth/local/register', values)
+      setSubmitting(false)
       console.log(res)
     }
   })
@@ -60,11 +64,11 @@ export const Form = () => {
             id="username"
             label="Username"
             name="username"
+            inputRef={inputRef}
             value={formik.values.username}
             onChange={formik.handleChange}
             error={formik.touched.username && Boolean(formik.errors.username)}
             helperText={formik.touched.username && formik.errors.username}
-            autoFocus
           />
           <TextField
             id="email"
