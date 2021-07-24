@@ -1,8 +1,18 @@
-import { TextField, Button, Box, Typography, useTheme } from '@material-ui/core'
+import {
+  TextField,
+  Button,
+  Box,
+  Typography,
+  useTheme,
+  Snackbar
+} from '@material-ui/core'
+// import { Alert } from '@material-ui/lab';
 import { useFormik } from 'formik'
 import { object, string, SchemaOf } from 'yup'
-import { useEffect, useRef } from 'react'
-import { axiosInstance as axios } from '@config/axios'
+import { useEffect, useRef, useState } from 'react'
+import { clientInstance as axios } from '@config/axios'
+import { useRouter } from 'next/router'
+
 interface FormTypes {
   username: string
   email: string
@@ -12,6 +22,9 @@ interface FormTypes {
 export const Form = () => {
   const theme = useTheme()
   const inputRef = useRef<HTMLInputElement>()
+  const [open, setOpen] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
+  const router = useRouter()
 
   useEffect(() => {
     inputRef.current?.focus()
@@ -38,11 +51,20 @@ export const Form = () => {
     onSubmit: async (values, { setSubmitting }) => {
       setSubmitting(true)
 
-      const res = await axios.post('/auth/local/register', values)
+      const res = await axios.post('/api/register', values)
+      if (res.data.success) {
+        router.push('dashboard')
+      } else {
+        setOpen(true)
+        setErrorMessage(res.data.message)
+      }
       setSubmitting(false)
-      console.log(res)
     }
   })
+
+  const handleClose = () => {
+    setOpen(false)
+  }
 
   return (
     <Box
@@ -106,6 +128,12 @@ export const Form = () => {
           </Box>
         </form>
       </Box>
+      <Snackbar
+        open={open}
+        autoHideDuration={3000}
+        message={errorMessage}
+        onClose={handleClose}
+      />
     </Box>
   )
 }
