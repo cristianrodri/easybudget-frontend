@@ -1,12 +1,13 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import cookie from 'cookie'
-import { axiosInstance as axios } from '@config/axios'
+import { serverInstance as axios } from '@config/axios'
+import { AxiosError } from 'axios'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'POST') {
-    const { data, status } = await axios.post('/auth/local/register', req.body)
+    try {
+      const { data } = await axios.post('/auth/local/register', req.body)
 
-    if (status === 200) {
       // Set Cookie
       res.setHeader(
         'Set-Cookie',
@@ -19,11 +20,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         })
       )
 
-      res.status(200).json({ success: true, user: data.user })
-    } else {
-      res
-        .status(data.statusCode)
-        .json({ success: false, message: data.message[0].messages[0].message })
+      res.status(201).json({ success: true, user: data.user })
+    } catch (error) {
+      const err = error as AxiosError
+      res.json({
+        success: false,
+        message: err.response.data.message[0].messages[0].message
+      })
     }
   } else {
     res.setHeader('Allow', ['POST'])
