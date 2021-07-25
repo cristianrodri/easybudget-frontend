@@ -4,14 +4,11 @@ import { responsiveFontSizes, ThemeProvider } from '@material-ui/core/styles'
 import { purple } from '@material-ui/core/colors'
 import '../styles/styles.css'
 import { useEffect } from 'react'
-import JSONPretty from 'react-json-pretty'
-import 'react-json-pretty/themes/monikai.css'
 
 export const theme = createMuiTheme({
   palette: {
     primary: {
       main: purple[400]
-      // main: '#9d3ff5',
     }
   }
 })
@@ -27,7 +24,6 @@ const App = ({ Component, pageProps }: AppProps) => {
   return (
     <ThemeProvider theme={responsiveTheme}>
       <Component {...pageProps} />
-      <JSONPretty id="json-pretty" data={responsiveTheme}></JSONPretty>
     </ThemeProvider>
   )
 }

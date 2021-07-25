@@ -38,7 +38,18 @@ const useStyles = makeStyles(theme => ({
       zIndex: 'var(--zindex-bg)'
     }
   },
-  login: {},
+  login: {
+    '&::before': {
+      content: "''",
+      background: `linear-gradient(45deg, ${theme.palette.primary.main} 70%, ${theme.palette.primary.light})`,
+      position: 'absolute',
+      top: '0',
+      left: 0,
+      width: '100%',
+      height: '100%',
+      zIndex: 'var(--zindex-bg)'
+    }
+  },
   default: {
     backgroundColor: theme.palette.background.default
   }
