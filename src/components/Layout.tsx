@@ -67,7 +67,7 @@ export const Layout: FC<Props> = ({
         <title>{title}</title>
       </Head>
       <Box minHeight="100vh" display="flex" flexDirection="column">
-        <Header />
+        {/* <Header /> */}
         {children}
       </Box>
     </Container>
