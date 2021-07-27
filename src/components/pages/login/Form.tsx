@@ -8,10 +8,10 @@ import {
 import { useFormik } from 'formik'
 import { object, string, SchemaOf } from 'yup'
 import Link from 'next/link'
-// import { useRouter } from 'next/router'
+import { useRouter } from 'next/router'
 import { useFocus } from '@hooks/useFocus'
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward'
-// import { clientInstance as axios } from '@config/axios'
+import { clientInstance as axios } from '@config/axios'
 
 interface FormTypes {
   identifier: string
@@ -39,7 +39,7 @@ const useStyles = makeStyles(theme => ({
 
 export const Form = () => {
   const ref = useFocus()
-  // const router = useRouter()
+  const router = useRouter()
   const { title, textField, button } = useStyles()
 
   const validationSchema: SchemaOf<FormTypes> = object({
@@ -53,17 +53,16 @@ export const Form = () => {
       password: ''
     },
     validationSchema,
-    onSubmit: async values => {
-      console.log(values)
-      // setSubmitting(true)
+    onSubmit: async (values, { setSubmitting }) => {
+      setSubmitting(true)
 
-      // const res = await axios.post('/api/login', values)
-      // if (res.data.success) {
-      //   router.push('dashboard')
-      // } else {
-      //   console.log(res.data.message)
-      // }
-      // setSubmitting(false)
+      const res = await axios.post('/api/login', values)
+      if (res.data.success) {
+        router.push('dashboard')
+      } else {
+        console.log(res.data.message)
+      }
+      setSubmitting(false)
     }
   })
 
