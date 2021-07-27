@@ -1,7 +1,17 @@
-import { Box, Button, TextField, makeStyles } from '@material-ui/core'
+import {
+  Box,
+  Button,
+  TextField,
+  makeStyles,
+  Typography
+} from '@material-ui/core'
 import { useFormik } from 'formik'
 import { object, string, SchemaOf } from 'yup'
+import Link from 'next/link'
+// import { useRouter } from 'next/router'
 import { useFocus } from '@hooks/useFocus'
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward'
+// import { clientInstance as axios } from '@config/axios'
 
 interface FormTypes {
   identifier: string
@@ -9,21 +19,31 @@ interface FormTypes {
 }
 
 const useStyles = makeStyles(theme => ({
+  title: {
+    fontWeight: theme.typography.fontWeightBold,
+    marginBottom: theme.spacing(2)
+  },
   textField: {
-    marginBottom: theme.spacing(1)
+    width: '100%',
+    marginBottom: theme.spacing(1),
+    '& input': {
+      fontSize: theme.typography.body2.fontSize
+    }
   },
   button: {
     marginTop: theme.spacing(2),
-    width: '100%'
+    width: '100%',
+    fontSize: theme.typography.body2.fontSize
   }
 }))
 
 export const Form = () => {
   const ref = useFocus()
-  const { textField, button } = useStyles()
+  // const router = useRouter()
+  const { title, textField, button } = useStyles()
 
   const validationSchema: SchemaOf<FormTypes> = object({
-    identifier: string().required('Email or password is required'),
+    identifier: string().required('Email or username is required'),
     password: string().required('Password is required')
   })
 
@@ -35,24 +55,40 @@ export const Form = () => {
     validationSchema,
     onSubmit: async values => {
       console.log(values)
+      // setSubmitting(true)
+
+      // const res = await axios.post('/api/login', values)
+      // if (res.data.success) {
+      //   router.push('dashboard')
+      // } else {
+      //   console.log(res.data.message)
+      // }
+      // setSubmitting(false)
     }
   })
 
   return (
     <Box
       width="50%"
-      bgcolor="white"
+      position="relative"
       display="flex"
       flexDirection="column"
       justifyContent="center"
       alignItems="center"
-      style={{ gap: '1rem' }}
+      bgcolor="white"
     >
-      <h2>Login</h2>
-      <Box clone display="flex" flexDirection="column" alignItems="center">
-        <form>
+      <Typography component="h3" variant="h6" gutterBottom className={title}>
+        Login
+      </Typography>
+      <Box
+        clone
+        width="80%"
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+      >
+        <form onSubmit={formik.handleSubmit}>
           <TextField
-            // variant="outlined"
             size="small"
             className={textField}
             id="identifier"
@@ -67,8 +103,9 @@ export const Form = () => {
             helperText={formik.touched.identifier && formik.errors.identifier}
           />
           <TextField
-            // variant="outlined"
             size="small"
+            className={textField}
+            type="password"
             id="password"
             label="Password"
             name="password"
@@ -88,6 +125,34 @@ export const Form = () => {
           </Button>
         </form>
       </Box>
+      <Link href="/signup" passHref>
+        <Box
+          clone
+          position="absolute"
+          bottom={0}
+          left={0}
+          right={0}
+          width="max-content"
+          mx="auto"
+          mb={2}
+          style={{ textDecoration: 'none' }}
+        >
+          <a>
+            <Box
+              clone
+              display="grid"
+              gridTemplateColumns="auto auto"
+              justifyContent="center"
+              alignItems="center"
+              gridGap="0.5rem"
+            >
+              <Typography variant="caption">
+                Create your account {<ArrowForwardIcon fontSize="small" />}
+              </Typography>
+            </Box>
+          </a>
+        </Box>
+      </Link>
     </Box>
   )
 }

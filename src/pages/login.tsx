@@ -12,7 +12,7 @@ const Login = () => {
         justifyContent="center"
         alignItems="center"
       >
-        <Box clone display="flex" width="min(100%, 600px)" height="50vh">
+        <Box clone display="flex" width="min(100%, 600px)" height="60vh">
           <Paper elevation={3}>
             <Box
               width="50%"
