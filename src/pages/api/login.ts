@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import cookie from 'cookie'
 import { serverInstance as axios } from '@config/axios'
 import { AxiosError } from 'axios'
+import { createCookie } from 'utils/cookie'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'POST') {
@@ -9,16 +9,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       const { data } = await axios.post('/auth/local', req.body)
 
       // Set Cookie
-      res.setHeader(
-        'Set-Cookie',
-        cookie.serialize('token', data.jwt, {
-          httpOnly: true,
-          secure: process.env.NODE_ENV !== 'development',
-          maxAge: 60 * 60 * 6, // 6 hours
-          sameSite: 'strict',
-          path: '/'
-        })
-      )
+      res.setHeader('Set-Cookie', createCookie(data.jwt))
 
       res.status(200).json({ success: true, user: data.user })
     } catch (error) {
