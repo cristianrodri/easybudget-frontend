@@ -120,7 +120,7 @@ export const Form = () => {
             className={button}
             disabled={formik.isSubmitting}
           >
-            {formik.isSubmitting ? 'Loading...' : 'sign up'}
+            {formik.isSubmitting ? 'Loading...' : 'login'}
           </Button>
         </form>
       </Box>
