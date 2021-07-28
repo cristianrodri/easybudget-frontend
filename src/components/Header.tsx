@@ -7,7 +7,7 @@ export const Header = () => {
     <header style={{ height: 'var(--header-height)' }}>
       <Link href="/">
         <a>
-          <Image src="/logo.webp" width={logoSize} height={logoSize} />
+          <Image src="/logo.png" width={logoSize} height={logoSize} />
         </a>
       </Link>
     </header>
