@@ -19,10 +19,11 @@ const useStyles = makeStyles(theme => ({
       top: '0',
       left: 0,
       width: '100%',
-      height: '150%',
+      minHeight: '100vh',
       zIndex: 'var(--zindex-bg)',
-      [theme.breakpoints.up('sm')]: {
-        clipPath: 'polygon(100% 0, 100% 20%, 29% 100%, 0 70%, 0 0)'
+      [theme.breakpoints.up('md')]: {
+        clipPath: 'polygon(100% 0, 100% 20%, 29% 100%, 0 70%, 0 0)',
+        height: '140%'
       }
     }
   },

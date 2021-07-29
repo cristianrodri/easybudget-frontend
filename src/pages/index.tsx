@@ -1,5 +1,11 @@
 import Image from 'next/image'
-import { Box, makeStyles, Typography } from '@material-ui/core'
+import {
+  Box,
+  makeStyles,
+  Typography,
+  useMediaQuery,
+  useTheme
+} from '@material-ui/core'
 import clsx from 'clsx'
 import { Layout } from '@components/Layout'
 import { Signup } from '@components/pages/home/Signup'
@@ -25,17 +31,25 @@ const useStyles = makeStyles(theme => ({
 
 const IndexPage = () => {
   const { presentation, titles, subtitle } = useStyles()
+  const theme = useTheme()
+  const matches = useMediaQuery(theme.breakpoints.down('sm'))
 
   return (
     <Layout title="EasyBudget" backgroundPage="homepage">
-      <Box component="main" display="flex" alignItems="center" height="90vh">
+      <Box
+        component="main"
+        display="flex"
+        alignItems="center"
+        minHeight="100vh"
+      >
         <Box
           display="flex"
           justifyContent="space-between"
           alignItems="center"
           flexWrap="wrap"
+          width="100%"
         >
-          <Box alignSelf="start" className={presentation}>
+          <Box className={presentation}>
             <Box clone color="white">
               <Typography
                 component="h1"
@@ -66,9 +80,16 @@ const IndexPage = () => {
               <Login />
             </Box>
           </Box>
-          <Box className={presentation}>
-            <Image width={600} height={400} src="/banner.svg" />
-          </Box>
+          {!matches && (
+            <Box className={presentation}>
+              <Image
+                width={500}
+                height={400}
+                layout="responsive"
+                src="/banner.svg"
+              />
+            </Box>
+          )}
         </Box>
       </Box>
       <CardContainer />

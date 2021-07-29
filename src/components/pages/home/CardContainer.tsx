@@ -1,4 +1,4 @@
-import { Grid } from '@material-ui/core'
+import { Box, Grid } from '@material-ui/core'
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn'
 import MoneyIcon from '@material-ui/icons/Money'
 import AccountBalanceWalletIcon from '@material-ui/icons/AccountBalanceWallet'
@@ -25,11 +25,14 @@ export const CardContainer = () => {
       avatar: <AccountBalanceWalletIcon fontSize="large" color="primary" />
     }
   ]
+
   return (
-    <Grid container spacing={4} justify="center">
-      {features.map((feature, i) => (
-        <CardItem key={i} {...feature} />
-      ))}
-    </Grid>
+    <Box clone pt={2}>
+      <Grid container spacing={4} justify="center">
+        {features.map((feature, i) => (
+          <CardItem key={i} {...feature} />
+        ))}
+      </Grid>
+    </Box>
   )
 }
