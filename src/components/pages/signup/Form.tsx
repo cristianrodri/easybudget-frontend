@@ -8,27 +8,25 @@ import {
 } from '@material-ui/core'
 // import { Alert } from '@material-ui/lab';
 import { useFormik } from 'formik'
-import { object, string, SchemaOf } from 'yup'
-import { useEffect, useRef, useState } from 'react'
+import { object, string, SchemaOf, ref as yupRef } from 'yup'
+import { useState } from 'react'
 import { clientInstance as axios } from '@config/axios'
 import { useRouter } from 'next/router'
+import { useFocus } from '@hooks/useFocus'
 
 interface FormTypes {
   username: string
   email: string
   password: string
+  confirmPassword: string
 }
 
 export const Form = () => {
   const theme = useTheme()
-  const inputRef = useRef<HTMLInputElement>()
+  const ref = useFocus()
   const [open, setOpen] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
   const router = useRouter()
-
-  useEffect(() => {
-    inputRef.current?.focus()
-  }, [])
 
   const validationSchema: SchemaOf<FormTypes> = object({
     username: string()
@@ -38,14 +36,19 @@ export const Form = () => {
     email: string().email('Enter a valid email').required('Email is required'),
     password: string()
       .min(8, 'Password should be of minimum 8 characters')
-      .required('Password is required')
+      .required('Password is required'),
+    confirmPassword: string().oneOf(
+      [yupRef('password'), null],
+      'Passwords must match'
+    )
   })
 
   const formik = useFormik<FormTypes>({
     initialValues: {
       username: '',
       email: '',
-      password: ''
+      password: '',
+      confirmPassword: ''
     },
     validationSchema,
     onSubmit: async (values, { setSubmitting }) => {
@@ -75,18 +78,18 @@ export const Form = () => {
       boxShadow={theme.shadows[15]}
       display="grid"
     >
-      <Box clone alignSelf="center">
-        <Typography component="h3" variant="h4" color="primary">
+      <Box clone alignSelf="center" style={{ marginBottom: theme.spacing(2) }}>
+        <Typography component="h3" variant="h5" color="primary">
           Sign up
         </Typography>
       </Box>
-      <Box clone display="grid">
+      <Box clone display="grid" gridGap={theme.spacing(1)}>
         <form onSubmit={formik.handleSubmit}>
           <TextField
             id="username"
             label="Username"
             name="username"
-            inputRef={inputRef}
+            inputRef={ref}
             value={formik.values.username}
             onChange={formik.handleChange}
             error={formik.touched.username && Boolean(formik.errors.username)}
@@ -111,11 +114,30 @@ export const Form = () => {
             error={formik.touched.password && Boolean(formik.errors.password)}
             helperText={formik.touched.password && formik.errors.password}
           />
+          <TextField
+            id="confirmPassword"
+            label="Confirm Password"
+            name="confirmPassword"
+            type="password"
+            value={formik.values.confirmPassword}
+            onChange={formik.handleChange}
+            error={
+              formik.touched.confirmPassword &&
+              Boolean(formik.errors.confirmPassword)
+            }
+            helperText={
+              formik.touched.confirmPassword && formik.errors.confirmPassword
+            }
+          />
           <Box
             clone
             justifySelf="start"
             alignSelf="center"
-            style={{ borderRadius: 24, padding: theme.spacing(1.5, 5) }}
+            style={{
+              borderRadius: 24,
+              padding: theme.spacing(1.5, 5),
+              marginTop: theme.spacing(2)
+            }}
           >
             <Button
               type="submit"

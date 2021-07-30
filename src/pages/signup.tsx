@@ -31,14 +31,8 @@ const Signup = () => {
 
   return (
     <Layout title="Signup" backgroundPage="signup">
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        flex="1"
-        mt="calc(var(--header-height) * -1)"
-      >
-        <Box width="min(100%, 700px)" height="70vh" display="flex">
+      <Box display="flex" justifyContent="center" alignItems="center" flex="1">
+        <Box width="min(100%, 700px)" display="flex">
           <Box
             width="45%"
             display="flex"
