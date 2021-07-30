@@ -38,8 +38,8 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export const Form = () => {
-  const ref = useFocus()
   const router = useRouter()
+  const ref = useFocus()
   const { title, textField, button } = useStyles()
 
   const validationSchema: SchemaOf<FormTypes> = object({
@@ -60,6 +60,7 @@ export const Form = () => {
       if (res.data.success) {
         router.push('dashboard')
       } else {
+        // add a alert message later on
         console.log(res.data.message)
       }
       setSubmitting(false)
@@ -68,20 +69,19 @@ export const Form = () => {
 
   return (
     <Box
-      width="50%"
       position="relative"
       display="flex"
       flexDirection="column"
       justifyContent="center"
       alignItems="center"
-      bgcolor="white"
+      flex={1}
     >
       <Typography component="h3" variant="h6" gutterBottom className={title}>
         Login
       </Typography>
       <Box
         clone
-        width="80%"
+        width="min(80%, 300px)"
         display="flex"
         flexDirection="column"
         alignItems="center"
