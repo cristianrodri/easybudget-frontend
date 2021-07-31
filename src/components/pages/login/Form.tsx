@@ -3,15 +3,16 @@ import {
   Button,
   TextField,
   makeStyles,
-  Typography
+  Typography,
+  useTheme
 } from '@material-ui/core'
 import { useFormik } from 'formik'
 import { object, string, SchemaOf } from 'yup'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useFocus } from '@hooks/useFocus'
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward'
+import { useFocus } from '@hooks/useFocus'
 import { clientInstance as axios } from '@config/axios'
+import { FormLink } from '@components/common/FormLink'
 
 interface FormTypes {
   identifier: string
@@ -39,6 +40,7 @@ const useStyles = makeStyles(theme => ({
 
 export const Form = () => {
   const router = useRouter()
+  const theme = useTheme()
   const ref = useFocus()
   const { title, textField, button } = useStyles()
 
@@ -124,34 +126,18 @@ export const Form = () => {
           </Button>
         </form>
       </Box>
-      <Link href="/signup" passHref>
+      <FormLink href="/signup">
         <Box
           clone
-          position="absolute"
-          bottom={0}
-          left={0}
-          right={0}
-          width="max-content"
-          mx="auto"
-          mb={2}
-          style={{ textDecoration: 'none' }}
+          display="flex"
+          alignItems="center"
+          style={{ marginTop: theme.spacing(2) }}
         >
-          <a>
-            <Box
-              clone
-              display="grid"
-              gridTemplateColumns="auto auto"
-              justifyContent="center"
-              alignItems="center"
-              gridGap="0.5rem"
-            >
-              <Typography variant="caption">
-                Create your account {<ArrowForwardIcon fontSize="small" />}
-              </Typography>
-            </Box>
-          </a>
+          <Typography variant="caption">
+            Create your account {<ArrowForwardIcon fontSize="small" />}
+          </Typography>
         </Box>
-      </Link>
+      </FormLink>
     </Box>
   )
 }

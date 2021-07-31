@@ -6,13 +6,13 @@ import {
   useTheme,
   Snackbar
 } from '@material-ui/core'
-// import { Alert } from '@material-ui/lab';
+import { useState } from 'react'
 import { useFormik } from 'formik'
 import { object, string, SchemaOf, ref as yupRef } from 'yup'
-import { useState } from 'react'
 import { clientInstance as axios } from '@config/axios'
 import { useRouter } from 'next/router'
 import { useFocus } from '@hooks/useFocus'
+import { FormLink } from '@components/common/FormLink'
 
 interface FormTypes {
   username: string
@@ -150,6 +150,9 @@ export const Form = () => {
           </Box>
         </form>
       </Box>
+      <Typography style={{ marginTop: theme.spacing(2) }}>
+        Already registered? <FormLink href="/login">Login</FormLink>
+      </Typography>
       <Snackbar
         open={open}
         autoHideDuration={3000}
