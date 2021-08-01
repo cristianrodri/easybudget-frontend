@@ -3,9 +3,10 @@ import { CLIENT_URL, SERVER_URL } from './url'
 
 export const clientInstance = axios.create({
   baseURL: CLIENT_URL,
-  timeout: 8000
+  validateStatus: status => status < 600
 })
 
 export const serverInstance = axios.create({
-  baseURL: SERVER_URL
+  baseURL: SERVER_URL,
+  timeout: 8000
 })
