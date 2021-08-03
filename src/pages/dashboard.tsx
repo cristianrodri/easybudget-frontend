@@ -1,6 +1,6 @@
 import { Layout } from '@components/Layout'
 import { serverInstance as axios } from '@config/axios'
-import { withAuthentication } from 'utils/middleware'
+import { withAuthentication } from '@utils/middleware'
 
 const Dashboard = ({ data }) => {
   return (

@@ -1,8 +1,8 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { serverInstance as axios } from '@config/axios'
 import { AxiosError } from 'axios'
-import { createCookie } from 'utils/cookie'
-import { errorResponse } from './../../utils/error'
+import { createCookie } from '@utils/cookie'
+import { errorResponse } from '@utils/error'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'POST') {
