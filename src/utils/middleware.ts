@@ -19,3 +19,20 @@ export const withAuthentication =
 
     return getServerSidePropsFn(ctx)
   }
+
+export const withPublic = (): GetServerSideProps => async ctx => {
+  const token = ctx.req.cookies?.token
+
+  if (token) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: '/dashboard'
+      }
+    }
+  }
+
+  return {
+    props: {}
+  }
+}

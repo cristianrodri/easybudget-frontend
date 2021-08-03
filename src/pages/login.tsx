@@ -2,6 +2,7 @@ import Image from 'next/image'
 import { Box, useMediaQuery, useTheme } from '@material-ui/core'
 import { Layout } from '@components/Layout'
 import { Form } from '@components/pages/login/Form'
+import { withPublic } from '@utils/middleware'
 
 const Login = () => {
   const theme = useTheme()
@@ -39,5 +40,7 @@ const Login = () => {
     </Layout>
   )
 }
+
+export const getServerSideProps = withPublic()
 
 export default Login

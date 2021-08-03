@@ -2,6 +2,7 @@ import { Box, Typography, makeStyles } from '@material-ui/core'
 import clsx from 'clsx'
 import { Layout } from '@components/Layout'
 import { Form } from '@components/pages/signup/Form'
+import { withPublic } from '@utils/middleware'
 
 const useStyles = makeStyles(theme => ({
   containerMessage: {
@@ -61,5 +62,7 @@ const Signup = () => {
     </Layout>
   )
 }
+
+export const getServerSideProps = withPublic()
 
 export default Signup
