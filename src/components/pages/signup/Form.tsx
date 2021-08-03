@@ -150,7 +150,7 @@ export const Form = () => {
           </Box>
         </form>
       </Box>
-      <Typography style={{ marginTop: theme.spacing(2) }}>
+      <Typography style={{ marginTop: theme.spacing(2) }} variant="body1">
         Already registered? <FormLink href="/login">Login</FormLink>
       </Typography>
       <Snackbar
