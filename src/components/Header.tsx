@@ -16,7 +16,7 @@ export const Header = () => {
   return (
     <header className={header}>
       <Link href="/">
-        <a>
+        <a data-testid="homepage">
           <Image src="/logo.png" width={logoSize} height={logoSize} />
         </a>
       </Link>
