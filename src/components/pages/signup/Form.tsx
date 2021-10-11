@@ -30,8 +30,8 @@ export const Form = () => {
 
   const validationSchema: SchemaOf<FormTypes> = object({
     username: string()
-      .min(2, 'Password should be of minimum 2 characters')
-      .max(25, 'Password should be of maximum 25 characters')
+      .min(2, 'Username should be of minimum 2 characters')
+      .max(25, 'Username should be of maximum 25 characters')
       .required('Name is required'),
     email: string().email('Enter a valid email').required('Email is required'),
     password: string()
