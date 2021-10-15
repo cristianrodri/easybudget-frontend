@@ -1,9 +1,24 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Form } from './Form'
+import { setupServer } from 'msw/node'
+import { DefaultRequestBody, rest } from 'msw'
+
+const server = setupServer(
+  rest.post<DefaultRequestBody, { success: boolean }>(
+    '/api/register',
+    (req, res, ctx) => {
+      return res(ctx.delay(100), ctx.json({ success: true }))
+    }
+  )
+)
+
+beforeAll(() => server.listen())
+afterAll(() => server.close())
+afterEach(() => server.resetHandlers())
 
 describe('Signup form', () => {
-  it('should submit the signup form', async () => {
+  it('should render Loading... after submit the form', async () => {
     render(<Form />)
 
     userEvent.type(screen.getByLabelText(/username/i), 'John')
