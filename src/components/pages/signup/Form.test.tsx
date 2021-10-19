@@ -37,7 +37,7 @@ describe('Signup form', () => {
   })
 
   describe('Show validation errors after submitting an empty form', () => {
-    beforeEach(async () => {
+    beforeEach(() => {
       render(<Form />)
     })
 
@@ -72,13 +72,45 @@ describe('Signup form', () => {
       })
     })
 
-    it.todo(
-      'should render "Username should be of minimum 2 characters" after the user types one word on username input'
-    )
+    it('should render "Username should be of minimum 2 characters" after the user types one word on username input', async () => {
+      submittingForm()
+      await waitFor(() => {
+        userEvent.type(screen.getByLabelText(/username/i), 'c')
+      })
+      await waitFor(() => {
+        expect(
+          screen.getByText(/^Username should be of minimum 2 characters$/i)
+        ).toBeInTheDocument()
+      })
+    })
 
-    it.todo(
-      'should render "Username should be of maximium 25 characters" after the user types more than 25 words on username input'
-    )
+    it('should render "Username should be of maximum 25 characters" after the user types more than 25 words on username input', async () => {
+      submittingForm()
+
+      await waitFor(() => {
+        fireEvent.change(screen.getByLabelText(/username/i), {
+          target: { value: 'usertypesmorethan25characters' }
+        })
+      })
+
+      await waitFor(() => {
+        expect(
+          screen.getByText(/^Username should be of maximum 25 characters$/i)
+        ).toBeInTheDocument()
+      })
+    })
+
+    it('should render "Password should be of minimum 8 characters"', async () => {
+      submittingForm()
+      await waitFor(() => {
+        userEvent.type(screen.getByLabelText(/^password$/i), 'cccyyy')
+      })
+      await waitFor(() => {
+        expect(
+          screen.getByText(/^Password should be of minimum 8 characters$/i)
+        ).toBeInTheDocument()
+      })
+    })
   })
 })
 
