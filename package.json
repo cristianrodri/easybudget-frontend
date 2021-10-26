@@ -9,12 +9,14 @@
     "test": "jest"
   },
   "dependencies": {
-    "@material-ui/core": "^4.11.4",
+    "@material-ui/core": "^4.12.3",
     "@material-ui/icons": "^4.11.2",
     "axios": "^0.21.1",
     "cookie": "^0.4.1",
     "formik": "^2.2.9",
+    "material-ui-popup-state": "^1.9.3",
     "next": "latest",
+    "nextjs-progressbar": "^0.0.11",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-json-pretty": "^2.2.0",
