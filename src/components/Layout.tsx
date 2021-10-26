@@ -50,9 +50,6 @@ const useStyles = makeStyles(theme => ({
       height: '100%',
       zIndex: 'var(--zindex-bg)'
     }
-  },
-  default: {
-    backgroundColor: theme.palette.background.default
   }
 }))
 
@@ -73,7 +70,7 @@ export const Layout: FC<Props> = ({
         flexDirection="column"
         position="relative"
       >
-        <Header />
+        {/* <Header /> */}
         {children}
       </Box>
     </Container>
