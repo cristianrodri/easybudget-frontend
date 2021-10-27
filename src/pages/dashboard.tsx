@@ -1,66 +1,25 @@
 import { useRouter } from 'next/router'
-import {
-  AppBar,
-  Avatar,
-  Box,
-  Button,
-  Dialog,
-  Divider,
-  Fab,
-  FormControl,
-  IconButton,
-  InputAdornment,
-  InputLabel,
-  makeStyles,
-  Menu,
-  MenuItem,
-  OutlinedInput,
-  Slide,
-  TextField,
-  Toolbar,
-  Typography
-} from '@material-ui/core'
+import { Avatar, Box, Fab, Menu, MenuItem } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
 import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state'
-import CloseIcon from '@material-ui/icons/Close'
+import { forwardRef, useState } from 'react'
+import NumberFormat from 'react-number-format'
 import { Layout } from '@components/Layout'
 import {
   clientInstance as axiosClient,
   serverInstance as axiosServer
 } from '@config/axios'
-import { TransitionProps } from '@material-ui/core/transitions/transition'
 import { withAuthentication } from '@utils/middleware'
 import { User } from '@custom-types'
 import { SERVER_URL } from '@config/url'
-import { forwardRef, ReactElement, Ref, useState } from 'react'
+import AddBudget from '@components/pages/dashboard/AddBudget'
 
 interface Props {
   user: User
 }
 
-const useStyles = makeStyles(theme => ({
-  appBar: {
-    position: 'relative'
-  },
-  title: {
-    marginLeft: theme.spacing(2),
-    flex: 1
-  },
-  form: {
-    padding: theme.spacing(2)
-  }
-}))
-
-const Transition = forwardRef(function Transition(
-  props: TransitionProps & { children?: ReactElement },
-  ref: Ref<unknown>
-) {
-  return <Slide direction="up" ref={ref} {...props} />
-})
-
 const Dashboard = ({ user }: Props) => {
   const router = useRouter()
-  const classes = useStyles()
   const [open, setOpen] = useState(false)
 
   const avatarUrl = user.avatar
@@ -123,39 +82,7 @@ const Dashboard = ({ user }: Props) => {
           <AddIcon />
         </Fab>
       </Box>
-      <Dialog fullScreen open={open} TransitionComponent={Transition}>
-        <AppBar className={classes.appBar}>
-          <Toolbar>
-            <IconButton
-              edge="start"
-              color="inherit"
-              onClick={handleClose}
-              aria-label="close"
-            >
-              <CloseIcon />
-            </IconButton>
-            <Typography variant="h6" className={classes.title}>
-              Add New Budget
-            </Typography>
-            <Button autoFocus color="inherit" onClick={handleClose}>
-              save
-            </Button>
-          </Toolbar>
-        </AppBar>
-        <form className={classes.form}>
-          <TextField label="Description" variant="outlined" fullWidth />
-          <FormControl fullWidth className={'classes.margin'}>
-            <InputLabel htmlFor="standard-adornment-amount">Amount</InputLabel>
-            <OutlinedInput
-              id="standard-adornment-amount"
-              // value={0}
-              startAdornment={
-                <InputAdornment position="start">$</InputAdornment>
-              }
-            />
-          </FormControl>
-        </form>
-      </Dialog>
+      <AddBudget openDialog={open} handleClose={handleClose} />
     </Layout>
   )
 }
