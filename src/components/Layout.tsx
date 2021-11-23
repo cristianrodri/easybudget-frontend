@@ -60,7 +60,10 @@ export const Layout: FC<Props> = ({
 }) => {
   const classes = useStyles()
   return (
-    <Container className={classes[backgroundPage]}>
+    <Container
+      maxWidth={backgroundPage === 'homepage' ? 'lg' : 'xl'}
+      className={classes[backgroundPage]}
+    >
       <Head>
         <title>{title}</title>
       </Head>
