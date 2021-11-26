@@ -53,3 +53,10 @@ export interface Budget {
   category: number
   date: string
 }
+
+export enum BudgetType {
+  INCOME = 'income',
+  EXPENSE = 'expense'
+}
+
+type CustomCategory = Pick<Category, 'id' | 'name' | 'type'>

@@ -1,9 +1,9 @@
 import { useRouter } from 'next/router'
+import { useState } from 'react'
 import { Avatar, Box, Fab, Menu, MenuItem } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
 import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state'
-import { forwardRef, useState } from 'react'
-import NumberFormat from 'react-number-format'
+import useSWR from 'swr'
 import { Layout } from '@components/Layout'
 import {
   clientInstance as axiosClient,
@@ -21,13 +21,27 @@ interface Props {
 const Dashboard = ({ user }: Props) => {
   const router = useRouter()
   const [open, setOpen] = useState(false)
+  const { data } = useSWR<User>(
+    '/api/user',
+    async (url: string) => {
+      const res = await axiosClient.get(url)
+      return res.data.user
+    },
+    {
+      fallbackData: user
+    }
+  )
 
   const avatarUrl = user.avatar
     ? user.avatar?.formats
       ? user.avatar.formats.thumbnail.url
       : user.avatar.url
     : user.username.charAt(0).toUpperCase()
-  console.log(user)
+  const allCategories = data.categories.map(category => ({
+    id: category.id,
+    name: category.name,
+    type: category.type
+  }))
 
   const logout = async () => {
     const res = await axiosClient.post<{ success: boolean }>('/api/logout')
@@ -72,7 +86,17 @@ const Dashboard = ({ user }: Props) => {
           </PopupState>
         </header>
       </Box>
-      <Box position="fixed" right="0" bottom="0" p={3}>
+      {data.categories.map(category => (
+        <div key={category.id}>
+          <h2>{category.name}</h2>
+          {category.budgets.map(budget => (
+            <div key={budget.id}>
+              {budget.description} {budget.money}
+            </div>
+          ))}
+        </div>
+      ))}
+      <Box position="absolute" right="0" bottom="0" paddingBottom={2}>
         <Fab
           color="primary"
           aria-label="add"
@@ -82,7 +106,11 @@ const Dashboard = ({ user }: Props) => {
           <AddIcon />
         </Fab>
       </Box>
-      <AddBudget openDialog={open} handleClose={handleClose} />
+      <AddBudget
+        openDialog={open}
+        handleClose={handleClose}
+        categories={allCategories}
+      />
     </Layout>
   )
 }
