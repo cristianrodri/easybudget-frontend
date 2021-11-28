@@ -1,53 +1,28 @@
-import { useRouter } from 'next/router'
 import { useState } from 'react'
-import { Avatar, Box, Fab, Menu, MenuItem } from '@material-ui/core'
+import { Box, Fab } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
-import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state'
-import useSWR from 'swr'
 import { Layout } from '@components/Layout'
-import {
-  clientInstance as axiosClient,
-  serverInstance as axiosServer
-} from '@config/axios'
+import { serverInstance as axios } from '@config/axios'
 import { withAuthentication } from '@utils/middleware'
 import { User } from '@custom-types'
-import { SERVER_URL } from '@config/url'
 import AddBudget from '@components/pages/dashboard/AddBudget'
+import { AuthMenu } from '@components/common/AuthMenu'
+import { useSWRUser } from '@hooks/useSWRUser'
 
 interface Props {
   user: User
 }
 
 const Dashboard = ({ user }: Props) => {
-  const router = useRouter()
   const [open, setOpen] = useState(false)
-  const { data } = useSWR<User>(
-    '/api/user',
-    async (url: string) => {
-      const res = await axiosClient.get(url)
-      return res.data.user
-    },
-    {
-      fallbackData: user
-    }
-  )
+  const { data } = useSWRUser(user)
 
-  const avatarUrl = user.avatar
-    ? user.avatar?.formats
-      ? user.avatar.formats.thumbnail.url
-      : user.avatar.url
-    : user.username.charAt(0).toUpperCase()
   const allCategories = data.categories.map(category => ({
     id: category.id,
     name: category.name,
     type: category.type
   }))
-
-  const logout = async () => {
-    const res = await axiosClient.post<{ success: boolean }>('/api/logout')
-
-    if (res.data.success) router.push('/')
-  }
+  console.log(data)
 
   const handleOpen = () => {
     setOpen(true)
@@ -64,26 +39,10 @@ const Dashboard = ({ user }: Props) => {
         display="flex"
         justifyContent="space-between"
         alignItems="center"
-        paddingTop="1rem"
       >
         <header>
           <h1>Overview</h1>
-          <PopupState variant="popover" popupId="demo-popup-menu">
-            {popupState => (
-              <>
-                <Avatar
-                  style={{ cursor: 'pointer' }}
-                  src={`${SERVER_URL}${avatarUrl}`}
-                  title={user.username}
-                  {...bindTrigger(popupState)}
-                />
-                <Menu {...bindMenu(popupState)}>
-                  <MenuItem onClick={popupState.close}>Edit User</MenuItem>
-                  <MenuItem onClick={logout}>Logout</MenuItem>
-                </Menu>
-              </>
-            )}
-          </PopupState>
+          <AuthMenu user={data} />
         </header>
       </Box>
       {data.categories.map(category => (
@@ -118,7 +77,7 @@ const Dashboard = ({ user }: Props) => {
 export const getServerSideProps = withAuthentication<Props>(async ({ req }) => {
   const { token } = req.cookies
 
-  const res = await axiosServer.get('/users/me', {
+  const res = await axios.get('/users/me', {
     headers: {
       Authorization: 'Bearer ' + token
     }

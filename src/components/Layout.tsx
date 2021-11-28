@@ -72,6 +72,7 @@ export const Layout: FC<Props> = ({
         display="flex"
         flexDirection="column"
         position="relative"
+        paddingTop="1rem"
       >
         {/* <Header /> */}
         {children}
