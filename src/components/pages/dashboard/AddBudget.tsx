@@ -24,8 +24,9 @@ import CloseIcon from '@material-ui/icons/Close'
 import NumberFormat from 'react-number-format'
 import { number, object, SchemaOf, string } from 'yup'
 import { useFormik } from 'formik'
-import { BudgetType, CustomCategory } from '@custom-types'
+import { CustomCategory } from '@custom-types'
 import { clientInstance as axios } from '@config/axios'
+import { BudgetType } from '@utils/enums'
 
 interface Props {
   openDialog: boolean
@@ -92,9 +93,7 @@ const AddBudget = ({ openDialog, handleClose, categories }: Props) => {
     },
     validationSchema,
     onSubmit: async values => {
-      const res = await axios.post('/api/create-budget', values)
-
-      console.log(res.data)
+      await axios.post('/api/create-budget', values)
     }
   })
 
@@ -167,7 +166,7 @@ const AddBudget = ({ openDialog, handleClose, categories }: Props) => {
           prefix="$"
         />
         <FormControl component="fieldset">
-          <FormLabel component="legend">Gender</FormLabel>
+          <FormLabel component="legend">Budget Type</FormLabel>
           <RadioGroup
             row
             aria-label="Type"
