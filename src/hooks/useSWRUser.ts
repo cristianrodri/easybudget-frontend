@@ -3,7 +3,7 @@ import useSWR from 'swr'
 import { clientInstance as axios } from '@config/axios'
 
 export const useSWRUser = (user: User) => {
-  const { data } = useSWR<User>(
+  const { data, mutate } = useSWR<User>(
     '/api/user',
     async (url: string) => {
       const res = await axios.get(url)
@@ -14,5 +14,5 @@ export const useSWRUser = (user: User) => {
     }
   )
 
-  return { data }
+  return { data, mutate }
 }
