@@ -19,7 +19,8 @@
       "@config/*": ["config/*"],
       "@hooks/*": ["hooks/*"],
       "@utils/*": ["utils/*"],
-      "@custom-types": ["custom-types"]
+      "@custom-types": ["custom-types"],
+      "@context/*": ["context/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
