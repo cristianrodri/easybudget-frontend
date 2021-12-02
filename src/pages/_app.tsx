@@ -1,12 +1,12 @@
 import { AppProps } from 'next/app'
-import { createTheme, Snackbar } from '@material-ui/core'
+import { createTheme } from '@material-ui/core'
 import { responsiveFontSizes, ThemeProvider } from '@material-ui/core/styles'
 import { purple } from '@material-ui/core/colors'
-import '../styles/styles.css'
 import { useEffect } from 'react'
+import '../styles/styles.css'
 import NextNProgress from 'nextjs-progressbar'
-import { Alert } from '@material-ui/lab'
 import { GlobalContext } from '@context/GlobalContext'
+import { Dialog } from '@components/common/Dialog'
 
 export const theme = createTheme({
   palette: {
@@ -34,15 +34,7 @@ const App = ({ Component, pageProps }: AppProps) => {
           height={3}
         />
         <Component {...pageProps} />
-        <Snackbar
-          open={false}
-          autoHideDuration={4000}
-          onClose={() => console.log('close')}
-        >
-          <Alert onClose={() => console.log('close')} severity="success">
-            This is a success message!
-          </Alert>
-        </Snackbar>
+        <Dialog />
       </ThemeProvider>
     </GlobalContext>
   )
