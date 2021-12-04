@@ -6,6 +6,7 @@ import {
   Typography,
   useTheme
 } from '@material-ui/core'
+import { useContext } from 'react'
 import { useFormik } from 'formik'
 import { object, string, SchemaOf } from 'yup'
 import { useRouter } from 'next/router'
@@ -13,6 +14,8 @@ import ArrowForwardIcon from '@material-ui/icons/ArrowForward'
 import { useFocus } from '@hooks/useFocus'
 import { clientInstance as axios } from '@config/axios'
 import { FormLink } from '@components/common/FormLink'
+import { Context } from '@context/GlobalContext'
+import { DialogType } from '@utils/enums'
 
 interface FormTypes {
   identifier: string
@@ -41,6 +44,7 @@ const useStyles = makeStyles(theme => ({
 export const Form = () => {
   const router = useRouter()
   const theme = useTheme()
+  const { openDialog } = useContext(Context)
   const ref = useFocus()
   const { title, textField, button } = useStyles()
 
@@ -62,8 +66,7 @@ export const Form = () => {
       if (res.data.success) {
         router.push('dashboard')
       } else {
-        // add a alert message later on
-        console.log(res.data.message)
+        openDialog(res.data.message, DialogType.ERROR)
       }
       setSubmitting(false)
     }
