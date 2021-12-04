@@ -17,9 +17,9 @@ export const GlobalContext: FC = ({ children }) => {
   const [dialogType, setDialogType] = useState<DialogType>(null)
 
   const openDialog = (message: string, type: DialogType) => {
-    setDialogOpen(true)
     setDialogMessage(message)
     setDialogType(type)
+    setDialogOpen(true)
   }
 
   const handleCloseDialog = () => {
