@@ -1,18 +1,13 @@
-import {
-  TextField,
-  Button,
-  Box,
-  Typography,
-  useTheme,
-  Snackbar
-} from '@material-ui/core'
-import { useState } from 'react'
+import { TextField, Button, Box, Typography, useTheme } from '@material-ui/core'
 import { useFormik } from 'formik'
 import { object, string, SchemaOf, ref as yupRef } from 'yup'
 import { clientInstance as axios } from '@config/axios'
 import { useRouter } from 'next/router'
 import { useFocus } from '@hooks/useFocus'
 import { FormLink } from '@components/common/FormLink'
+import { useContext } from 'react'
+import { Context } from '@context/GlobalContext'
+import { DialogType } from '@utils/enums'
 
 interface FormTypes {
   username: string
@@ -24,9 +19,8 @@ interface FormTypes {
 export const Form = () => {
   const theme = useTheme()
   const ref = useFocus()
-  const [open, setOpen] = useState(false)
-  const [errorMessage, setErrorMessage] = useState('')
   const router = useRouter()
+  const { openDialog } = useContext(Context)
 
   const validationSchema: SchemaOf<FormTypes> = object({
     username: string()
@@ -54,20 +48,18 @@ export const Form = () => {
     onSubmit: async (values, { setSubmitting }) => {
       setSubmitting(true)
 
-      const res = await axios.post('/api/register', values)
+      const submittedValues = { ...values }
+      delete submittedValues.confirmPassword
+
+      const res = await axios.post('/api/register', submittedValues)
       if (res.data.success) {
         router.push('dashboard')
       } else {
-        setOpen(true)
-        setErrorMessage(res.data.message)
+        openDialog(res.data.message, DialogType.ERROR)
       }
       setSubmitting(false)
     }
   })
-
-  const handleClose = () => {
-    setOpen(false)
-  }
 
   return (
     <Box
@@ -153,12 +145,6 @@ export const Form = () => {
       <Typography style={{ marginTop: theme.spacing(2) }} variant="body1">
         Already registered? <FormLink href="/login">Login</FormLink>
       </Typography>
-      <Snackbar
-        open={open}
-        autoHideDuration={3000}
-        message={errorMessage}
-        onClose={handleClose}
-      />
     </Box>
   )
 }
