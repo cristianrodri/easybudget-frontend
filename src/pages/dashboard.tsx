@@ -17,12 +17,11 @@ const Dashboard = ({ user }: Props) => {
   const [open, setOpen] = useState(false)
   const { data } = useSWRUser(user)
 
-  const allCategories = data.categories.map(category => ({
-    id: category.id,
-    name: category.name,
-    type: category.type
+  const allCategories = data.categories.map(({ id, type, name }) => ({
+    id,
+    name,
+    type
   }))
-  console.log(data)
 
   const handleOpen = () => {
     setOpen(true)

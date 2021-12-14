@@ -12,7 +12,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         }
       })
 
-      res.status(200).json({ success: true, user: data })
+      res.status(200).json({ success: true, data: data })
     } catch (error) {
       const err = error as AxiosError
 

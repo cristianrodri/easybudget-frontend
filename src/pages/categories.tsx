@@ -1,24 +1,13 @@
-import {
-  Box,
-  Button,
-  FormControl,
-  FormControlLabel,
-  FormLabel,
-  Radio,
-  RadioGroup,
-  TextField,
-  Typography,
-  useTheme
-} from '@material-ui/core'
+import { Box, Typography, useTheme } from '@material-ui/core'
 import { serverInstance as axios } from '@config/axios'
 import { Layout } from '@components/Layout'
 import { useSWRUser } from '@hooks/useSWRUser'
 import { withAuthentication } from '@utils/middleware'
 import { AuthMenu } from '@components/common/AuthMenu'
 import { User } from '@custom-types'
-import { useFocus } from '@hooks/useFocus'
 import { BudgetType } from '@utils/enums'
 import { Category } from '@components/pages/categories/Category'
+import { Form } from '@components/pages/categories/Form'
 
 interface Props {
   user: User
@@ -26,7 +15,6 @@ interface Props {
 
 const Categories = ({ user }: Props) => {
   const { data } = useSWRUser(user)
-  const ref = useFocus()
   const theme = useTheme()
 
   return (
@@ -38,46 +26,7 @@ const Categories = ({ user }: Props) => {
         <AuthMenu user={data} />
       </Box>
       <Box display="flex" flexDirection="column" justifyContent="center">
-        <Box
-          clone
-          display="flex"
-          flexDirection="column"
-          alignSelf="center"
-          mt={5}
-        >
-          <form>
-            <TextField
-              inputRef={ref}
-              name="category"
-              variant="outlined"
-              label="Add category"
-              style={{ marginBottom: '1rem' }}
-            />
-            <FormControl component="fieldset" style={{ marginBottom: '.5rem' }}>
-              <FormLabel component="legend">Budget Type</FormLabel>
-              <RadioGroup
-                row
-                aria-label="Type"
-                name="type"
-                // onChange={handleChangeRadio}
-              >
-                <FormControlLabel
-                  value="income"
-                  control={<Radio />}
-                  label="Income"
-                />
-                <FormControlLabel
-                  value="expense"
-                  control={<Radio />}
-                  label="Expense"
-                />
-              </RadioGroup>
-            </FormControl>
-            <Button type="submit" color="primary" variant="contained">
-              Add
-            </Button>
-          </form>
-        </Box>
+        <Form />
         <Box mt={3}>
           <Typography component="h3" variant="h6" align="center">
             Available Categories
