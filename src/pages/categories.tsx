@@ -26,7 +26,7 @@ const Categories = ({ user }: Props) => {
         <AuthMenu user={data} />
       </Box>
       <Box display="flex" flexDirection="column" justifyContent="center">
-        <Form />
+        <Form userData={data} />
         <Box mt={3}>
           <Typography component="h3" variant="h6" align="center">
             Available Categories
