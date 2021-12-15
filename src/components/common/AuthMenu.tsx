@@ -31,7 +31,7 @@ export const AuthMenu = ({ user }: Props) => {
             {...bindTrigger(popupState)}
           />
           <Menu {...bindMenu(popupState)}>
-            <MenuItem onClick={popupState.close}>Edit User</MenuItem>
+            <MenuItem onClick={() => router.push('/profile')}>Profile</MenuItem>
             <MenuItem onClick={() => router.push('/categories')}>
               Categories
             </MenuItem>
