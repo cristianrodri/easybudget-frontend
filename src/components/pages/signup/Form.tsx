@@ -7,7 +7,7 @@ import { useFocus } from '@hooks/useFocus'
 import { FormLink } from '@components/common/FormLink'
 import { useContext } from 'react'
 import { Context } from '@context/GlobalContext'
-import { DialogType } from '@utils/enums'
+import { SnackbarType } from '@utils/enums'
 
 interface FormTypes {
   username: string
@@ -20,7 +20,7 @@ export const Form = () => {
   const theme = useTheme()
   const ref = useFocus()
   const router = useRouter()
-  const { openDialog } = useContext(Context)
+  const { openSnackbar } = useContext(Context)
 
   const validationSchema: SchemaOf<FormTypes> = object({
     username: string()
@@ -55,7 +55,7 @@ export const Form = () => {
       if (res.data.success) {
         router.push('dashboard')
       } else {
-        openDialog(res.data.message, DialogType.ERROR)
+        openSnackbar(res.data.message, SnackbarType.ERROR)
       }
       setSubmitting(false)
     }

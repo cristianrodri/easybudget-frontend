@@ -15,7 +15,7 @@ import { useFocus } from '@hooks/useFocus'
 import { clientInstance as axios } from '@config/axios'
 import { FormLink } from '@components/common/FormLink'
 import { Context } from '@context/GlobalContext'
-import { DialogType } from '@utils/enums'
+import { SnackbarType } from '@utils/enums'
 
 interface FormTypes {
   identifier: string
@@ -44,7 +44,7 @@ const useStyles = makeStyles(theme => ({
 export const Form = () => {
   const router = useRouter()
   const theme = useTheme()
-  const { openDialog } = useContext(Context)
+  const { openSnackbar } = useContext(Context)
   const ref = useFocus()
   const { title, textField, button } = useStyles()
 
@@ -66,7 +66,7 @@ export const Form = () => {
       if (res.data.success) {
         router.push('dashboard')
       } else {
-        openDialog(res.data.message, DialogType.ERROR)
+        openSnackbar(res.data.message, SnackbarType.ERROR)
       }
       setSubmitting(false)
     }

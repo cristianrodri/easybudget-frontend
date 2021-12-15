@@ -3,7 +3,7 @@ export enum BudgetType {
   EXPENSE = 'expense'
 }
 
-export enum DialogType {
+export enum SnackbarType {
   SUCCESS = 'success',
   ERROR = 'error'
 }

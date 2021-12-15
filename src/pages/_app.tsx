@@ -6,7 +6,7 @@ import { useEffect } from 'react'
 import '../styles/styles.css'
 import NextNProgress from 'nextjs-progressbar'
 import { GlobalContext } from '@context/GlobalContext'
-import { Dialog } from '@components/common/Dialog'
+import { Snackbar } from '@components/common/Snackbar'
 
 export const theme = createTheme({
   palette: {
@@ -34,7 +34,7 @@ const App = ({ Component, pageProps }: AppProps) => {
           height={3}
         />
         <Component {...pageProps} />
-        <Dialog />
+        <Snackbar />
       </ThemeProvider>
     </GlobalContext>
   )

@@ -1,39 +1,39 @@
 import { createContext, FC, useState } from 'react'
-import { DialogType } from '@utils/enums'
+import { SnackbarType } from '@utils/enums'
 
 export interface ContextProps {
-  dialogOpen: boolean
-  dialogMessage: string
-  dialogType: DialogType
-  openDialog: (message: string, type: DialogType) => void
-  handleCloseDialog: () => void
+  snackbarOpen: boolean
+  snackbarMessage: string
+  snackbarType: SnackbarType
+  openSnackbar: (message: string, type: SnackbarType) => void
+  handleCloseSnackbar: () => void
 }
 
 export const Context = createContext<ContextProps>(null)
 
 export const GlobalContext: FC = ({ children }) => {
-  const [dialogOpen, setDialogOpen] = useState(false)
-  const [dialogMessage, setDialogMessage] = useState('')
-  const [dialogType, setDialogType] = useState<DialogType>(null)
+  const [snackbarOpen, setSnackbarOpen] = useState(false)
+  const [snackbarMessage, setSnackbarMessage] = useState('')
+  const [snackbarType, setSnackbarType] = useState<SnackbarType>(null)
 
-  const openDialog = (message: string, type: DialogType) => {
-    setDialogMessage(message)
-    setDialogType(type)
-    setDialogOpen(true)
+  const openSnackbar = (message: string, type: SnackbarType) => {
+    setSnackbarMessage(message)
+    setSnackbarType(type)
+    setSnackbarOpen(true)
   }
 
-  const handleCloseDialog = () => {
-    setDialogOpen(false)
+  const handleCloseSnackbar = () => {
+    setSnackbarOpen(false)
   }
 
   return (
     <Context.Provider
       value={{
-        dialogOpen,
-        dialogMessage,
-        dialogType,
-        openDialog,
-        handleCloseDialog
+        snackbarOpen,
+        snackbarMessage,
+        snackbarType,
+        openSnackbar,
+        handleCloseSnackbar
       }}
     >
       {children}

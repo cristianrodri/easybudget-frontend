@@ -10,7 +10,7 @@ import {
 import DeleteIcon from '@material-ui/icons/Delete'
 import { User } from '@custom-types'
 import { clientInstance as axios } from '@config/axios'
-import { BudgetType, DialogType } from '@utils/enums'
+import { BudgetType, SnackbarType } from '@utils/enums'
 import { useSWRUser } from '@hooks/useSWRUser'
 import { useContext, useState } from 'react'
 import { Context } from '@context/GlobalContext'
@@ -33,7 +33,7 @@ interface Props {
 
 export const Category = ({ budgetType, user }: Props) => {
   const { data, mutate } = useSWRUser(user)
-  const { openDialog } = useContext(Context)
+  const { openSnackbar } = useContext(Context)
   const classes = useStyles()
   const [open, setOpen] = useState(false)
   const [idToDelete, setIdToDelete] = useState(null)
@@ -68,8 +68,8 @@ export const Category = ({ budgetType, user }: Props) => {
     const res = await axios.delete(`/api/categories/delete/${idToDelete}`)
 
     if (res.data.success)
-      openDialog(`${res.data.data.name} deleted!`, DialogType.SUCCESS)
-    else openDialog(res.data.message, DialogType.ERROR)
+      openSnackbar(`${res.data.data.name} deleted!`, SnackbarType.SUCCESS)
+    else openSnackbar(res.data.message, SnackbarType.ERROR)
 
     setIdToDelete(null)
     setMoney(null)
