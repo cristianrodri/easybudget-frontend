@@ -1,4 +1,3 @@
-import { AuthMenu } from '@components/common/AuthMenu'
 import { Layout } from '@components/Layout'
 import {
   clientInstance as axiosClient,
@@ -8,7 +7,7 @@ import { Context } from '@context/GlobalContext'
 import { User } from '@custom-types'
 import { useFocus } from '@hooks/useFocus'
 import { useSWRUser } from '@hooks/useSWRUser'
-import { Box, Button, TextField } from '@material-ui/core'
+import { Box, Button, TextField, Typography } from '@material-ui/core'
 import { SnackbarType } from '@utils/enums'
 import { withAuthentication } from '@utils/middleware'
 import { useFormik } from 'formik'
@@ -74,22 +73,14 @@ const Profile = ({ user }: Props) => {
 
   return (
     <Layout title="Profile">
-      <Box
-        component="header"
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-      >
-        <h1>Profile</h1>
-        <AuthMenu user={data} />
-      </Box>
+      <Typography component="h1" variant="h5" align="center" gutterBottom>
+        Profile
+      </Typography>
       <Box display="flex" flexDirection="column" alignItems="center">
         <Box
           clone
           display="flex"
           flexDirection="column"
-          // ml={'auto'}
-          // mr={'auto'}
           style={{ width: 'min(90%, 300px)' }}
         >
           <form onSubmit={formik.handleSubmit}>

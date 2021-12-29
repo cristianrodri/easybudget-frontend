@@ -3,7 +3,7 @@ import { Header } from './Header'
 
 describe('Header', () => {
   beforeEach(() => {
-    render(<Header />)
+    render(<Header userData={undefined} backgroundPage="homepage" />)
   })
 
   it('link has href="/" in header logo', () => {

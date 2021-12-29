@@ -2,11 +2,13 @@ import { FC } from 'react'
 import Head from 'next/head'
 import { Container, Box, makeStyles } from '@material-ui/core'
 import { Header } from './Header'
+import { User } from '@custom-types'
 
-type BackgroundType = 'homepage' | 'signup' | 'login' | 'default'
+export type BackgroundType = 'homepage' | 'signup' | 'login' | 'default'
 
 interface Props {
   title: string
+  user?: User
   backgroundPage?: BackgroundType
 }
 
@@ -56,6 +58,7 @@ const useStyles = makeStyles(theme => ({
 export const Layout: FC<Props> = ({
   children,
   title,
+  user,
   backgroundPage = 'default'
 }) => {
   const classes = useStyles()
@@ -74,7 +77,7 @@ export const Layout: FC<Props> = ({
         position="relative"
         paddingTop="1rem"
       >
-        {/* <Header /> */}
+        <Header userData={user} backgroundPage={backgroundPage} />
         {children}
       </Box>
     </Container>

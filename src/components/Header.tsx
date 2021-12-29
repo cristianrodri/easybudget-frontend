@@ -1,25 +1,38 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { makeStyles } from '@material-ui/core'
+import { makeStyles, Theme } from '@material-ui/core'
+import { useSWRUser } from '@hooks/useSWRUser'
+import { User } from '@custom-types'
+import { AuthMenu } from './common/AuthMenu'
+import { BackgroundType } from './Layout'
 
-const useStyles = makeStyles(() => ({
+interface Props {
+  userData: User
+  backgroundPage: BackgroundType
+}
+
+const useStyles = makeStyles<Theme, { backgroundPage: BackgroundType }>(() => ({
   header: {
-    position: 'absolute',
-    width: '100%'
+    position: props =>
+      props.backgroundPage === 'default' ? 'static' : 'absolute',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center'
   }
 }))
 
-export const Header = () => {
-  const logoSize = 100
-  const { header } = useStyles()
+export const Header = ({ userData, backgroundPage }: Props) => {
+  const { data } = useSWRUser(userData)
+  const { header } = useStyles({ backgroundPage })
 
   return (
     <header className={header}>
       <Link href="/">
         <a data-testid="homepage">
-          <Image src="/logo.png" width={logoSize} height={logoSize} />
+          <Image src="/logo.png" layout="fixed" width={120} height={50} />
         </a>
       </Link>
+      {data && <AuthMenu user={data} />}
     </header>
   )
 }

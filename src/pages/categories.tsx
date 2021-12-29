@@ -3,7 +3,6 @@ import { serverInstance as axios } from '@config/axios'
 import { Layout } from '@components/Layout'
 import { useSWRUser } from '@hooks/useSWRUser'
 import { withAuthentication } from '@utils/middleware'
-import { AuthMenu } from '@components/common/AuthMenu'
 import { User } from '@custom-types'
 import { BudgetType } from '@utils/enums'
 import { Category } from '@components/pages/categories/Category'
@@ -19,12 +18,9 @@ const Categories = ({ user }: Props) => {
 
   return (
     <Layout title="Categories">
-      <Typography component="h1" variant="h5" align="left">
+      <Typography component="h1" variant="h5" align="center" gutterBottom>
         Categories
       </Typography>
-      <Box position="absolute" top="1rem" right="0">
-        <AuthMenu user={data} />
-      </Box>
       <Box display="flex" flexDirection="column" justifyContent="center">
         <Form userData={data} />
         <Box mt={3}>

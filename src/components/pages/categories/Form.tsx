@@ -72,7 +72,7 @@ export const Form = ({ userData }: Props) => {
   })
 
   return (
-    <Box clone display="flex" flexDirection="column" alignSelf="center" mt={5}>
+    <Box clone display="flex" flexDirection="column" alignSelf="center">
       <form onSubmit={formik.handleSubmit}>
         <TextField
           id="name"

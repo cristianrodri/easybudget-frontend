@@ -6,7 +6,6 @@ import { serverInstance as axios } from '@config/axios'
 import { withAuthentication } from '@utils/middleware'
 import { User } from '@custom-types'
 import AddBudget from '@components/pages/dashboard/AddBudget'
-import { AuthMenu } from '@components/common/AuthMenu'
 import { useSWRUser } from '@hooks/useSWRUser'
 
 interface Props {
@@ -33,17 +32,6 @@ const Dashboard = ({ user }: Props) => {
 
   return (
     <Layout title="Dashboard">
-      <Box
-        clone
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-      >
-        <header>
-          <h1>Overview</h1>
-          <AuthMenu user={data} />
-        </header>
-      </Box>
       {data.categories.map(category => (
         <div key={category.id}>
           <h2>{category.name}</h2>
