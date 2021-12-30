@@ -3,6 +3,7 @@ import { DefaultRequestBody, rest } from 'msw'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Form } from './Form'
+import { GlobalContext } from '@context/GlobalContext'
 
 const server = setupServer(
   rest.post<DefaultRequestBody, { success: boolean }>(
@@ -19,7 +20,11 @@ afterEach(() => server.resetHandlers())
 
 describe('Login Form', () => {
   it('should render Loading... after submit the form', async () => {
-    render(<Form />)
+    render(
+      <GlobalContext>
+        <Form />
+      </GlobalContext>
+    )
 
     userEvent.type(
       screen.getByLabelText(/email or username/i),
@@ -39,7 +44,11 @@ describe('Login Form', () => {
 
   describe('Show validation errors after submitting an empty form', () => {
     beforeEach(() => {
-      render(<Form />)
+      render(
+        <GlobalContext>
+          <Form />
+        </GlobalContext>
+      )
     })
 
     it('should render "Email or username is required"', async () => {
@@ -61,7 +70,11 @@ describe('Login Form', () => {
 
   describe('Remove error messages after user types any words', () => {
     beforeEach(async () => {
-      render(<Form />)
+      render(
+        <GlobalContext>
+          <Form />
+        </GlobalContext>
+      )
     })
 
     it('should remove "Email or username is required"', async () => {

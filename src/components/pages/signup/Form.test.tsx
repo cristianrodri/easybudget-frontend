@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event'
 import { Form } from './Form'
 import { setupServer } from 'msw/node'
 import { DefaultRequestBody, rest } from 'msw'
+import { GlobalContext } from '@context/GlobalContext'
 
 const server = setupServer(
   rest.post<DefaultRequestBody, { success: boolean }>(
@@ -19,7 +20,11 @@ afterEach(() => server.resetHandlers())
 
 describe('Signup form', () => {
   it('should render Loading... after submit the form', async () => {
-    render(<Form />)
+    render(
+      <GlobalContext>
+        <Form />
+      </GlobalContext>
+    )
 
     userEvent.type(screen.getByLabelText(/username/i), 'John')
     userEvent.type(screen.getByLabelText(/email/i), 'john.dee@someemail.com')
@@ -38,7 +43,11 @@ describe('Signup form', () => {
 
   describe('Show validation errors after submitting an empty form', () => {
     beforeEach(() => {
-      render(<Form />)
+      render(
+        <GlobalContext>
+          <Form />
+        </GlobalContext>
+      )
     })
 
     it('should render "Name is required"', async () => {
