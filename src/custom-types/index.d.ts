@@ -14,7 +14,7 @@ export interface User {
   created_at: string
   updated_at: string
   avatar: Avatar | null
-  categories: Category[]
+  categories: CategoryTypes[]
 }
 
 export interface Formats {
@@ -38,7 +38,7 @@ export interface Avatar {
   path?: null
 }
 
-export interface Category {
+export interface CategoryTypes {
   id: number
   name: string
   type: string
@@ -54,4 +54,5 @@ export interface Budget {
   date: string
 }
 
-type CustomCategory = Omit<Category, 'budgets' | 'money'>
+type AddCategory = Omit<CategoryTypes, 'budgets' | 'money'>
+type GetCategory = Omit<CategoryTypes, 'budgets'>

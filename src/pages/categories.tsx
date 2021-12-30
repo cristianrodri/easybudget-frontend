@@ -1,19 +1,19 @@
 import { Box, Typography, useTheme } from '@material-ui/core'
 import { serverInstance as axios } from '@config/axios'
 import { Layout } from '@components/Layout'
-import { useSWRUser } from '@hooks/useSWRUser'
 import { withAuthentication } from '@utils/middleware'
-import { User } from '@custom-types'
+import { GetCategory } from '@custom-types'
 import { BudgetType } from '@utils/enums'
 import { Category } from '@components/pages/categories/Category'
 import { Form } from '@components/pages/categories/Form'
+import { useSWRCategories } from '@hooks/useSWRCategories'
 
 interface Props {
-  user: User
+  categories: GetCategory[]
 }
 
-const Categories = ({ user }: Props) => {
-  const { data } = useSWRUser(user)
+const Categories = ({ categories }: Props) => {
+  const { data: categoriesData } = useSWRCategories(categories)
   const theme = useTheme()
 
   return (
@@ -22,7 +22,7 @@ const Categories = ({ user }: Props) => {
         Categories
       </Typography>
       <Box display="flex" flexDirection="column" justifyContent="center">
-        <Form userData={data} />
+        <Form categories={categoriesData} />
         <Box mt={3}>
           <Typography component="h3" variant="h6" align="center">
             Available Categories
@@ -38,13 +38,19 @@ const Categories = ({ user }: Props) => {
               <Typography component="h3" align="center">
                 Income
               </Typography>
-              <Category budgetType={BudgetType.INCOME} user={user} />
+              <Category
+                budgetType={BudgetType.INCOME}
+                categories={categoriesData}
+              />
             </Box>
             <Box>
               <Typography component="h3" align="center">
                 Expense
               </Typography>
-              <Category budgetType={BudgetType.EXPENSE} user={user} />
+              <Category
+                budgetType={BudgetType.EXPENSE}
+                categories={categoriesData}
+              />
             </Box>
           </Box>
         </Box>
@@ -56,7 +62,7 @@ const Categories = ({ user }: Props) => {
 export const getServerSideProps = withAuthentication<Props>(async ({ req }) => {
   const { token } = req.cookies
 
-  const res = await axios.get('/users/me', {
+  const res = await axios.get('/categories', {
     headers: {
       Authorization: 'Bearer ' + token
     }
@@ -64,7 +70,7 @@ export const getServerSideProps = withAuthentication<Props>(async ({ req }) => {
 
   return {
     props: {
-      user: res.data
+      categories: res.data
     }
   }
 })

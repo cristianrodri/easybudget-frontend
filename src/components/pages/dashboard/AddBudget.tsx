@@ -24,14 +24,14 @@ import CloseIcon from '@material-ui/icons/Close'
 import NumberFormat from 'react-number-format'
 import { number, object, SchemaOf, string } from 'yup'
 import { useFormik } from 'formik'
-import { CustomCategory } from '@custom-types'
+import { AddCategory } from '@custom-types'
 import { clientInstance as axios } from '@config/axios'
 import { BudgetType } from '@utils/enums'
 
 interface Props {
   openDialog: boolean
   handleClose: () => void
-  categories: CustomCategory[]
+  categories: AddCategory[]
 }
 
 interface FormTypes {

@@ -8,13 +8,13 @@ import {
   makeStyles
 } from '@material-ui/core'
 import DeleteIcon from '@material-ui/icons/Delete'
-import { User } from '@custom-types'
+import { GetCategory } from '@custom-types'
 import { clientInstance as axios } from '@config/axios'
 import { BudgetType, SnackbarType } from '@utils/enums'
-import { useSWRUser } from '@hooks/useSWRUser'
 import { useContext, useState } from 'react'
 import { Context } from '@context/GlobalContext'
 import { DialogConfirm } from './DialogConfirm'
+import { useSWRCategories } from '@hooks/useSWRCategories'
 
 const useStyles = makeStyles(theme => ({
   listItem: {
@@ -28,18 +28,18 @@ const useStyles = makeStyles(theme => ({
 
 interface Props {
   budgetType: BudgetType
-  user: User
+  categories: GetCategory[]
 }
 
-export const Category = ({ budgetType, user }: Props) => {
-  const { data, mutate } = useSWRUser(user)
+export const Category = ({ budgetType, categories }: Props) => {
+  const { data: categoriesData, mutate } = useSWRCategories(categories)
   const { openSnackbar } = useContext(Context)
   const classes = useStyles()
   const [open, setOpen] = useState(false)
   const [idToDelete, setIdToDelete] = useState(null)
   // The below money variable is used to ckeck when some category is trying to delete
   const [money, setMoney] = useState(null)
-  const category = data.categories.filter(c => c.type === budgetType)
+  const category = categoriesData.filter(c => c.type === budgetType)
 
   const handleDelete = (id: number, money: number) => () => {
     setIdToDelete(id)
@@ -59,12 +59,11 @@ export const Category = ({ budgetType, user }: Props) => {
 
     handleClose()
 
-    const updatedCategories = data.categories.filter(
+    const updatedCategories = categoriesData.filter(
       category => category.id !== idToDelete
     )
-    const updatedData = { ...data, categories: updatedCategories }
 
-    mutate(updatedData, false)
+    mutate(updatedCategories, false)
     const res = await axios.delete(`/api/categories/delete/${idToDelete}`)
 
     if (res.data.success)

@@ -16,11 +16,11 @@ import { clientInstance as axios } from '@config/axios'
 import { useContext } from 'react'
 import { Context } from '@context/GlobalContext'
 import { SnackbarType } from '@utils/enums'
-import { useSWRUser } from '@hooks/useSWRUser'
-import { User } from '@custom-types'
+import { GetCategory } from '@custom-types'
+import { useSWRCategories } from '@hooks/useSWRCategories'
 
 interface Props {
-  userData: User
+  categories: GetCategory[]
 }
 
 interface FormTypes {
@@ -28,9 +28,9 @@ interface FormTypes {
   type: string
 }
 
-export const Form = ({ userData }: Props) => {
+export const Form = ({ categories }: Props) => {
   const { openSnackbar } = useContext(Context)
-  const { data, mutate } = useSWRUser(userData)
+  const { data: categoriesData, mutate } = useSWRCategories(categories)
   const ref = useFocus()
 
   const validationSchema: SchemaOf<FormTypes> = object({
@@ -56,10 +56,10 @@ export const Form = ({ userData }: Props) => {
         )
 
         // Mutate categories by adding new category
-        const updatedCategories = data.categories.concat(res.data.data)
-        const updatedData = { ...data, categories: updatedCategories }
+        const updatedCategories = categoriesData.concat(res.data.data)
+        // const updatedData = { ...categoriesData, categories: updatedCategories }
 
-        mutate(updatedData, false)
+        mutate(updatedCategories, false)
 
         helpers.resetForm()
         ref.current?.focus()
