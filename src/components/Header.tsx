@@ -1,13 +1,10 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { makeStyles, Theme } from '@material-ui/core'
-import { useSWRUser } from '@hooks/useSWRUser'
-import { User } from '@custom-types'
 import { AuthMenu } from './common/AuthMenu'
 import { BackgroundType } from './Layout'
 
 interface Props {
-  userData: User
   backgroundPage: BackgroundType
 }
 
@@ -21,8 +18,7 @@ const useStyles = makeStyles<Theme, { backgroundPage: BackgroundType }>(() => ({
   }
 }))
 
-export const Header = ({ userData, backgroundPage }: Props) => {
-  const { data } = useSWRUser(userData)
+export const Header = ({ backgroundPage }: Props) => {
   const { header } = useStyles({ backgroundPage })
 
   return (
@@ -32,7 +28,7 @@ export const Header = ({ userData, backgroundPage }: Props) => {
           <Image src="/logo.png" layout="fixed" width={120} height={50} />
         </a>
       </Link>
-      {data && <AuthMenu user={data} />}
+      <AuthMenu />
     </header>
   )
 }

@@ -1,17 +1,14 @@
 import { Avatar, Menu, MenuItem } from '@material-ui/core'
 import PopupState, { bindMenu, bindTrigger } from 'material-ui-popup-state'
 import { useRouter } from 'next/router'
-import { User } from '@custom-types'
 import { SERVER_URL } from '@config/url'
 import { getAvatar } from '@utils/avatar'
 import { clientInstance as axios } from '@config/axios'
+import { useSWRUser } from '@hooks/useSWRUser'
 
-interface Props {
-  user: User
-}
-
-export const AuthMenu = ({ user }: Props) => {
-  const avatarUrl = getAvatar(user)
+export const AuthMenu = () => {
+  const { data } = useSWRUser()
+  const avatarUrl = getAvatar(data)
   const router = useRouter()
 
   const logout = async () => {
@@ -20,6 +17,8 @@ export const AuthMenu = ({ user }: Props) => {
     if (res.data.success) router.push('/')
   }
 
+  if (!data) return null
+
   return (
     <PopupState variant="popover" popupId="demo-popup-menu">
       {popupState => (
@@ -27,7 +26,7 @@ export const AuthMenu = ({ user }: Props) => {
           <Avatar
             style={{ cursor: 'pointer' }}
             src={`${SERVER_URL}${avatarUrl}`}
-            title={user.username}
+            title={data?.username}
             {...bindTrigger(popupState)}
           />
           <Menu {...bindMenu(popupState)}>

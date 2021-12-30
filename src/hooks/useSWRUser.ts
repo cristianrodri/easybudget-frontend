@@ -2,7 +2,7 @@ import { User } from '@custom-types'
 import useSWR from 'swr'
 import { clientInstance as axios } from '@config/axios'
 
-export const useSWRUser = (fallbackData: User) => {
+export const useSWRUser = (fallbackData?: User) => {
   const { data, mutate } = useSWR<User>(
     '/api/user/get',
     async (url: string) => {
