@@ -16,10 +16,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     } catch (error) {
       const err = error as AxiosError
 
-      const { status, message } = errorResponse(
-        err,
-        err.response?.data.message[0].messages[0].message
-      )
+      const { status, message } = errorResponse(err, err.response?.data.error)
 
       res.status(status).json({
         success: false,

@@ -19,14 +19,22 @@ import {
   Typography
 } from '@material-ui/core'
 import { TransitionProps } from '@material-ui/core/transitions/transition'
-import { ChangeEvent, forwardRef, ReactElement, Ref, useState } from 'react'
+import {
+  ChangeEvent,
+  forwardRef,
+  ReactElement,
+  Ref,
+  useContext,
+  useState
+} from 'react'
 import CloseIcon from '@material-ui/icons/Close'
 import NumberFormat from 'react-number-format'
 import { number, object, SchemaOf, string } from 'yup'
 import { useFormik } from 'formik'
 import { AddCategory } from '@custom-types'
 import { clientInstance as axios } from '@config/axios'
-import { BudgetType } from '@utils/enums'
+import { BudgetType, SnackbarType } from '@utils/enums'
+import { Context } from '@context/GlobalContext'
 
 interface Props {
   openDialog: boolean
@@ -68,6 +76,7 @@ const Transition = forwardRef(function Transition(
 })
 
 const AddBudget = ({ openDialog, handleClose, categories }: Props) => {
+  const { openSnackbar } = useContext(Context)
   const classes = useStyles()
   const [budgetType, setBudgetType] = useState<
     BudgetType.INCOME | BudgetType.EXPENSE
@@ -92,8 +101,28 @@ const AddBudget = ({ openDialog, handleClose, categories }: Props) => {
       category: ''
     },
     validationSchema,
-    onSubmit: async values => {
-      await axios.post('/api/create-budget', values)
+    onSubmit: async (values, helpers) => {
+      const res = await axios.post('/api/budget/add', values)
+
+      if (res.data.success) {
+        helpers.resetForm({
+          values: {
+            description: '',
+            money: 0,
+            category: ''
+          }
+        })
+
+        openSnackbar(
+          `${res.data.data.description} added!`,
+          SnackbarType.SUCCESS
+        )
+
+        // Close the dialog
+        handleClose()
+      } else {
+        openSnackbar(res.data.message, SnackbarType.ERROR)
+      }
     }
   })
 
@@ -119,13 +148,14 @@ const AddBudget = ({ openDialog, handleClose, categories }: Props) => {
             <CloseIcon />
           </IconButton>
           <Typography variant="h6" className={classes.title}>
-            Add New Budget
+            {formik.isSubmitting ? 'Adding new budget...' : 'Add New Budget'}
           </Typography>
           <Button
             type="submit"
             autoFocus
             color="inherit"
             form="add-budget-form"
+            disabled={formik.isSubmitting}
           >
             save
           </Button>
