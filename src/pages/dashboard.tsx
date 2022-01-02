@@ -7,6 +7,7 @@ import { withAuthentication } from '@utils/middleware'
 import { User } from '@custom-types'
 import AddBudget from '@components/pages/dashboard/AddBudget'
 import { useSWRUser } from '@hooks/useSWRUser'
+import { DateTime } from 'luxon'
 
 interface Props {
   user: User
@@ -64,11 +65,21 @@ const Dashboard = ({ user }: Props) => {
 export const getServerSideProps = withAuthentication<Props>(async ({ req }) => {
   const { token } = req.cookies
 
+  const tzid = Intl.DateTimeFormat().resolvedOptions().timeZone
+
+  const monthStart = DateTime.now().setZone(tzid).startOf('month').toISO()
+  const monthEnd = DateTime.now().setZone(tzid).endOf('month').toISO()
+
   const res = await axios.get('/users/me', {
     headers: {
       Authorization: 'Bearer ' + token
+    },
+    params: {
+      budgets_date_start: monthStart,
+      budgets_date_end: monthEnd
     }
   })
+
   return {
     props: {
       user: res.data

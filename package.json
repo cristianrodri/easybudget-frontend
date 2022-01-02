@@ -1,5 +1,5 @@
 {
-  "name": "with-typescript",
+  "name": "easy-budget-front",
   "version": "1.0.0",
   "scripts": {
     "dev": "next",
@@ -15,6 +15,7 @@
     "axios": "^0.21.1",
     "cookie": "^0.4.1",
     "formik": "^2.2.9",
+    "luxon": "^2.2.0",
     "material-ui-popup-state": "^1.9.3",
     "next": "latest",
     "nextjs-progressbar": "^0.0.11",
@@ -31,6 +32,7 @@
     "@testing-library/user-event": "^13.2.1",
     "@types/cookie": "^0.4.1",
     "@types/jest": "^27.0.1",
+    "@types/luxon": "^2.0.8",
     "@types/node": "^12.12.21",
     "@types/react": "^17.0.2",
     "@types/react-dom": "^17.0.1",

@@ -9,6 +9,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       const { data } = await axios.get('/users/me', {
         headers: {
           Authorization: 'Bearer ' + req.cookies.token
+        },
+        params: {
+          budgets_date_start: req.query.budgets_date_start,
+          budgets_date_end: req.query.budgets_date_end
         }
       })
 
