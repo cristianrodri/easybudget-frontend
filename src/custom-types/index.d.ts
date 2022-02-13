@@ -50,7 +50,7 @@ export interface Budget {
   id: number
   description: string
   money: number
-  category: number
+  categoryId: number
   date: string
 }
 

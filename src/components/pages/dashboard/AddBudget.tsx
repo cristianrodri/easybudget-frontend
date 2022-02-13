@@ -31,21 +31,20 @@ import CloseIcon from '@material-ui/icons/Close'
 import NumberFormat from 'react-number-format'
 import { number, object, SchemaOf, string } from 'yup'
 import { useFormik } from 'formik'
-import { AddCategory } from '@custom-types'
+import { AddCategory, Budget, User } from '@custom-types'
 import { clientInstance as axios } from '@config/axios'
 import { BudgetType, SnackbarType } from '@utils/enums'
 import { Context } from '@context/GlobalContext'
+import { useSWRUser } from '@hooks/useSWRUser'
 
 interface Props {
   openDialog: boolean
   handleClose: () => void
-  categories: AddCategory[]
+  user: User
 }
 
-interface FormTypes {
-  description: string
-  money: number
-  category: number | ''
+type FormTypes = Omit<Budget, 'id' | 'date' | 'categoryId'> & {
+  categoryId: number | string
 }
 
 const useStyles = makeStyles(theme => ({
@@ -75,12 +74,21 @@ const Transition = forwardRef(function Transition(
   return <Slide direction="up" ref={ref} {...props} />
 })
 
-const AddBudget = ({ openDialog, handleClose, categories }: Props) => {
+const AddBudget = ({ openDialog, handleClose, user }: Props) => {
   const { openSnackbar } = useContext(Context)
   const classes = useStyles()
+  const { data, mutate } = useSWRUser(user)
   const [budgetType, setBudgetType] = useState<
     BudgetType.INCOME | BudgetType.EXPENSE
   >(null)
+
+  const categories: AddCategory[] = data.categories.map(
+    ({ id, type, name }) => ({
+      id,
+      name,
+      type
+    })
+  )
 
   const validationSchema: SchemaOf<FormTypes> = object({
     description: string()
@@ -91,27 +99,46 @@ const AddBudget = ({ openDialog, handleClose, categories }: Props) => {
       .transform(value => (isNaN(value) ? undefined : value))
       .required('Amount is required')
       .min(1, 'Amount must be greater than 0'),
-    category: number().required('Category is required')
+    categoryId: number().required('Category is required')
   })
 
   const formik = useFormik<FormTypes>({
     initialValues: {
       description: '',
       money: null,
-      category: ''
+      categoryId: ''
     },
     validationSchema,
     onSubmit: async (values, helpers) => {
-      const res = await axios.post('/api/budget/add', values)
+      const res = await axios.post<
+        { success: true; data: Budget } | { success: false; message: string }
+      >('/api/budget/add', values)
 
-      if (res.data.success) {
+      if (res.data.success === true) {
+        const categoryId = res.data.data.categoryId
+        const newBudget = res.data.data
+
         helpers.resetForm({
           values: {
             description: '',
             money: 0,
-            category: ''
+            categoryId: ''
           }
         })
+
+        // Mutate SWR data by adding new budget into related category
+        const mutatedData = { ...data }
+
+        mutatedData.categories.map(c => {
+          if (c.id === categoryId) {
+            c.budgets = [...c.budgets, newBudget]
+            c.money += newBudget.money
+          }
+
+          return c
+        })
+
+        mutate(mutatedData, false)
 
         openSnackbar(
           `${res.data.data.description} added!`,
@@ -121,6 +148,7 @@ const AddBudget = ({ openDialog, handleClose, categories }: Props) => {
         // Close the dialog
         handleClose()
       } else {
+        res.data.success
         openSnackbar(res.data.message, SnackbarType.ERROR)
       }
     }
@@ -132,7 +160,7 @@ const AddBudget = ({ openDialog, handleClose, categories }: Props) => {
     const firstBudgetType = categories.find(
       category => category.type === e.target.value
     )
-    formik.setFieldValue('category', firstBudgetType.id)
+    formik.setFieldValue('categoryId', firstBudgetType.id)
   }
 
   return (
@@ -219,13 +247,15 @@ const AddBudget = ({ openDialog, handleClose, categories }: Props) => {
           <InputLabel id="select-label">Category</InputLabel>
           <Select
             labelId="select-label"
-            id="category"
-            name="category"
-            value={formik.values.category}
+            id="categoryId"
+            name="categoryId"
+            value={formik.values.categoryId}
             defaultValue={''}
             onChange={formik.handleChange}
             label="Category"
-            error={formik.touched.category && Boolean(formik.errors.category)}
+            error={
+              formik.touched.categoryId && Boolean(formik.errors.categoryId)
+            }
           >
             {categories.map(category => (
               <MenuItem
@@ -238,7 +268,7 @@ const AddBudget = ({ openDialog, handleClose, categories }: Props) => {
             ))}
           </Select>
           <FormHelperText style={{ color: '#f44336' }}>
-            {formik.touched.category && formik.errors.category}
+            {formik.touched.categoryId && formik.errors.categoryId}
           </FormHelperText>
         </FormControl>
       </form>

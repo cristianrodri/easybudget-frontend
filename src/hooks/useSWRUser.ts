@@ -1,34 +1,29 @@
 import useSWR from 'swr'
-import { DateTime } from 'luxon'
 import { clientInstance as axios } from '@config/axios'
 import { User } from '@custom-types'
+import moment from 'moment'
 
 interface Dates {
-  dateStart: string
-  dateEnd: string
+  start: string
+  end: string
 }
 
-const tzid = Intl.DateTimeFormat().resolvedOptions().timeZone
-
-const monthStart = DateTime.now().setZone(tzid).startOf('month').toISO()
-const monthEnd = DateTime.now().setZone(tzid).endOf('month').toISO()
-
 const currentMonth: Dates = {
-  dateStart: monthStart,
-  dateEnd: monthEnd
+  start: moment().startOf('month').format(),
+  end: moment().endOf('month').format()
 }
 
 export const useSWRUser = (
   fallbackData?: User,
-  dates: Dates = currentMonth
+  budgetDates: Dates = currentMonth
 ) => {
   const { data, mutate } = useSWR<User>(
     '/api/user/get',
     async (url: string) => {
       const res = await axios.get(url, {
         params: {
-          budgets_date_start: dates.dateStart,
-          budgets_date_end: dates.dateEnd
+          budgets_date_start: budgetDates.start,
+          budgets_date_end: budgetDates.end
         }
       })
       return res.data?.user

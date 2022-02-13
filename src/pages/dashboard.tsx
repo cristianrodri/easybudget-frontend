@@ -7,7 +7,7 @@ import { withAuthentication } from '@utils/middleware'
 import { User } from '@custom-types'
 import AddBudget from '@components/pages/dashboard/AddBudget'
 import { useSWRUser } from '@hooks/useSWRUser'
-import { DateTime } from 'luxon'
+import moment from 'moment'
 
 interface Props {
   user: User
@@ -16,12 +16,6 @@ interface Props {
 const Dashboard = ({ user }: Props) => {
   const [open, setOpen] = useState(false)
   const { data } = useSWRUser(user)
-
-  const allCategories = data.categories.map(({ id, type, name }) => ({
-    id,
-    name,
-    type
-  }))
 
   const handleOpen = () => {
     setOpen(true)
@@ -53,11 +47,7 @@ const Dashboard = ({ user }: Props) => {
           <AddIcon />
         </Fab>
       </Box>
-      <AddBudget
-        openDialog={open}
-        handleClose={handleClose}
-        categories={allCategories}
-      />
+      <AddBudget openDialog={open} handleClose={handleClose} user={data} />
     </Layout>
   )
 }
@@ -65,10 +55,8 @@ const Dashboard = ({ user }: Props) => {
 export const getServerSideProps = withAuthentication<Props>(async ({ req }) => {
   const { token } = req.cookies
 
-  const tzid = Intl.DateTimeFormat().resolvedOptions().timeZone
-
-  const monthStart = DateTime.now().setZone(tzid).startOf('month').toISO()
-  const monthEnd = DateTime.now().setZone(tzid).endOf('month').toISO()
+  const monthStart = moment().startOf('month').format()
+  const monthEnd = moment().endOf('month').format()
 
   const res = await axios.get('/users/me', {
     headers: {
