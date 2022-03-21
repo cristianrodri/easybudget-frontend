@@ -2,27 +2,28 @@ import {
   Box,
   Button,
   TextField,
-  makeStyles,
+  Theme,
   Typography,
   useTheme
-} from '@material-ui/core'
+} from '@mui/material'
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import { useContext } from 'react'
 import { useFormik } from 'formik'
 import { object, string, SchemaOf } from 'yup'
 import { useRouter } from 'next/router'
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward'
 import { useFocus } from '@hooks/useFocus'
 import { clientInstance as axios } from '@config/axios'
 import { FormLink } from '@components/common/FormLink'
 import { Context } from '@context/GlobalContext'
 import { SnackbarType } from '@utils/enums'
+import { makeStyles } from '@mui/styles'
 
 interface FormTypes {
   identifier: string
   password: string
 }
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme: Theme) => ({
   title: {
     fontWeight: theme.typography.fontWeightBold,
     marginBottom: theme.spacing(2)
@@ -85,56 +86,54 @@ export const Form = () => {
         Login
       </Typography>
       <Box
-        clone
+        component="form"
+        onSubmit={formik.handleSubmit}
         width="min(80%, 300px)"
         display="flex"
         flexDirection="column"
         alignItems="center"
       >
-        <form onSubmit={formik.handleSubmit}>
-          <TextField
-            size="small"
-            className={textField}
-            id="identifier"
-            label="Email or username"
-            name="identifier"
-            inputRef={ref}
-            value={formik.values.identifier}
-            onChange={formik.handleChange}
-            error={
-              formik.touched.identifier && Boolean(formik.errors.identifier)
-            }
-            helperText={formik.touched.identifier && formik.errors.identifier}
-          />
-          <TextField
-            size="small"
-            className={textField}
-            type="password"
-            id="password"
-            label="Password"
-            name="password"
-            value={formik.values.password}
-            onChange={formik.handleChange}
-            error={formik.touched.password && Boolean(formik.errors.password)}
-            helperText={formik.touched.password && formik.errors.password}
-          />
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            className={button}
-            disabled={formik.isSubmitting}
-          >
-            {formik.isSubmitting ? 'Loading...' : 'login'}
-          </Button>
-        </form>
+        <TextField
+          size="small"
+          className={textField}
+          id="identifier"
+          label="Email or username"
+          name="identifier"
+          inputRef={ref}
+          value={formik.values.identifier}
+          onChange={formik.handleChange}
+          error={formik.touched.identifier && Boolean(formik.errors.identifier)}
+          helperText={formik.touched.identifier && formik.errors.identifier}
+        />
+        <TextField
+          size="small"
+          className={textField}
+          type="password"
+          id="password"
+          label="Password"
+          name="password"
+          value={formik.values.password}
+          onChange={formik.handleChange}
+          error={formik.touched.password && Boolean(formik.errors.password)}
+          helperText={formik.touched.password && formik.errors.password}
+        />
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          className={button}
+          disabled={formik.isSubmitting}
+        >
+          {formik.isSubmitting ? 'Loading...' : 'login'}
+        </Button>
       </Box>
       <FormLink href="/signup">
         <Box
-          clone
+          component={Typography}
           display="flex"
           alignItems="center"
-          style={{ marginTop: theme.spacing(2) }}
+          mt={theme.spacing(2)}
+          // style={{ marginTop: theme.spacing(2) }}
         >
           <Typography variant="caption">
             Create your account {<ArrowForwardIcon fontSize="small" />}

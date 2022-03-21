@@ -1,6 +1,5 @@
 import { useContext } from 'react'
-import { Snackbar as SnackbarMaterial } from '@material-ui/core'
-import { Alert } from '@material-ui/lab'
+import { Alert, Snackbar as SnackbarMaterial } from '@mui/material'
 import { Context } from '@context/GlobalContext'
 
 export const Snackbar = () => {

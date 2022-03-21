@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { Box, useMediaQuery, useTheme } from '@material-ui/core'
+import { Box, useMediaQuery, useTheme } from '@mui/material'
 import { Layout } from '@components/Layout'
 import { Form } from '@components/pages/login/Form'
 import { withPublic } from '@utils/middleware'

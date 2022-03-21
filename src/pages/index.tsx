@@ -1,11 +1,6 @@
 import Image from 'next/image'
-import {
-  Box,
-  makeStyles,
-  Typography,
-  useMediaQuery,
-  useTheme
-} from '@material-ui/core'
+import { Box, Theme, Typography, useMediaQuery, useTheme } from '@mui/material'
+import { makeStyles } from '@mui/styles'
 import clsx from 'clsx'
 import { Layout } from '@components/Layout'
 import { Signup } from '@components/pages/home/Signup'
@@ -13,7 +8,7 @@ import { Login } from '@components/pages/home/Login'
 import { CardContainer } from '@components/pages/home/CardContainer'
 import { withPublic } from '@utils/middleware'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme: Theme) => ({
   presentation: {
     flex: '1 0 300px'
   },
@@ -51,16 +46,15 @@ const IndexPage = () => {
           width="100%"
         >
           <Box className={presentation}>
-            <Box clone color="white">
-              <Typography
-                component="h1"
-                variant="h3"
-                gutterBottom
-                className={titles}
-              >
-                Easy Budget
-              </Typography>
-            </Box>
+            <Typography
+              component="h1"
+              variant="h3"
+              gutterBottom
+              className={titles}
+              color="white"
+            >
+              Easy Budget
+            </Typography>
             <Typography
               variant="h6"
               component="h3"
@@ -74,7 +68,8 @@ const IndexPage = () => {
               mt={2}
               mb={2}
               display="grid"
-              gridGap="1rem"
+              gap={1}
+              // gridGap="1rem"
               gridTemplateColumns={{ sm: 'max-content max-content' }}
             >
               <Signup />

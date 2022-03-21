@@ -1,4 +1,4 @@
-import { Avatar, Menu, MenuItem } from '@material-ui/core'
+import { Avatar, Menu, MenuItem } from '@mui/material'
 import PopupState, { bindMenu, bindTrigger } from 'material-ui-popup-state'
 import { useRouter } from 'next/router'
 import { SERVER_URL } from '@config/url'

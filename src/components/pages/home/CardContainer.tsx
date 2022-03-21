@@ -1,7 +1,7 @@
-import { Box, Grid } from '@material-ui/core'
-import MonetizationOnIcon from '@material-ui/icons/MonetizationOn'
-import MoneyIcon from '@material-ui/icons/Money'
-import AccountBalanceWalletIcon from '@material-ui/icons/AccountBalanceWallet'
+import { Grid } from '@mui/material'
+import MonetizationOnIcon from '@mui/icons-material/MonetizationOn'
+import MoneyIcon from '@mui/icons-material/Money'
+import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet'
 import { CardItem } from '@components/pages/home/CardItem'
 
 export const CardContainer = () => {
@@ -27,12 +27,10 @@ export const CardContainer = () => {
   ]
 
   return (
-    <Box clone pt={2}>
-      <Grid container spacing={4} justifyContent="center">
-        {features.map((feature, i) => (
-          <CardItem key={i} {...feature} />
-        ))}
-      </Grid>
-    </Box>
+    <Grid pt={2} container spacing={4} justifyContent="center">
+      {features.map((feature, i) => (
+        <CardItem key={i} {...feature} />
+      ))}
+    </Grid>
   )
 }

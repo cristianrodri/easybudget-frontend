@@ -7,7 +7,7 @@ import { Context } from '@context/GlobalContext'
 import { User } from '@custom-types'
 import { useFocus } from '@hooks/useFocus'
 import { useSWRUser } from '@hooks/useSWRUser'
-import { Box, Button, TextField, Typography } from '@material-ui/core'
+import { Box, Button, TextField, Typography } from '@mui/material'
 import { SnackbarType } from '@utils/enums'
 import { withAuthentication } from '@utils/middleware'
 import { useFormik } from 'formik'
@@ -78,52 +78,52 @@ const Profile = ({ user }: Props) => {
       </Typography>
       <Box display="flex" flexDirection="column" alignItems="center">
         <Box
-          clone
+          // clone
+          component="form"
+          onSubmit={formik.handleSubmit}
           display="flex"
           flexDirection="column"
           style={{ width: 'min(90%, 300px)' }}
         >
-          <form onSubmit={formik.handleSubmit}>
-            <TextField
-              id="username"
-              inputRef={ref}
-              name="username"
-              variant="outlined"
-              label="Username"
-              style={{ marginBottom: '1rem' }}
-              InputProps={{
-                readOnly
-              }}
-              value={formik.values.username}
-              onChange={formik.handleChange}
-              error={formik.touched.username && Boolean(formik.errors.username)}
-              helperText={formik.touched.username && formik.errors.username}
-            />
-            <TextField
-              id="email"
-              name="email"
-              variant="outlined"
-              label="Email"
-              style={{ marginBottom: '1rem' }}
-              InputProps={{
-                readOnly
-              }}
-              value={formik.values.email}
-              onChange={formik.handleChange}
-              error={formik.touched.email && Boolean(formik.errors.email)}
-              helperText={formik.touched.email && formik.errors.email}
-            />
-            {!readOnly ? (
-              <Button
-                type="submit"
-                color="primary"
-                variant="contained"
-                disabled={formik.isSubmitting}
-              >
-                Save Changes
-              </Button>
-            ) : null}
-          </form>
+          <TextField
+            id="username"
+            inputRef={ref}
+            name="username"
+            variant="outlined"
+            label="Username"
+            style={{ marginBottom: '1rem' }}
+            InputProps={{
+              readOnly
+            }}
+            value={formik.values.username}
+            onChange={formik.handleChange}
+            error={formik.touched.username && Boolean(formik.errors.username)}
+            helperText={formik.touched.username && formik.errors.username}
+          />
+          <TextField
+            id="email"
+            name="email"
+            variant="outlined"
+            label="Email"
+            style={{ marginBottom: '1rem' }}
+            InputProps={{
+              readOnly
+            }}
+            value={formik.values.email}
+            onChange={formik.handleChange}
+            error={formik.touched.email && Boolean(formik.errors.email)}
+            helperText={formik.touched.email && formik.errors.email}
+          />
+          {!readOnly ? (
+            <Button
+              type="submit"
+              color="primary"
+              variant="contained"
+              disabled={formik.isSubmitting}
+            >
+              Save Changes
+            </Button>
+          ) : null}
         </Box>
         {readOnly ? (
           <Button color="primary" variant="contained" onClick={handleReadOnly}>

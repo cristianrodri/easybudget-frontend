@@ -1,8 +1,9 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { makeStyles, Theme } from '@material-ui/core'
+import { Theme } from '@mui/material'
 import { AuthMenu } from './common/AuthMenu'
 import { BackgroundType } from './Layout'
+import { makeStyles } from '@mui/styles'
 
 interface Props {
   backgroundPage: BackgroundType

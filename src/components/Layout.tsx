@@ -1,7 +1,8 @@
 import { FC } from 'react'
 import Head from 'next/head'
-import { Container, Box, makeStyles } from '@material-ui/core'
+import { Container, Box, Theme } from '@mui/material'
 import { Header } from './Header'
+import { makeStyles } from '@mui/styles'
 
 export type BackgroundType = 'homepage' | 'signup' | 'login' | 'default'
 
@@ -10,7 +11,7 @@ interface Props {
   backgroundPage?: BackgroundType
 }
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme: Theme) => ({
   homepage: {
     '&::before': {
       content: "''",

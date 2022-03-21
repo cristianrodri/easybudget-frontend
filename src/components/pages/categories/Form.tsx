@@ -8,7 +8,7 @@ import {
   Radio,
   RadioGroup,
   TextField
-} from '@material-ui/core'
+} from '@mui/material'
 import { useFocus } from '@hooks/useFocus'
 import { object, SchemaOf, string } from 'yup'
 import { useFormik } from 'formik'
@@ -72,54 +72,54 @@ export const Form = ({ categories }: Props) => {
   })
 
   return (
-    <Box clone display="flex" flexDirection="column" alignSelf="center">
-      <form onSubmit={formik.handleSubmit}>
-        <TextField
-          id="name"
-          inputRef={ref}
-          name="name"
-          variant="outlined"
-          label="Add category"
-          style={{ marginBottom: '1rem' }}
-          value={formik.values.name}
+    <Box
+      component="form"
+      onSubmit={formik.handleSubmit}
+      display="flex"
+      flexDirection="column"
+      alignSelf="center"
+    >
+      <TextField
+        id="name"
+        inputRef={ref}
+        name="name"
+        variant="outlined"
+        label="Add category"
+        style={{ marginBottom: '1rem' }}
+        value={formik.values.name}
+        onChange={formik.handleChange}
+        error={formik.touched.name && Boolean(formik.errors.name)}
+        helperText={formik.touched.name && formik.errors.name}
+      />
+      <FormControl component="fieldset" style={{ marginBottom: '.5rem' }}>
+        <FormLabel component="legend">Budget Type</FormLabel>
+        <RadioGroup
+          id="type"
+          row
+          aria-label="Type"
+          name="type"
+          value={formik.values.type}
           onChange={formik.handleChange}
-          error={formik.touched.name && Boolean(formik.errors.name)}
-          helperText={formik.touched.name && formik.errors.name}
-        />
-        <FormControl component="fieldset" style={{ marginBottom: '.5rem' }}>
-          <FormLabel component="legend">Budget Type</FormLabel>
-          <RadioGroup
-            id="type"
-            row
-            aria-label="Type"
-            name="type"
-            value={formik.values.type}
-            onChange={formik.handleChange}
-          >
-            <FormControlLabel
-              value="income"
-              control={<Radio />}
-              label="Income"
-            />
-            <FormControlLabel
-              value="expense"
-              control={<Radio />}
-              label="Expense"
-            />
-          </RadioGroup>
-          <FormHelperText style={{ color: '#f44336' }}>
-            {formik.touched.type && formik.errors.type}
-          </FormHelperText>
-        </FormControl>
-        <Button
-          type="submit"
-          color="primary"
-          variant="contained"
-          disabled={formik.isSubmitting}
         >
-          {formik.isSubmitting ? 'Adding...' : 'Add category'}
-        </Button>
-      </form>
+          <FormControlLabel value="income" control={<Radio />} label="Income" />
+          <FormControlLabel
+            value="expense"
+            control={<Radio />}
+            label="Expense"
+          />
+        </RadioGroup>
+        <FormHelperText style={{ color: '#f44336' }}>
+          {formik.touched.type && formik.errors.type}
+        </FormHelperText>
+      </FormControl>
+      <Button
+        type="submit"
+        color="primary"
+        variant="contained"
+        disabled={formik.isSubmitting}
+      >
+        {formik.isSubmitting ? 'Adding...' : 'Add category'}
+      </Button>
     </Box>
   )
 }

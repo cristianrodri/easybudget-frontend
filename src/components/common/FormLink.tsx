@@ -1,12 +1,13 @@
 import { FC } from 'react'
 import Link from 'next/link'
-import { makeStyles } from '@material-ui/core'
+import { Theme } from '@mui/material'
+import { makeStyles } from '@mui/styles'
 
 interface Props {
   href: string
 }
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme: Theme) => ({
   link: {
     color: theme.palette.primary.main,
     '&:hover': {

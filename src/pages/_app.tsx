@@ -1,12 +1,12 @@
-import { AppProps } from 'next/app'
-import { createTheme } from '@material-ui/core'
-import { responsiveFontSizes, ThemeProvider } from '@material-ui/core/styles'
-import { purple } from '@material-ui/core/colors'
 import { useEffect } from 'react'
-import '../styles/styles.css'
+import { AppProps } from 'next/app'
 import NextNProgress from 'nextjs-progressbar'
+import { responsiveFontSizes } from '@mui/material'
+import { purple } from '@mui/material/colors'
 import { GlobalContext } from '@context/GlobalContext'
 import { Snackbar } from '@components/common/Snackbar'
+import '../styles/styles.css'
+import { createTheme, ThemeProvider } from '@mui/material/styles'
 
 export const theme = createTheme({
   palette: {

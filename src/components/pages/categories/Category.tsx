@@ -5,9 +5,9 @@ import {
   ListItem,
   ListItemSecondaryAction,
   ListItemText,
-  makeStyles
-} from '@material-ui/core'
-import DeleteIcon from '@material-ui/icons/Delete'
+  Theme
+} from '@mui/material'
+import DeleteIcon from '@mui/icons-material/Delete'
 import { GetCategory } from '@custom-types'
 import { clientInstance as axios } from '@config/axios'
 import { BudgetType, SnackbarType } from '@utils/enums'
@@ -15,8 +15,9 @@ import { useContext, useState } from 'react'
 import { Context } from '@context/GlobalContext'
 import { DialogConfirm } from './DialogConfirm'
 import { useSWRCategories } from '@hooks/useSWRCategories'
+import { makeStyles } from '@mui/styles'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme: Theme) => ({
   listItem: {
     backgroundColor: theme.palette.grey[300],
     width: 200

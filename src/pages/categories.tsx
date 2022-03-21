@@ -1,4 +1,4 @@
-import { Box, Typography, useTheme } from '@material-ui/core'
+import { Box, Typography, useTheme } from '@mui/material'
 import { serverInstance as axios } from '@config/axios'
 import { Layout } from '@components/Layout'
 import { withAuthentication } from '@utils/middleware'

@@ -8,17 +8,17 @@ import {
   FormLabel,
   IconButton,
   InputLabel,
-  makeStyles,
   MenuItem,
   Radio,
   RadioGroup,
   Select,
   Slide,
   TextField,
+  Theme,
   Toolbar,
   Typography
-} from '@material-ui/core'
-import { TransitionProps } from '@material-ui/core/transitions/transition'
+} from '@mui/material'
+import { TransitionProps } from '@mui/material/transitions/transition'
 import {
   ChangeEvent,
   forwardRef,
@@ -27,7 +27,7 @@ import {
   useContext,
   useState
 } from 'react'
-import CloseIcon from '@material-ui/icons/Close'
+import CloseIcon from '@mui/icons-material/Close'
 import NumberFormat from 'react-number-format'
 import { number, object, SchemaOf, string } from 'yup'
 import { useFormik } from 'formik'
@@ -36,6 +36,7 @@ import { clientInstance as axios } from '@config/axios'
 import { BudgetType, SnackbarType } from '@utils/enums'
 import { Context } from '@context/GlobalContext'
 import { useSWRUser } from '@hooks/useSWRUser'
+import { makeStyles } from '@mui/styles'
 
 interface Props {
   openDialog: boolean
@@ -47,7 +48,7 @@ type FormTypes = Omit<Budget, 'id' | 'date' | 'categoryId'> & {
   categoryId: number | string
 }
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme: Theme) => ({
   appBar: {
     position: 'relative'
   },
@@ -71,7 +72,11 @@ const Transition = forwardRef(function Transition(
   props: TransitionProps & { children?: ReactElement },
   ref: Ref<unknown>
 ) {
-  return <Slide direction="up" ref={ref} {...props} />
+  return (
+    <Slide direction="up" ref={ref} {...props}>
+      {props.children}
+    </Slide>
+  )
 })
 
 const AddBudget = ({ openDialog, handleClose, user }: Props) => {
@@ -148,7 +153,6 @@ const AddBudget = ({ openDialog, handleClose, user }: Props) => {
         // Close the dialog
         handleClose()
       } else {
-        res.data.success
         openSnackbar(res.data.message, SnackbarType.ERROR)
       }
     }

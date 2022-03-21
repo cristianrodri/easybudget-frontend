@@ -1,13 +1,13 @@
 import { useState } from 'react'
-import { Box, Fab } from '@material-ui/core'
-import AddIcon from '@material-ui/icons/Add'
+import { Box, Fab } from '@mui/material'
+import AddIcon from '@mui/icons-material/Add'
+import moment from 'moment'
 import { Layout } from '@components/Layout'
 import { serverInstance as axios } from '@config/axios'
 import { withAuthentication } from '@utils/middleware'
 import { User } from '@custom-types'
 import AddBudget from '@components/pages/dashboard/AddBudget'
 import { useSWRUser } from '@hooks/useSWRUser'
-import moment from 'moment'
 
 interface Props {
   user: User

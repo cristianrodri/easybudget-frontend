@@ -1,10 +1,11 @@
-import { Box, Typography, makeStyles } from '@material-ui/core'
+import { Box, Theme, Typography } from '@mui/material'
 import clsx from 'clsx'
 import { Layout } from '@components/Layout'
 import { Form } from '@components/pages/signup/Form'
 import { withPublic } from '@utils/middleware'
+import { makeStyles } from '@mui/styles'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme: Theme) => ({
   containerMessage: {
     backgroundColor: theme.palette.primary.main,
     transform: 'scale(1.1)',

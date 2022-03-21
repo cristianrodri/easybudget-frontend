@@ -5,8 +5,9 @@ import {
   CardContent,
   Grid,
   Box,
-  makeStyles
-} from '@material-ui/core'
+  Theme
+} from '@mui/material'
+import { makeStyles } from '@mui/styles'
 
 interface Props {
   title: string
@@ -14,7 +15,7 @@ interface Props {
   avatar: JSX.Element
 }
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme: Theme) => ({
   card: {
     borderRadius: '1rem',
     padding: theme.spacing(2),
@@ -50,7 +51,7 @@ export const CardItem = ({ title, description, avatar }: Props) => {
             component="h3"
             variant="h6"
             align="center"
-            color="primary"
+            sx={{ color: 'primary.main' }}
             className={cardTitle}
             gutterBottom
           >
