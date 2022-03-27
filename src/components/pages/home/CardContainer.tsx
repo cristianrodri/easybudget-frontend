@@ -27,7 +27,7 @@ export const CardContainer = () => {
   ]
 
   return (
-    <Grid pt={2} container spacing={4} justifyContent="center">
+    <Grid pb={2} container spacing={4} justifyContent="center">
       {features.map((feature, i) => (
         <CardItem key={i} {...feature} />
       ))}

@@ -10,6 +10,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     '&:hover': {
       backgroundColor: theme.palette.primary.light,
       color: theme.palette.getContrastText(theme.palette.primary.light)
+    },
+    width: 200,
+    ['@media (max-width: 450px)']: {
+      width: '100%'
     }
   }
 }))

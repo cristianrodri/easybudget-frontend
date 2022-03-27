@@ -1,4 +1,4 @@
-import { Button, Box, Theme } from '@mui/material'
+import { Button, Theme } from '@mui/material'
 import { makeStyles } from '@mui/styles'
 import Link from 'next/link'
 
@@ -13,6 +13,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     '&:hover': {
       backgroundColor: theme.palette.primary.light,
       color: theme.palette.getContrastText(theme.palette.primary.light)
+    },
+    width: 280,
+    ['@media (max-width: 450px)']: {
+      width: '100%'
     }
   }
 }))
@@ -21,11 +25,9 @@ export const Signup = () => {
   const { root } = useStyles()
   return (
     <Link href="/signup" passHref>
-      <Box component={Button} pt={3}>
-        <Button variant="contained" className={root}>
-          Get started for free
-        </Button>
-      </Box>
+      <Button variant="contained" className={root}>
+        Get started for free
+      </Button>
     </Link>
   )
 }

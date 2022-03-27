@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   titles: {
     textAlign: 'left',
     marginBottom: theme.spacing(2),
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('sm')]: {
       textAlign: 'center'
     }
   },
@@ -67,10 +67,14 @@ const IndexPage = () => {
             <Box
               mt={2}
               mb={2}
-              display="grid"
-              gap={1}
-              // gridGap="1rem"
-              gridTemplateColumns={{ sm: 'max-content max-content' }}
+              display="flex"
+              flexWrap="wrap"
+              gap={2}
+              sx={{
+                [theme.breakpoints.down('sm')]: {
+                  justifyContent: 'center'
+                }
+              }}
             >
               <Signup />
               <Login />
@@ -79,8 +83,8 @@ const IndexPage = () => {
           {!matches && (
             <Box className={presentation}>
               <Image
-                width={500}
-                height={400}
+                width={400}
+                height={300}
                 layout="responsive"
                 src="/banner.svg"
               />
