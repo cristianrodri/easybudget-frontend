@@ -13,9 +13,14 @@ export const theme = createTheme({
     primary: {
       main: purple[400]
     }
+  },
+  typography: {
+    fontFamily: '"Nunito", sans-serif'
   }
 })
 const responsiveTheme = responsiveFontSizes(theme)
+
+console.log(responsiveTheme)
 
 const App = ({ Component, pageProps }: AppProps) => {
   useEffect(() => {

@@ -13,6 +13,7 @@
 }
 
 body {
+  /* Useful when using normal HTML tags (no material ui components) */
   font-family: 'Nunito', sans-serif;
 }
 
