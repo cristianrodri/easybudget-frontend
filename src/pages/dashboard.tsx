@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Box, Fab } from '@mui/material'
+import { Box, Fab, Stack, Typography } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 import moment from 'moment'
 import { Layout } from '@components/Layout'
@@ -8,6 +8,8 @@ import { withAuthentication } from '@utils/middleware'
 import { User } from '@custom-types'
 import AddBudget from '@components/pages/dashboard/AddBudget'
 import { useSWRUser } from '@hooks/useSWRUser'
+import { Header } from '@components/pages/dashboard/Header'
+import LatestBudgets from '@components/pages/dashboard/LatestBudgets'
 
 interface Props {
   user: User
@@ -27,16 +29,28 @@ const Dashboard = ({ user }: Props) => {
 
   return (
     <Layout title="Dashboard">
-      {data.categories.map(category => (
-        <div key={category.id}>
-          <h2>{category.name}</h2>
-          {category.budgets.map(budget => (
-            <div key={budget.id}>
-              {budget.description} {budget.money}
+      <Stack
+        mt={2}
+        direction="row"
+        flexWrap="wrap"
+        justifyContent="center"
+        spacing={1}
+      >
+        <Stack flex={1} minWidth={350}>
+          <Header />
+          {data.categories.map(category => (
+            <div key={category.id}>
+              <Typography>{category.name}</Typography>
+              {category.budgets.map(budget => (
+                <div key={budget.id}>
+                  {budget.description} {budget.money}
+                </div>
+              ))}
             </div>
           ))}
-        </div>
-      ))}
+        </Stack>
+        <LatestBudgets />
+      </Stack>
       <Box position="absolute" right="0" bottom="0" paddingBottom={2}>
         <Fab
           color="primary"
