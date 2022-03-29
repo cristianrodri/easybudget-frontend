@@ -18,6 +18,7 @@ export const theme = createTheme({
     fontFamily: '"Nunito", sans-serif'
   }
 })
+
 const responsiveTheme = responsiveFontSizes(theme)
 
 console.log(responsiveTheme)
