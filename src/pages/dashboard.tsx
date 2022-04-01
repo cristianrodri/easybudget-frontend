@@ -1,23 +1,15 @@
 import { useState } from 'react'
-import { Box, Fab, Stack, Typography } from '@mui/material'
+import { Box, Fab, Stack } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
-import moment from 'moment'
 import { Layout } from '@components/Layout'
-import { serverInstance as axios } from '@config/axios'
 import { withAuthentication } from '@utils/middleware'
-import { User } from '@custom-types'
 import AddBudget from '@components/pages/dashboard/AddBudget'
-import { useSWRUser } from '@hooks/useSWRUser'
 import { Header } from '@components/pages/dashboard/Header'
 import LatestBudgets from '@components/pages/dashboard/LatestBudgets'
+import { Summary } from '@components/pages/dashboard/Summary'
 
-interface Props {
-  user: User
-}
-
-const Dashboard = ({ user }: Props) => {
+const Dashboard = () => {
   const [open, setOpen] = useState(false)
-  const { data } = useSWRUser(user)
 
   const handleOpen = () => {
     setOpen(true)
@@ -38,16 +30,7 @@ const Dashboard = ({ user }: Props) => {
       >
         <Stack flex={1} minWidth={350}>
           <Header />
-          {data.categories.map(category => (
-            <div key={category.id}>
-              <Typography>{category.name}</Typography>
-              {category.budgets.map(budget => (
-                <div key={budget.id}>
-                  {budget.description} {budget.money}
-                </div>
-              ))}
-            </div>
-          ))}
+          <Summary />
         </Stack>
         <LatestBudgets />
       </Stack>
@@ -61,32 +44,11 @@ const Dashboard = ({ user }: Props) => {
           <AddIcon />
         </Fab>
       </Box>
-      <AddBudget openDialog={open} handleClose={handleClose} user={data} />
+      <AddBudget openDialog={open} handleClose={handleClose} />
     </Layout>
   )
 }
 
-export const getServerSideProps = withAuthentication<Props>(async ({ req }) => {
-  const { token } = req.cookies
-
-  const monthStart = moment().startOf('month').format()
-  const monthEnd = moment().endOf('month').format()
-
-  const res = await axios.get('/users/me', {
-    headers: {
-      Authorization: 'Bearer ' + token
-    },
-    params: {
-      budgets_date_start: monthStart,
-      budgets_date_end: monthEnd
-    }
-  })
-
-  return {
-    props: {
-      user: res.data
-    }
-  }
-})
+export const getServerSideProps = withAuthentication()
 
 export default Dashboard
