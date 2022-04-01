@@ -31,7 +31,7 @@ import CloseIcon from '@mui/icons-material/Close'
 import NumberFormat from 'react-number-format'
 import { number, object, SchemaOf, string } from 'yup'
 import { useFormik } from 'formik'
-import { AddCategory, Budget, User } from '@custom-types'
+import { Budget } from '@custom-types'
 import { clientInstance as axios } from '@config/axios'
 import { BudgetType, SnackbarType } from '@utils/enums'
 import { Context } from '@context/GlobalContext'
@@ -41,7 +41,6 @@ import { makeStyles } from '@mui/styles'
 interface Props {
   openDialog: boolean
   handleClose: () => void
-  user: User
 }
 
 type FormTypes = Omit<Budget, 'id' | 'date' | 'categoryId'> & {
@@ -79,21 +78,19 @@ const Transition = forwardRef(function Transition(
   )
 })
 
-const AddBudget = ({ openDialog, handleClose, user }: Props) => {
+const AddBudget = ({ openDialog, handleClose }: Props) => {
   const { openSnackbar } = useContext(Context)
   const classes = useStyles()
-  const { data, mutate } = useSWRUser(user)
+  const { data, mutate } = useSWRUser()
   const [budgetType, setBudgetType] = useState<
     BudgetType.INCOME | BudgetType.EXPENSE
   >(null)
 
-  const categories: AddCategory[] = data.categories.map(
-    ({ id, type, name }) => ({
-      id,
-      name,
-      type
-    })
-  )
+  const categories = data?.categories.map(({ id, type, name }) => ({
+    id,
+    name,
+    type
+  }))
 
   const validationSchema: SchemaOf<FormTypes> = object({
     description: string()
@@ -261,7 +258,7 @@ const AddBudget = ({ openDialog, handleClose, user }: Props) => {
               formik.touched.categoryId && Boolean(formik.errors.categoryId)
             }
           >
-            {categories.map(category => (
+            {categories?.map(category => (
               <MenuItem
                 key={category.id}
                 value={category.id}
