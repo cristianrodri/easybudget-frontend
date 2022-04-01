@@ -4,7 +4,7 @@ const LatestBudgets = () => {
   return (
     <Stack
       width={350}
-      sx={{ backgroundColor: theme => theme.palette.grey[100] }}
+      sx={{ backgroundColor: theme => theme.palette.grey[200] }}
       alignSelf="baseline"
     >
       <Typography component="h3" variant="h6" align="center" gutterBottom>
