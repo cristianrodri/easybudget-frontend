@@ -21,9 +21,14 @@ export const Header = () => {
     <Stack
       direction="row"
       flexWrap="wrap"
-      justifyContent="center"
       alignItems="center"
       gap={2}
+      sx={{
+        justifyContent: {
+          xs: 'center',
+          sm: 'space-between'
+        }
+      }}
     >
       <Typography variant="h4" component="h1">
         Wallet - March 2022
