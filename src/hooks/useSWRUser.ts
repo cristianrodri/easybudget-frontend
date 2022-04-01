@@ -14,8 +14,8 @@ const currentMonth: Dates = {
 }
 
 export const useSWRUser = (
-  fallbackData?: User,
-  budgetDates: Dates = currentMonth
+  budgetDates: Dates = currentMonth,
+  fallbackData?: User
 ) => {
   const { data, mutate } = useSWR<User>(
     '/api/user/get',
