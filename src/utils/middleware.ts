@@ -18,6 +18,13 @@ export const withAuthentication =
       }
     }
 
+    // If getServerSidePropsFn function is not provided, return empty props
+    if (!getServerSidePropsFn) {
+      return {
+        props: {} as undefined
+      }
+    }
+
     return getServerSidePropsFn(ctx)
   }
 
