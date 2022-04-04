@@ -4,10 +4,10 @@ import { useRouter } from 'next/router'
 import { SERVER_URL } from '@config/url'
 import { getAvatar } from '@utils/avatar'
 import { clientInstance as axios } from '@config/axios'
-import { useSWRUser } from '@hooks/useSWRUser'
+import { useUserData } from '@hooks/useSWRUser'
 
 export const AuthMenu = () => {
-  const { data } = useSWRUser()
+  const { data } = useUserData()
   const avatarUrl = getAvatar(data)
   const router = useRouter()
 

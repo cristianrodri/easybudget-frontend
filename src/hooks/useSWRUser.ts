@@ -1,37 +1,28 @@
 import useSWR from 'swr'
 import { clientInstance as axios } from '@config/axios'
 import { User } from '@custom-types'
-import moment from 'moment'
 
 interface Dates {
   start: string
   end: string
 }
 
-const currentMonth: Dates = {
-  start: moment().startOf('month').format(),
-  end: moment().endOf('month').format()
+interface ApiResponse {
+  success: boolean
+  user: User
 }
 
-export const useSWRUser = (
-  budgetDates: Dates = currentMonth,
-  fallbackData?: User
-) => {
-  const { data, mutate } = useSWR<User>(
-    '/api/user/get',
-    async (url: string) => {
-      const res = await axios.get(url, {
-        params: {
-          budgets_date_start: budgetDates.start,
-          budgets_date_end: budgetDates.end
-        }
-      })
-      return res.data?.user
-    },
-    {
-      fallbackData
-    }
-  )
+// Fetcher function when useSWR hook api is called
+const fetcher = (url: string) =>
+  axios.get<ApiResponse>(url).then(res => res.data.user)
+
+// Custom hook which get user data by useSWR hook
+export const useUserData = (date?: Dates) => {
+  const API = date
+    ? `/api/user/get?budgets_date_start=${date.start}&budgets_date_end=${date.end}`
+    : '/api/user/get'
+
+  const { data, mutate } = useSWR(API, fetcher)
 
   return { data, mutate }
 }

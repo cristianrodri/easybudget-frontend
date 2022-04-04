@@ -35,7 +35,7 @@ import { Budget } from '@custom-types'
 import { clientInstance as axios } from '@config/axios'
 import { BudgetType, SnackbarType } from '@utils/enums'
 import { Context } from '@context/GlobalContext'
-import { useSWRUser } from '@hooks/useSWRUser'
+import { useUserData } from '@hooks/useSWRUser'
 import { makeStyles } from '@mui/styles'
 
 interface Props {
@@ -81,7 +81,7 @@ const Transition = forwardRef(function Transition(
 const AddBudget = ({ openDialog, handleClose }: Props) => {
   const { openSnackbar } = useContext(Context)
   const classes = useStyles()
-  const { data, mutate } = useSWRUser()
+  const { data, mutate } = useUserData()
   const [budgetType, setBudgetType] = useState<
     BudgetType.INCOME | BudgetType.EXPENSE
   >(null)
