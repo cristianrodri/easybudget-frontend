@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import { Alert, Snackbar as SnackbarMaterial } from '@mui/material'
+import { Alert, Snackbar as SnackbarMui } from '@mui/material'
 import { Context } from '@context/GlobalContext'
 
 export const Snackbar = () => {
@@ -7,7 +7,7 @@ export const Snackbar = () => {
     useContext(Context)
 
   return (
-    <SnackbarMaterial
+    <SnackbarMui
       open={snackbarOpen}
       autoHideDuration={4000}
       onClose={handleCloseSnackbar}
@@ -19,6 +19,6 @@ export const Snackbar = () => {
       >
         {snackbarMessage}
       </Alert>
-    </SnackbarMaterial>
+    </SnackbarMui>
   )
 }
