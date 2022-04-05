@@ -37,7 +37,7 @@ import { BudgetType, SnackbarType } from '@utils/enums'
 import { Context } from '@context/GlobalContext'
 import { useUserData } from '@hooks/useSWRUser'
 import { makeStyles } from '@mui/styles'
-import { currentMonth, getCustomDate } from '@utils/dates'
+import { currentMonth } from '@utils/dates'
 
 interface Props {
   openDialog: boolean
@@ -47,6 +47,10 @@ interface Props {
 type FormTypes = Omit<Budget, 'id' | 'date' | 'categoryId'> & {
   categoryId: number | string
 }
+
+type ApiResponse =
+  | { success: true; data: Budget }
+  | { success: false; message: string }
 
 const useStyles = makeStyles((theme: Theme) => ({
   appBar: {
@@ -112,22 +116,12 @@ const AddBudget = ({ openDialog, handleClose }: Props) => {
       categoryId: ''
     },
     validationSchema,
-    onSubmit: async (values, helpers) => {
-      const res = await axios.post<
-        { success: true; data: Budget } | { success: false; message: string }
-      >('/api/budget/add', values)
+    onSubmit: async values => {
+      const res = await axios.post<ApiResponse>('/api/budget/add', values)
 
       if (res.data.success === true) {
         const categoryId = res.data.data.categoryId
         const newBudget = res.data.data
-
-        helpers.resetForm({
-          values: {
-            description: '',
-            money: 0,
-            categoryId: ''
-          }
-        })
 
         // Mutate SWR data by adding new budget into related category
         const mutatedData = { ...data }
@@ -141,8 +135,6 @@ const AddBudget = ({ openDialog, handleClose }: Props) => {
           return c
         })
 
-        console.log(mutatedData)
-
         mutate(mutatedData, false)
 
         openSnackbar(
@@ -151,7 +143,7 @@ const AddBudget = ({ openDialog, handleClose }: Props) => {
         )
 
         // Close the dialog
-        handleClose()
+        handleDialogClose()
       } else {
         openSnackbar(res.data.message, SnackbarType.ERROR)
       }
@@ -160,21 +152,32 @@ const AddBudget = ({ openDialog, handleClose }: Props) => {
 
   const handleChangeRadio = (e: ChangeEvent<HTMLInputElement>) => {
     setBudgetType(e.target.value as BudgetType)
-    // when budget type is changed in radio button, select the first budget type into select element
+    // When budget type is changed in radio button, display the first "budget type" into the select
     const firstBudgetType = categories.find(
       category => category.type === e.target.value
     )
     formik.setFieldValue('categoryId', firstBudgetType.id)
   }
 
+  const handleDialogClose = () => {
+    formik.resetForm()
+
+    handleClose()
+  }
+
   return (
-    <Dialog fullScreen open={openDialog} TransitionComponent={Transition}>
+    <Dialog
+      fullScreen
+      open={openDialog}
+      TransitionComponent={Transition}
+      onClose={handleDialogClose}
+    >
       <AppBar className={classes.appBar}>
         <Toolbar>
           <IconButton
             edge="start"
             color="inherit"
-            onClick={handleClose}
+            onClick={handleDialogClose}
             aria-label="close"
           >
             <CloseIcon />
@@ -271,7 +274,7 @@ const AddBudget = ({ openDialog, handleClose }: Props) => {
               </MenuItem>
             ))}
           </Select>
-          <FormHelperText style={{ color: '#f44336' }}>
+          <FormHelperText sx={{ color: theme => theme.palette.error.main }}>
             {formik.touched.categoryId && formik.errors.categoryId}
           </FormHelperText>
         </FormControl>
