@@ -37,6 +37,7 @@ import { BudgetType, SnackbarType } from '@utils/enums'
 import { Context } from '@context/GlobalContext'
 import { useUserData } from '@hooks/useSWRUser'
 import { makeStyles } from '@mui/styles'
+import { currentMonth, getCustomDate } from '@utils/dates'
 
 interface Props {
   openDialog: boolean
@@ -81,7 +82,7 @@ const Transition = forwardRef(function Transition(
 const AddBudget = ({ openDialog, handleClose }: Props) => {
   const { openSnackbar } = useContext(Context)
   const classes = useStyles()
-  const { data, mutate } = useUserData()
+  const { data, mutate } = useUserData(currentMonth)
   const [budgetType, setBudgetType] = useState<
     BudgetType.INCOME | BudgetType.EXPENSE
   >(null)
@@ -139,6 +140,8 @@ const AddBudget = ({ openDialog, handleClose }: Props) => {
 
           return c
         })
+
+        console.log(mutatedData)
 
         mutate(mutatedData, false)
 

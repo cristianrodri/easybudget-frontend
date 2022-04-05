@@ -10,3 +10,11 @@ export const getCustomDate = (
     end: new Date(endYear, endMonth).toISOString()
   }
 }
+
+// Get first date and the last day of the current month
+export const currentMonth = getCustomDate(
+  new Date().getFullYear(),
+  new Date().getMonth() - 1,
+  new Date().getFullYear(),
+  new Date().getMonth()
+)
