@@ -51,7 +51,7 @@ export const Form = ({ categories }: Props) => {
 
       if (res.data.success) {
         openSnackbar(
-          `${res.data.data[0].name} added into ${res.data.data[0].type} category`,
+          `${res.data.data[0].name} was added into ${res.data.data[0].type} category`,
           SnackbarType.SUCCESS
         )
 
