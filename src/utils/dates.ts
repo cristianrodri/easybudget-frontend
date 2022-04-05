@@ -14,7 +14,7 @@ export const getCustomDate = (
 // Get first date and the last day of the current month
 export const currentMonth = getCustomDate(
   new Date().getFullYear(),
-  new Date().getMonth() - 1,
+  new Date().getMonth(),
   new Date().getFullYear(),
-  new Date().getMonth()
+  new Date().getMonth() + 1
 )
