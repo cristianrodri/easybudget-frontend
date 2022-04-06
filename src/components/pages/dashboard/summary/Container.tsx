@@ -1,26 +1,42 @@
-import { Stack, Typography } from '@mui/material'
+import { Stack } from '@mui/material'
 import { useUserData } from '@hooks/useSWRUser'
 import { currentMonth } from '@utils/dates'
+import { Budget } from './Budget'
+import { BudgetType } from '@utils/enums'
 
 export const Summary = () => {
   const { data } = useUserData(currentMonth)
 
+  // Get all INCOME budgets of the provided date
+  const moneyIncome = data?.categories.reduce(
+    (prev, category) =>
+      category.type === BudgetType.INCOME ? prev + category.money : prev,
+    0
+  )
+
+  // Get all EXPENSE budgets of the provided date
+  const moneyExpense = data?.categories.reduce(
+    (prev, category) =>
+      category.type === BudgetType.EXPENSE ? prev + category.money : prev,
+    0
+  )
+
+  const moneyBudget = moneyIncome - moneyExpense
+
   return (
-    <Stack>
-      {data?.categories.map(category => (
-        <div key={category.id}>
-          <Typography
-            sx={{ fontWeight: theme => theme.typography.fontWeightBold }}
-          >
-            {category.name}
-          </Typography>
-          {category.budgets.map(budget => (
-            <Stack ml={3} key={budget.id}>
-              {budget.description} {budget.money}
-            </Stack>
-          ))}
-        </div>
-      ))}
+    <Stack
+      my={3}
+      p={2}
+      sx={{ backgroundColor: theme => theme.palette.grey[50] }}
+      direction="row"
+      flexWrap="wrap"
+      justifyContent="center"
+      alignItems="center"
+      gap={1}
+    >
+      <Budget colorType={BudgetType.INCOME} money={moneyIncome} />
+      <Budget colorType={BudgetType.EXPENSE} money={moneyExpense} />
+      <Budget colorType="budget" money={moneyBudget} />
     </Stack>
   )
 }
