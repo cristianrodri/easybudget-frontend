@@ -1,3 +1,5 @@
+import { BudgetType } from '@utils/enums'
+
 export interface Type {
   jwt: string
   user: User
@@ -41,7 +43,7 @@ export interface Avatar {
 export interface CategoryTypes {
   id: number
   name: string
-  type: string
+  type: BudgetType.INCOME | BudgetType.EXPENSE
   budgets: Budget[]
   money: number
 }
