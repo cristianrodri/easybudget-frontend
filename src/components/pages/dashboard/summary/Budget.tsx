@@ -7,7 +7,7 @@ import { BudgetType } from '@utils/enums'
 interface Props {
   colorType: BudgetType.INCOME | BudgetType.EXPENSE | 'budget'
   money: number
-  isValidating: boolean
+  isLoading: boolean
 }
 
 const COLOR_VALUE = 800
@@ -18,7 +18,7 @@ const color = {
   budget: blue[COLOR_VALUE]
 }
 
-export const Budget = ({ colorType, money, isValidating }: Props) => {
+export const Budget = ({ colorType, money, isLoading }: Props) => {
   const formatMoney = new Intl.NumberFormat('es-CL').format(money)
 
   return (
@@ -29,12 +29,12 @@ export const Budget = ({ colorType, money, isValidating }: Props) => {
       alignItems="center"
       gap={1}
     >
-      {isValidating ? (
+      {isLoading ? (
         <Skeleton variant="circular" width={24} height={24} color="primary" />
       ) : (
         <PaidIcon htmlColor={color[colorType]} />
       )}
-      {isValidating ? (
+      {isLoading ? (
         <Skeleton width={130} height={28} color="primary" />
       ) : (
         <Typography
@@ -50,7 +50,7 @@ export const Budget = ({ colorType, money, isValidating }: Props) => {
           $ {formatMoney}
         </Typography>
       )}
-      {isValidating ? (
+      {isLoading ? (
         <Skeleton width={60} height={28} />
       ) : (
         <Typography color={color[colorType]}>

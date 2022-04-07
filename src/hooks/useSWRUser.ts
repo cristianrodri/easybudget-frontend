@@ -22,7 +22,7 @@ export const useUserData = (date?: Dates) => {
     ? `/api/user/get?budgets_date_start=${date.start}&budgets_date_end=${date.end}`
     : '/api/user/get'
 
-  const { data, mutate, isValidating } = useSWR(API, fetcher)
+  const { data, mutate } = useSWR(API, fetcher)
 
-  return { data, mutate, isValidating }
+  return { data, mutate }
 }
