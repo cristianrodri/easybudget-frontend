@@ -22,7 +22,7 @@ const Dashboard = () => {
   return (
     <Layout title="Dashboard">
       <Stack
-        mt={2}
+        my={2}
         direction="row"
         flexWrap="wrap"
         justifyContent="center"
