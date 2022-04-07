@@ -23,7 +23,7 @@ export const Budget = ({ colorType, money, isLoading }: Props) => {
 
   return (
     <Stack
-      width="250px"
+      width={250}
       direction="column"
       justifyContent="center"
       alignItems="center"
