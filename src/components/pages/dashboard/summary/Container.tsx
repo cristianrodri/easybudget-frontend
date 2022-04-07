@@ -5,7 +5,7 @@ import { Budget } from './Budget'
 import { BudgetType } from '@utils/enums'
 
 export const Summary = () => {
-  const { data } = useUserData(currentMonth)
+  const { data, isValidating } = useUserData(currentMonth)
 
   // Get all INCOME budgets of the provided date
   const moneyIncome = data?.categories.reduce(
@@ -34,9 +34,21 @@ export const Summary = () => {
       alignItems="center"
       gap={1}
     >
-      <Budget colorType={BudgetType.INCOME} money={moneyIncome} />
-      <Budget colorType={BudgetType.EXPENSE} money={moneyExpense} />
-      <Budget colorType="budget" money={moneyBudget} />
+      <Budget
+        colorType={BudgetType.INCOME}
+        money={moneyIncome}
+        isValidating={isValidating}
+      />
+      <Budget
+        colorType={BudgetType.EXPENSE}
+        money={moneyExpense}
+        isValidating={isValidating}
+      />
+      <Budget
+        colorType="budget"
+        money={moneyBudget}
+        isValidating={isValidating}
+      />
     </Stack>
   )
 }

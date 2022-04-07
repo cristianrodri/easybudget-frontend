@@ -1,4 +1,4 @@
-import { Stack, Typography } from '@mui/material'
+import { Skeleton, Stack, Typography } from '@mui/material'
 import PaidIcon from '@mui/icons-material/Paid'
 import { red, green, blue } from '@mui/material/colors'
 import { textCapitalize } from '@utils/string'
@@ -7,6 +7,7 @@ import { BudgetType } from '@utils/enums'
 interface Props {
   colorType: BudgetType.INCOME | BudgetType.EXPENSE | 'budget'
   money: number
+  isValidating: boolean
 }
 
 const COLOR_VALUE = 800
@@ -17,7 +18,7 @@ const color = {
   budget: blue[COLOR_VALUE]
 }
 
-export const Budget = ({ colorType, money }: Props) => {
+export const Budget = ({ colorType, money, isValidating }: Props) => {
   const formatMoney = new Intl.NumberFormat('es-CL').format(money)
 
   return (
@@ -28,22 +29,34 @@ export const Budget = ({ colorType, money }: Props) => {
       alignItems="center"
       gap={1}
     >
-      <PaidIcon htmlColor={color[colorType]} />
-      <Typography
-        variant="h6"
-        color={color[colorType]}
-        sx={{
-          fontWeight: theme =>
-            theme.typography[
-              colorType === 'budget' ? 'fontWeightBold' : 'fontWeightRegular'
-            ]
-        }}
-      >
-        $ {formatMoney}
-      </Typography>
-      <Typography color={color[colorType]}>
-        {textCapitalize(colorType)}
-      </Typography>
+      {isValidating ? (
+        <Skeleton variant="circular" width={24} height={24} color="primary" />
+      ) : (
+        <PaidIcon htmlColor={color[colorType]} />
+      )}
+      {isValidating ? (
+        <Skeleton width={130} height={28} color="primary" />
+      ) : (
+        <Typography
+          variant="h6"
+          color={color[colorType]}
+          sx={{
+            fontWeight: theme =>
+              theme.typography[
+                colorType === 'budget' ? 'fontWeightBold' : 'fontWeightRegular'
+              ]
+          }}
+        >
+          $ {formatMoney}
+        </Typography>
+      )}
+      {isValidating ? (
+        <Skeleton width={60} height={28} />
+      ) : (
+        <Typography color={color[colorType]}>
+          {textCapitalize(colorType)}
+        </Typography>
+      )}
     </Stack>
   )
 }
