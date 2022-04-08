@@ -6,8 +6,9 @@ import {
 import { Context } from '@context/GlobalContext'
 import { User } from '@custom-types'
 import { useFocus } from '@hooks/useFocus'
-import { useSWRUser } from '@hooks/useSWRUser'
+// import { useUserData } from '@hooks/useSWRUser'
 import { Box, Button, TextField, Typography } from '@mui/material'
+// import { currentMonth } from '@utils/dates'
 import { SnackbarType } from '@utils/enums'
 import { withAuthentication } from '@utils/middleware'
 import { useFormik } from 'formik'
@@ -15,7 +16,7 @@ import { useContext, useState } from 'react'
 import { object, SchemaOf, string } from 'yup'
 
 interface Props {
-  user: User
+  data: User
 }
 
 interface FormTypes {
@@ -23,8 +24,7 @@ interface FormTypes {
   email: string
 }
 
-const Profile = ({ user }: Props) => {
-  const { data } = useSWRUser(user)
+const Profile = ({ data }: Props) => {
   const { openSnackbar } = useContext(Context)
   const ref = useFocus()
   const [readOnly, setReadOnly] = useState(true)
@@ -78,7 +78,6 @@ const Profile = ({ user }: Props) => {
       </Typography>
       <Box display="flex" flexDirection="column" alignItems="center">
         <Box
-          // clone
           component="form"
           onSubmit={formik.handleSubmit}
           display="flex"
@@ -140,15 +139,20 @@ export default Profile
 export const getServerSideProps = withAuthentication<Props>(async ({ req }) => {
   const { token } = req.cookies
 
-  const res = await axios.get('/users/me', {
+  const res = await axios.get<User>('/users/me', {
     headers: {
       Authorization: 'Bearer ' + token
+    },
+    // This api received all user data, including categories and budegts, therefore budgets data is not needed, that's why dates params is added with current date to the start and the end
+    params: {
+      budgets_date_start: new Date().toISOString(),
+      budgets_date_end: new Date().toISOString()
     }
   })
 
   return {
     props: {
-      user: res.data
+      data: res.data
     }
   }
 })
