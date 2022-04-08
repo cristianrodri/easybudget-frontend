@@ -1,8 +1,9 @@
 import { Skeleton, Stack, Typography } from '@mui/material'
 import PaidIcon from '@mui/icons-material/Paid'
-import { red, green, blue } from '@mui/material/colors'
 import { textCapitalize } from '@utils/string'
 import { BudgetType } from '@utils/enums'
+import { colorWallet } from '@utils/color'
+import { formatMoney } from '@utils/money'
 
 interface Props {
   colorType: BudgetType.INCOME | BudgetType.EXPENSE | 'budget'
@@ -10,17 +11,7 @@ interface Props {
   isLoading: boolean
 }
 
-const COLOR_VALUE = 800
-
-const color = {
-  expense: red[COLOR_VALUE],
-  income: green[COLOR_VALUE],
-  budget: blue[COLOR_VALUE]
-}
-
 export const Budget = ({ colorType, money, isLoading }: Props) => {
-  const formatMoney = new Intl.NumberFormat('es-CL').format(money)
-
   return (
     <Stack
       width={250}
@@ -32,14 +23,14 @@ export const Budget = ({ colorType, money, isLoading }: Props) => {
       {isLoading ? (
         <Skeleton variant="circular" width={24} height={24} color="primary" />
       ) : (
-        <PaidIcon htmlColor={color[colorType]} />
+        <PaidIcon htmlColor={colorWallet[colorType]} />
       )}
       {isLoading ? (
         <Skeleton width={130} height={28} color="primary" />
       ) : (
         <Typography
           variant="h6"
-          color={color[colorType]}
+          color={colorWallet[colorType]}
           sx={{
             fontWeight: theme =>
               theme.typography[
@@ -47,13 +38,13 @@ export const Budget = ({ colorType, money, isLoading }: Props) => {
               ]
           }}
         >
-          $ {formatMoney}
+          $ {formatMoney(money)}
         </Typography>
       )}
       {isLoading ? (
         <Skeleton width={60} height={28} />
       ) : (
-        <Typography color={color[colorType]}>
+        <Typography color={colorWallet[colorType]}>
           {textCapitalize(colorType)}
         </Typography>
       )}
