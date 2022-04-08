@@ -7,6 +7,7 @@ import AddBudget from '@components/pages/dashboard/AddBudget'
 import { Header } from '@components/pages/dashboard/Header'
 import LatestBudgets from '@components/pages/dashboard/LatestBudgets'
 import { Summary } from '@components/pages/dashboard/summary/Container'
+import { Categories } from '@components/pages/dashboard/categories/Container'
 
 const Dashboard = () => {
   const [open, setOpen] = useState(false)
@@ -31,6 +32,7 @@ const Dashboard = () => {
         <Stack flex={1} minWidth={350}>
           <Header />
           <Summary />
+          <Categories />
         </Stack>
         <LatestBudgets />
       </Stack>
