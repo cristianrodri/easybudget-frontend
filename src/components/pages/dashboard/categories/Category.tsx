@@ -1,5 +1,5 @@
 import { CategoryTypes } from '@custom-types'
-import { Stack, Typography } from '@mui/material'
+import { Skeleton, Stack, Typography } from '@mui/material'
 import { colorWallet } from '@utils/color'
 import { BudgetType } from '@utils/enums'
 import { textCapitalize } from '@utils/string'
@@ -33,9 +33,17 @@ export const Category = ({ type, categories }: Props) => {
           }
         }}
       >
-        {categories.map(category => (
+        {categories?.map(category => (
           <CategoryCard key={category.id} {...category} />
         ))}
+        {!categories &&
+          Array.from({ length: 3 }, (_, i) => (
+            <Skeleton
+              key={i}
+              variant="rectangular"
+              sx={{ width: 200, height: 96, borderRadius: 1 }}
+            />
+          ))}
       </Stack>
     </Stack>
   )
