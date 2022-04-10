@@ -44,8 +44,8 @@ interface Props {
   handleClose: () => void
 }
 
-type FormTypes = Omit<Budget, 'id' | 'date' | 'categoryId'> & {
-  categoryId: number | string
+type FormTypes = Omit<Budget, 'id' | 'date' | 'category'> & {
+  category: number | string
 }
 
 type ApiResponse =
@@ -106,21 +106,21 @@ const AddBudget = ({ openDialog, handleClose }: Props) => {
       .transform(value => (isNaN(value) ? undefined : value))
       .required('Amount is required')
       .min(1, 'Amount must be greater than 0'),
-    categoryId: number().required('Category is required')
+    category: number().required('Category is required')
   })
 
   const formik = useFormik<FormTypes>({
     initialValues: {
       description: '',
       money: null,
-      categoryId: ''
+      category: ''
     },
     validationSchema,
     onSubmit: async values => {
       const res = await axios.post<ApiResponse>('/api/budget/add', values)
 
       if (res.data.success === true) {
-        const categoryId = res.data.data.categoryId
+        const categoryId = res.data.data.category as number
         const newBudget = res.data.data
 
         // Mutate SWR data by adding new budget into related category
@@ -156,7 +156,7 @@ const AddBudget = ({ openDialog, handleClose }: Props) => {
     const firstBudgetType = categories.find(
       category => category.type === e.target.value
     )
-    formik.setFieldValue('categoryId', firstBudgetType.id)
+    formik.setFieldValue('category', firstBudgetType.id)
   }
 
   const handleDialogClose = () => {
@@ -254,15 +254,13 @@ const AddBudget = ({ openDialog, handleClose }: Props) => {
           <InputLabel id="select-label">Category</InputLabel>
           <Select
             labelId="select-label"
-            id="categoryId"
-            name="categoryId"
-            value={formik.values.categoryId}
+            id="category"
+            name="category"
+            value={formik.values.category}
             defaultValue={''}
             onChange={formik.handleChange}
             label="Category"
-            error={
-              formik.touched.categoryId && Boolean(formik.errors.categoryId)
-            }
+            error={formik.touched.category && Boolean(formik.errors.category)}
           >
             {categories?.map(category => (
               <MenuItem
@@ -275,7 +273,7 @@ const AddBudget = ({ openDialog, handleClose }: Props) => {
             ))}
           </Select>
           <FormHelperText sx={{ color: theme => theme.palette.error.main }}>
-            {formik.touched.categoryId && formik.errors.categoryId}
+            {formik.touched.category && formik.errors.category}
           </FormHelperText>
         </FormControl>
       </form>

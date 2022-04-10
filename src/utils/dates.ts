@@ -11,6 +11,15 @@ export const getCustomDate = (
   }
 }
 
+export const getDateWithZero = (date: Date | string) =>
+  +`0${new Date(date).getDate()}`.slice(-2)
+
+export const getMonthName = (date: Date | string) =>
+  new Date(date).toLocaleString('en-us', { month: 'long' })
+
+export const getDayAndMonth = (date: Date | string) =>
+  `${getDateWithZero(date)} ${getMonthName(date)}`
+
 // Get first date and the last day of the current month
 export const currentMonth = getCustomDate(
   new Date().getFullYear(),
