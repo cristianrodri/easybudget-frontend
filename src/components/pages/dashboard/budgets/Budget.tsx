@@ -29,7 +29,7 @@ export const BudgetDescription = ({
 
   return (
     <Stack direction="row" spacing={2}>
-      <Stack color={color[type].main}>
+      <Stack color={color?.[type]?.main}>
         {type === BudgetType.INCOME ? '+' : '-'}
       </Stack>
       <Stack flexGrow={1}>
@@ -38,15 +38,17 @@ export const BudgetDescription = ({
           justifyContent="space-between"
           spacing={2}
           fontWeight={theme => theme.typography.fontWeightRegular}
-          color={color[type].main}
+          color={color?.[type]?.main}
         >
           <Box component="span">{textCapitalize(description)}</Box>
-          <Box component="span">$ {formatMoney(money)}</Box>
+          <Box component="span" sx={{ width: '50%', textAlign: 'right' }}>
+            $ {formatMoney(money)}
+          </Box>
         </Stack>
         <Typography
           component="span"
           variant="caption"
-          color={color[type].light}
+          color={color?.[type]?.light}
         >
           {getDayAndMonth(date)}
         </Typography>
