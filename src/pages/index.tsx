@@ -87,6 +87,7 @@ const IndexPage = () => {
                 height={300}
                 layout="responsive"
                 src="/banner.svg"
+                alt="Homepage banner"
               />
             </Box>
           )}

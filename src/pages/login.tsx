@@ -31,7 +31,12 @@ const Login = () => {
               justifyContent="center"
               alignItems="center"
             >
-              <Image src="/banner-login.svg" width={200} height={200} />
+              <Image
+                src="/banner-login.svg"
+                width={200}
+                height={200}
+                alt="Login banner"
+              />
             </Box>
           )}
           <Form />

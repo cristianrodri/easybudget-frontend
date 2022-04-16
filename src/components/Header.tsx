@@ -26,7 +26,13 @@ export const Header = ({ backgroundPage }: Props) => {
     <header className={header}>
       <Link href="/">
         <a data-testid="homepage">
-          <Image src="/logo.png" layout="fixed" width={120} height={50} />
+          <Image
+            src="/logo.png"
+            layout="fixed"
+            width={120}
+            height={50}
+            alt="Header logo"
+          />
         </a>
       </Link>
       <AuthMenu />
