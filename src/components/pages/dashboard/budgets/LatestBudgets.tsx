@@ -1,4 +1,4 @@
-import { Skeleton, Stack, Typography } from '@mui/material'
+import { Stack, Typography } from '@mui/material'
 import useSWR from 'swr'
 import { clientInstance as axios } from '@config/axios'
 import { Budget } from '@custom-types'
