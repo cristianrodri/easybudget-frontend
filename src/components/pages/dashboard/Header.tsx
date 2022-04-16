@@ -22,11 +22,12 @@ export const Header = () => {
       direction="row"
       flexWrap="wrap"
       alignItems="center"
+      spacing={4}
       gap={2}
       sx={{
         justifyContent: {
           xs: 'center',
-          md: 'space-between'
+          lg: 'space-between'
         }
       }}
     >
