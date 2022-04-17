@@ -36,7 +36,21 @@ const Dashboard = () => {
         </Stack>
         <LatestBudgets />
       </Stack>
-      <Box position="absolute" right="0" bottom="0" paddingBottom={2}>
+      <Box
+        position="fixed"
+        right="0"
+        bottom="0"
+        sx={{
+          paddingBottom: {
+            xs: 2,
+            sm: 3
+          },
+          paddingRight: {
+            xs: 2,
+            sm: 3
+          }
+        }}
+      >
         <Fab
           color="primary"
           aria-label="add"
