@@ -37,7 +37,7 @@ export const Category = ({ type, categories }: Props) => {
           <CategoryCard key={category.id} {...category} />
         ))}
         {!categories &&
-          Array.from({ length: 3 }, (_, i) => (
+          Array.from({ length: 5 }, (_, i) => (
             <Skeleton
               key={i}
               variant="rectangular"
