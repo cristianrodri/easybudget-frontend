@@ -29,7 +29,7 @@ export const Category = ({ type, categories }: Props) => {
         sx={{
           justifyContent: {
             xs: 'center',
-            lg: 'flex-start'
+            md: 'flex-start'
           }
         }}
       >

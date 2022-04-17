@@ -27,7 +27,7 @@ export const Header = () => {
       sx={{
         justifyContent: {
           xs: 'center',
-          lg: 'space-between'
+          md: 'space-between'
         }
       }}
     >

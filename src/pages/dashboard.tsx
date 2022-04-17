@@ -29,7 +29,7 @@ const Dashboard = () => {
         justifyContent="center"
         spacing={1}
       >
-        <Stack flex={1} minWidth={350}>
+        <Stack>
           <Header />
           <Summary />
           <Categories />
