@@ -38,6 +38,7 @@ import { Context } from '@context/GlobalContext'
 import { useUserData } from '@hooks/useSWRUser'
 import { makeStyles } from '@mui/styles'
 import { currentMonth } from '@utils/dates'
+import { useSWRLatestBudgets } from '@hooks/useSWRLatestBudgets'
 
 interface Props {
   openDialog: boolean
@@ -87,6 +88,7 @@ const AddBudget = ({ openDialog, handleClose }: Props) => {
   const { openSnackbar } = useContext(Context)
   const classes = useStyles()
   const { data, mutateByAddingBudgetToCategory } = useUserData(currentMonth)
+  const { mutateByAddingNewBudget } = useSWRLatestBudgets()
   const [budgetType, setBudgetType] = useState<
     BudgetType.INCOME | BudgetType.EXPENSE
   >(null)
@@ -125,6 +127,9 @@ const AddBudget = ({ openDialog, handleClose }: Props) => {
 
         // Mutate SWR data by adding new budget into related category
         mutateByAddingBudgetToCategory(newBudget, categoryId)
+
+        // Mutate Latest budgets data by adding new budget to SWR data
+        mutateByAddingNewBudget(newBudget)
 
         openSnackbar(
           `${res.data.data.description} added!`,

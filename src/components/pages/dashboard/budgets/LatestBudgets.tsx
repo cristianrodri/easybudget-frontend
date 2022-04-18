@@ -1,23 +1,10 @@
 import { Stack, Typography } from '@mui/material'
-import useSWR from 'swr'
-import { clientInstance as axios } from '@config/axios'
-import { Budget } from '@custom-types'
 import { BudgetDescription } from './Budget'
 import { Loading } from './Loading'
-
-interface ApiResponse {
-  success: boolean
-  data: Budget[]
-}
-
-const fetcher = (url: string) =>
-  axios.get<ApiResponse>(url).then(res => res.data.data)
+import { useSWRLatestBudgets } from '@hooks/useSWRLatestBudgets'
 
 const LatestBudgets = () => {
-  const { data } = useSWR(
-    '/api/budget/get?_sort=date:DESC&_limit=5&_categorydata=true',
-    fetcher
-  )
+  const { data } = useSWRLatestBudgets()
 
   return (
     <Stack

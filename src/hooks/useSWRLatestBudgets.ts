@@ -1,0 +1,27 @@
+import { Budget } from '@custom-types'
+import useSWR from 'swr'
+import { clientInstance as axios } from '@config/axios'
+
+interface ApiResponse {
+  success: boolean
+  data: Budget[]
+}
+
+const fetcher = (url: string) =>
+  axios.get<ApiResponse>(url).then(res => res.data.data)
+
+export const useSWRLatestBudgets = () => {
+  const { data, mutate } = useSWR(
+    '/api/budget/get?_sort=date:DESC&_limit=5&_categorydata=true',
+    fetcher
+  )
+
+  // This function will be called after a budget is created in post API
+  const mutateByAddingNewBudget = (newBudget: Budget) => {
+    const updatedBudgets = [newBudget, ...data.slice(0, 4)]
+
+    mutate(updatedBudgets, false)
+  }
+
+  return { data, mutate, mutateByAddingNewBudget }
+}
