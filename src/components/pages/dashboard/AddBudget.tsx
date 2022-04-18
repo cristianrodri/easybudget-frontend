@@ -45,7 +45,7 @@ interface Props {
 }
 
 type FormTypes = Omit<Budget, 'id' | 'date' | 'category'> & {
-  category: number | string
+  categoryId: number | string
 }
 
 type ApiResponse =
@@ -106,14 +106,14 @@ const AddBudget = ({ openDialog, handleClose }: Props) => {
       .transform(value => (isNaN(value) ? undefined : value))
       .required('Amount is required')
       .min(1, 'Amount must be greater than 0'),
-    category: number().required('Category is required')
+    categoryId: number().required('Category is required')
   })
 
   const formik = useFormik<FormTypes>({
     initialValues: {
       description: '',
       money: null,
-      category: ''
+      categoryId: ''
     },
     validationSchema,
     onSubmit: async values => {
@@ -156,7 +156,7 @@ const AddBudget = ({ openDialog, handleClose }: Props) => {
     const firstBudgetType = categories.find(
       category => category.type === e.target.value
     )
-    formik.setFieldValue('category', firstBudgetType.id)
+    formik.setFieldValue('categoryId', firstBudgetType.id)
   }
 
   const handleDialogClose = () => {
@@ -254,13 +254,15 @@ const AddBudget = ({ openDialog, handleClose }: Props) => {
           <InputLabel id="select-label">Category</InputLabel>
           <Select
             labelId="select-label"
-            id="category"
-            name="category"
-            value={formik.values.category}
+            id="categoryId"
+            name="categoryId"
+            value={formik.values.categoryId}
             defaultValue={''}
             onChange={formik.handleChange}
             label="Category"
-            error={formik.touched.category && Boolean(formik.errors.category)}
+            error={
+              formik.touched.categoryId && Boolean(formik.errors.categoryId)
+            }
           >
             {categories?.map(category => (
               <MenuItem
@@ -273,7 +275,7 @@ const AddBudget = ({ openDialog, handleClose }: Props) => {
             ))}
           </Select>
           <FormHelperText sx={{ color: theme => theme.palette.error.main }}>
-            {formik.touched.category && formik.errors.category}
+            {formik.touched.categoryId && formik.errors.categoryId}
           </FormHelperText>
         </FormControl>
       </form>
