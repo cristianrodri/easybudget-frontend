@@ -86,7 +86,7 @@ const Transition = forwardRef(function Transition(
 const AddBudget = ({ openDialog, handleClose }: Props) => {
   const { openSnackbar } = useContext(Context)
   const classes = useStyles()
-  const { data, mutate } = useUserData(currentMonth)
+  const { data, mutateByAddingBudgetToCategory } = useUserData(currentMonth)
   const [budgetType, setBudgetType] = useState<
     BudgetType.INCOME | BudgetType.EXPENSE
   >(null)
@@ -120,22 +120,11 @@ const AddBudget = ({ openDialog, handleClose }: Props) => {
       const res = await axios.post<ApiResponse>('/api/budget/add', values)
 
       if (res.data.success === true) {
-        const categoryId = res.data.data.category as number
         const newBudget = res.data.data
+        const categoryId = res.data.data.category as number
 
         // Mutate SWR data by adding new budget into related category
-        const mutatedData = { ...data }
-
-        mutatedData.categories.map(c => {
-          if (c.id === categoryId) {
-            c.budgets = [...c.budgets, newBudget]
-            c.money += newBudget.money
-          }
-
-          return c
-        })
-
-        mutate(mutatedData, false)
+        mutateByAddingBudgetToCategory(newBudget, categoryId)
 
         openSnackbar(
           `${res.data.data.description} added!`,
