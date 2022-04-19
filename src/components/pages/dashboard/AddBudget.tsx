@@ -123,10 +123,9 @@ const AddBudget = ({ openDialog, handleClose }: Props) => {
 
       if (res.data.success === true) {
         const newBudget = res.data.data
-        const categoryId = res.data.data.category as number
 
         // Mutate SWR data by adding new budget into related category
-        mutateByAddingBudgetToCategory(newBudget, categoryId)
+        mutateByAddingBudgetToCategory(newBudget)
 
         // Mutate Latest budgets data by adding new budget to SWR data
         mutateByAddingNewBudget(newBudget)
