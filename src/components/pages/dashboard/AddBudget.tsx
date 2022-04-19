@@ -38,6 +38,7 @@ import { Context } from '@context/GlobalContext'
 import { useUserData } from '@hooks/useSWRUser'
 import { makeStyles } from '@mui/styles'
 import { currentMonth } from '@utils/dates'
+import { useSWRLatestBudgets } from '@hooks/useSWRLatestBudgets'
 
 interface Props {
   openDialog: boolean
@@ -45,7 +46,7 @@ interface Props {
 }
 
 type FormTypes = Omit<Budget, 'id' | 'date' | 'category'> & {
-  category: number | string
+  categoryId: number | string
 }
 
 type ApiResponse =
@@ -86,7 +87,8 @@ const Transition = forwardRef(function Transition(
 const AddBudget = ({ openDialog, handleClose }: Props) => {
   const { openSnackbar } = useContext(Context)
   const classes = useStyles()
-  const { data, mutate } = useUserData(currentMonth)
+  const { data, mutateByAddingBudgetToCategory } = useUserData(currentMonth)
+  const { mutateByAddingNewBudget } = useSWRLatestBudgets()
   const [budgetType, setBudgetType] = useState<
     BudgetType.INCOME | BudgetType.EXPENSE
   >(null)
@@ -106,36 +108,27 @@ const AddBudget = ({ openDialog, handleClose }: Props) => {
       .transform(value => (isNaN(value) ? undefined : value))
       .required('Amount is required')
       .min(1, 'Amount must be greater than 0'),
-    category: number().required('Category is required')
+    categoryId: number().required('Category is required')
   })
 
   const formik = useFormik<FormTypes>({
     initialValues: {
       description: '',
       money: null,
-      category: ''
+      categoryId: ''
     },
     validationSchema,
     onSubmit: async values => {
       const res = await axios.post<ApiResponse>('/api/budget/add', values)
 
       if (res.data.success === true) {
-        const categoryId = res.data.data.category as number
         const newBudget = res.data.data
 
         // Mutate SWR data by adding new budget into related category
-        const mutatedData = { ...data }
+        mutateByAddingBudgetToCategory(newBudget)
 
-        mutatedData.categories.map(c => {
-          if (c.id === categoryId) {
-            c.budgets = [...c.budgets, newBudget]
-            c.money += newBudget.money
-          }
-
-          return c
-        })
-
-        mutate(mutatedData, false)
+        // Mutate Latest budgets data by adding new budget to SWR data
+        mutateByAddingNewBudget(newBudget)
 
         openSnackbar(
           `${res.data.data.description} added!`,
@@ -156,7 +149,7 @@ const AddBudget = ({ openDialog, handleClose }: Props) => {
     const firstBudgetType = categories.find(
       category => category.type === e.target.value
     )
-    formik.setFieldValue('category', firstBudgetType.id)
+    formik.setFieldValue('categoryId', firstBudgetType.id)
   }
 
   const handleDialogClose = () => {
@@ -254,13 +247,15 @@ const AddBudget = ({ openDialog, handleClose }: Props) => {
           <InputLabel id="select-label">Category</InputLabel>
           <Select
             labelId="select-label"
-            id="category"
-            name="category"
-            value={formik.values.category}
+            id="categoryId"
+            name="categoryId"
+            value={formik.values.categoryId}
             defaultValue={''}
             onChange={formik.handleChange}
             label="Category"
-            error={formik.touched.category && Boolean(formik.errors.category)}
+            error={
+              formik.touched.categoryId && Boolean(formik.errors.categoryId)
+            }
           >
             {categories?.map(category => (
               <MenuItem
@@ -273,7 +268,7 @@ const AddBudget = ({ openDialog, handleClose }: Props) => {
             ))}
           </Select>
           <FormHelperText sx={{ color: theme => theme.palette.error.main }}>
-            {formik.touched.category && formik.errors.category}
+            {formik.touched.categoryId && formik.errors.categoryId}
           </FormHelperText>
         </FormControl>
       </form>

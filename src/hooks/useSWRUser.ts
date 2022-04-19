@@ -1,6 +1,6 @@
 import useSWR from 'swr'
 import { clientInstance as axios } from '@config/axios'
-import { User } from '@custom-types'
+import { AddCategory, Budget, User } from '@custom-types'
 
 interface Dates {
   start: string
@@ -24,5 +24,22 @@ export const useUserData = (date?: Dates) => {
 
   const { data, mutate } = useSWR(API, fetcher)
 
-  return { data, mutate }
+  // This function will be called after a budget is created in post API
+  const mutateByAddingBudgetToCategory = (newBudget: Budget) => {
+    const mutatedData = { ...data }
+
+    mutatedData.categories.map(c => {
+      // If the category is related with the new budget, add it to budgets array and update the money
+      if (c.id === (newBudget.category as AddCategory).id) {
+        c.budgets = [...c.budgets, newBudget]
+        c.money += newBudget.money
+      }
+
+      return c
+    })
+
+    mutate(mutatedData, false)
+  }
+
+  return { data, mutate, mutateByAddingBudgetToCategory }
 }
