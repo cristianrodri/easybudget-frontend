@@ -52,7 +52,7 @@ export interface Budget {
   id: number
   description: string
   money: number
-  category: number | Omit<CategoryTypes, 'budgets' | 'money'>
+  category: AddCategory | number
   date: string
 }
 
