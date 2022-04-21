@@ -1,31 +1,63 @@
-import { Action, SnackbarType } from '@utils/enums'
+import { CategoryTypes } from '@custom-types'
+import { SnackbarType } from '@utils/enums'
 import { ActionType } from './actions'
+import { CATEGORY_DIALOG, CHANGE_WALLET_DATE, OPEN_SNACKBAR } from './names'
 
 export interface ContextProps {
+  // Snackbar state
   snackbarOpen: boolean
   snackbarMessage: string
   snackbarType: SnackbarType
+
+  // Wallet date state
+  walletDate: {
+    year: number
+    month: number
+  }
+
+  // Category dialog state
+  categoryDialog: Omit<CategoryTypes, 'id'>
 }
 
-const initialState: ContextProps = {
+export const initialState: ContextProps = {
   snackbarOpen: false,
   snackbarMessage: '',
-  snackbarType: null
+  snackbarType: null,
+  walletDate: {
+    year: new Date().getFullYear(),
+    month: new Date().getMonth()
+  },
+  categoryDialog: {
+    budgets: [],
+    money: 0,
+    name: '',
+    type: null
+  }
 }
 
-const { OPEN_SNACKBAR } = Action
-
-export const reducer = (
-  state: ContextProps = initialState,
-  action: ActionType
-) => {
+export const reducer = (state = initialState, action: ActionType) => {
   switch (action.type) {
     case OPEN_SNACKBAR:
       return {
         ...state,
         snackbarOpen: true,
-        snackbarMessage: action.payload.message,
-        snackbarType: action.payload.type
+        snackbarMessage: action.payload,
+        snackbarType: action.payload
       }
+
+    case CHANGE_WALLET_DATE:
+      return {
+        ...state,
+        walletDate: action.payload
+      }
+
+    case CATEGORY_DIALOG:
+      return {
+        ...state,
+        categoryDialog: action.payload
+      }
+
+    default:
+      return state
   }
 }
