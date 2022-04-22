@@ -1,12 +1,23 @@
-import { CategoryTypes } from '@custom-types'
+import { useContext } from 'react'
 import { Card, CardContent, Typography } from '@mui/material'
+import { CategoryTypes } from '@custom-types'
 import { bgColorWallet, colorWallet } from '@utils/color'
 import { textCapitalize } from '@utils/string'
 import { formatMoney } from '@utils/money'
+import { Context } from '@context/GlobalContext'
+import { showCategoryDialog } from '@context/actions'
 
 type Props = CategoryTypes
 
-export const CategoryCard = ({ name, money, type }: Props) => {
+export const CategoryCard = (props: Props) => {
+  const { name, money, type } = props
+  const { dispatch } = useContext(Context)
+
+  const handleClick = () => {
+    // Show the dialog with the props category data
+    dispatch(showCategoryDialog(props))
+  }
+
   return (
     <Card
       sx={{
@@ -14,6 +25,7 @@ export const CategoryCard = ({ name, money, type }: Props) => {
         backgroundColor: bgColorWallet[type],
         cursor: 'pointer'
       }}
+      onClick={handleClick}
     >
       <CardContent
         sx={{

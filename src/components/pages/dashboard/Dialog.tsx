@@ -1,56 +1,58 @@
+import { useContext } from 'react'
 import Button from '@mui/material/Button'
 import Dialog from '@mui/material/Dialog'
 import DialogActions from '@mui/material/DialogActions'
 import DialogContent from '@mui/material/DialogContent'
-import DialogContentText from '@mui/material/DialogContentText'
 import DialogTitle from '@mui/material/DialogTitle'
-import { useEffect, useRef, useState } from 'react'
+import { Context } from '@context/GlobalContext'
+import { closeCategoryDialog } from '@context/actions'
+import { textCapitalize } from '@utils/string'
+import { BudgetDescription } from './budgets/Budget'
+import { formatMoney } from '@utils/money'
+import { Box } from '@mui/material'
+import { colorWallet } from '@utils/color'
 
 export const DialogBudgets = () => {
-  const [open, setOpen] = useState(true)
+  const { values, dispatch } = useContext(Context)
+  const { categoryDialogOpen, categoryDialog } = values
 
   const handleClose = () => {
-    setOpen(false)
+    dispatch(closeCategoryDialog())
   }
-
-  const descriptionElementRef = useRef<HTMLElement>(null)
-  useEffect(() => {
-    if (open) {
-      const { current: descriptionElement } = descriptionElementRef
-      if (descriptionElement !== null) {
-        descriptionElement.focus()
-      }
-    }
-  }, [open])
 
   return (
     <Dialog
-      open={open}
+      open={categoryDialogOpen}
       onClose={handleClose}
       scroll="paper"
       aria-labelledby="scroll-dialog-title"
       aria-describedby="scroll-dialog-description"
+      maxWidth="md"
+      PaperProps={{ sx: { width: 600, height: '100%' } }}
     >
-      <DialogTitle id="scroll-dialog-title">Subscribe</DialogTitle>
-      <DialogContent dividers>
-        <DialogContentText
-          id="scroll-dialog-description"
-          ref={descriptionElementRef}
-          tabIndex={-1}
-        >
-          {[...new Array(50)]
-            .map(
-              () => `Cras mattis consectetur purus sit amet fermentum.
-Cras justo odio, dapibus ac facilisis in, egestas eget quam.
-Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
-Praesent commodo cursus magna, vel scelerisque nisl consectetur et.`
-            )
-            .join('\n')}
-        </DialogContentText>
+      <DialogTitle
+        id="scroll-dialog-title"
+        sx={{ display: 'flex', justifyContent: 'space-between' }}
+      >
+        <Box component="span">{textCapitalize(categoryDialog.name)}</Box>
+        <Box component="span" sx={{ color: colorWallet[categoryDialog.type] }}>
+          $ {formatMoney(categoryDialog.money)}
+        </Box>
+      </DialogTitle>
+      <DialogContent
+        dividers
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: theme => theme.spacing(2)
+        }}
+      >
+        {categoryDialog.budgets.map(budget => (
+          <BudgetDescription key={budget.id} {...budget} />
+        ))}
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose}>Cancel</Button>
-        <Button onClick={handleClose}>Subscribe</Button>
+        <Button onClick={handleClose}>Close</Button>
       </DialogActions>
     </Dialog>
   )
