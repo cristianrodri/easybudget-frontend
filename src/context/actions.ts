@@ -1,6 +1,7 @@
 import {
   CategoryDialog,
   ChangeWalletDate,
+  CloseCategoryDialog,
   CloseSnackbar,
   OpenSnackbar,
   ShowCategoryDialog
@@ -43,9 +44,13 @@ export const showCategoryDialog = (
   category: CategoryDialog
 ): ShowCategoryDialog => {
   return {
-    type: Action.CATEGORY_DIALOG,
+    type: Action.OPEN_CATEGORY_DIALOG,
     payload: category
   }
+}
+
+export const closeCategoryDialog = (): CloseCategoryDialog => {
+  return { type: Action.CLOSE_CATEGORY_DIALOG }
 }
 
 export type ActionType =
@@ -53,3 +58,4 @@ export type ActionType =
   | CloseSnackbar
   | ChangeWalletDate
   | ShowCategoryDialog
+  | CloseCategoryDialog

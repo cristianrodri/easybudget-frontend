@@ -20,6 +20,7 @@ export interface ContextValues {
 
   // Category dialog state
   categoryDialog: CategoryDialog
+  categoryDialogOpen: boolean
 }
 
 export type OpenSnackbar = {
@@ -40,6 +41,10 @@ export type ChangeWalletDate = {
 }
 
 export type ShowCategoryDialog = {
-  type: Action.CATEGORY_DIALOG
+  type: Action.OPEN_CATEGORY_DIALOG
   payload: CategoryDialog
+}
+
+export type CloseCategoryDialog = {
+  type: Action.CLOSE_CATEGORY_DIALOG
 }

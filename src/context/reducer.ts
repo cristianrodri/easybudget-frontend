@@ -10,6 +10,7 @@ export const initialState: ContextValues = {
     year: new Date().getFullYear(),
     month: new Date().getMonth()
   },
+  categoryDialogOpen: false,
   categoryDialog: {
     budgets: [],
     money: 0,
@@ -40,10 +41,17 @@ export const reducer = (state = initialState, action: ActionType) => {
         walletDate: action.payload
       }
 
-    case Action.CATEGORY_DIALOG:
+    case Action.OPEN_CATEGORY_DIALOG:
       return {
         ...state,
+        categoryDialogOpen: true,
         categoryDialog: action.payload
+      }
+
+    case Action.CLOSE_CATEGORY_DIALOG:
+      return {
+        ...state,
+        categoryDialogOpen: false
       }
 
     default:
