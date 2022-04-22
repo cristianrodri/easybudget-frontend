@@ -1,39 +1,23 @@
-import { createContext, FC, useState } from 'react'
-import { SnackbarType } from '@utils/enums'
+import { createContext, Dispatch, FC, useReducer } from 'react'
+import { initialState, reducer } from './reducer'
+import { ActionType } from './actions'
+import { ContextValues } from './types'
 
-export interface ContextProps {
-  snackbarOpen: boolean
-  snackbarMessage: string
-  snackbarType: SnackbarType
-  openSnackbar: (message: string, type: SnackbarType) => void
-  handleCloseSnackbar: () => void
+interface ContextType {
+  values: ContextValues
+  dispatch: Dispatch<ActionType>
 }
 
-export const Context = createContext<ContextProps>(null)
+export const Context = createContext({} as ContextType)
 
 export const GlobalContext: FC = ({ children }) => {
-  const [snackbarOpen, setSnackbarOpen] = useState(false)
-  const [snackbarMessage, setSnackbarMessage] = useState('')
-  const [snackbarType, setSnackbarType] = useState<SnackbarType>(null)
-
-  const openSnackbar = (message: string, type: SnackbarType) => {
-    setSnackbarMessage(message)
-    setSnackbarType(type)
-    setSnackbarOpen(true)
-  }
-
-  const handleCloseSnackbar = () => {
-    setSnackbarOpen(false)
-  }
+  const [values, dispatch] = useReducer(reducer, initialState)
 
   return (
     <Context.Provider
       value={{
-        snackbarOpen,
-        snackbarMessage,
-        snackbarType,
-        openSnackbar,
-        handleCloseSnackbar
+        values,
+        dispatch
       }}
     >
       {children}

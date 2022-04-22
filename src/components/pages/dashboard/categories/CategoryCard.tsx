@@ -4,11 +4,17 @@ import { bgColorWallet, colorWallet } from '@utils/color'
 import { textCapitalize } from '@utils/string'
 import { formatMoney } from '@utils/money'
 
-type Props = Omit<CategoryTypes, 'id' | 'budgets'>
+type Props = CategoryTypes
 
 export const CategoryCard = ({ name, money, type }: Props) => {
   return (
-    <Card sx={{ width: 200, backgroundColor: bgColorWallet[type] }}>
+    <Card
+      sx={{
+        width: 200,
+        backgroundColor: bgColorWallet[type],
+        cursor: 'pointer'
+      }}
+    >
       <CardContent
         sx={{
           display: 'flex',
