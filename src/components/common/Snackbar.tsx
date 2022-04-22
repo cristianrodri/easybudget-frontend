@@ -14,6 +14,7 @@ export const Snackbar = () => {
   return (
     <SnackbarMui
       open={snackbarOpen}
+      anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       autoHideDuration={4000}
       onClose={handleClose}
     >
