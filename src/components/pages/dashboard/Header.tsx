@@ -1,3 +1,4 @@
+import { useContext } from 'react'
 import {
   FormControl,
   InputLabel,
@@ -7,6 +8,8 @@ import {
   Typography
 } from '@mui/material'
 import { makeStyles } from '@mui/styles'
+import { Context } from '@context/GlobalContext'
+import { dateTitle } from '@utils/dates'
 
 const useStyles = makeStyles(() => ({
   formControl: {
@@ -16,6 +19,7 @@ const useStyles = makeStyles(() => ({
 
 export const Header = () => {
   const { formControl } = useStyles()
+  const { values } = useContext(Context)
 
   return (
     <Stack
@@ -32,7 +36,7 @@ export const Header = () => {
       }}
     >
       <Typography variant="h4" component="h1">
-        Wallet - March 2022
+        Wallet - {dateTitle(values.walletDate)}
       </Typography>
       <Stack direction="row" spacing={2}>
         {/* Select year */}

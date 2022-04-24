@@ -10,11 +10,11 @@ import { textCapitalize } from '@utils/string'
 import { BudgetDescription } from './budgets/Budget'
 import { formatMoney } from '@utils/money'
 import { Box } from '@mui/material'
-import { colorWallet } from '@utils/color'
+import { dateTitle } from '@utils/dates'
 
 export const DialogBudgets = () => {
   const { values, dispatch } = useContext(Context)
-  const { categoryDialogOpen, categoryDialog } = values
+  const { categoryDialogOpen, categoryDialog, walletDate } = values
 
   const handleClose = () => {
     dispatch(closeCategoryDialog())
@@ -34,10 +34,10 @@ export const DialogBudgets = () => {
         id="scroll-dialog-title"
         sx={{ display: 'flex', justifyContent: 'space-between' }}
       >
-        <Box component="span">{textCapitalize(categoryDialog.name)}</Box>
-        <Box component="span" sx={{ color: colorWallet[categoryDialog.type] }}>
-          $ {formatMoney(categoryDialog.money)}
+        <Box component="span">
+          {textCapitalize(categoryDialog.name)} - {dateTitle(walletDate)}
         </Box>
+        <Box component="span">$ {formatMoney(categoryDialog.money)}</Box>
       </DialogTitle>
       <DialogContent
         dividers

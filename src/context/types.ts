@@ -5,9 +5,9 @@ import { Action } from './enum'
 // Context
 export type CategoryDialog = Omit<CategoryTypes, 'id'>
 
-interface WalletDate {
-  year: number | string
-  month: number | string
+export interface WalletDate {
+  year: number | 'all'
+  month: number | 'all'
 }
 export interface ContextValues {
   // Snackbar state

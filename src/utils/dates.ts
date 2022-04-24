@@ -1,3 +1,5 @@
+import { WalletDate } from '@context/types'
+
 // this function return a start ISO date and an end ISO date, which is useful when need to add api params to get budgets by specific date in database
 export const getCustomDate = (
   startYear: number,
@@ -27,3 +29,16 @@ export const currentMonth = getCustomDate(
   new Date().getFullYear(),
   new Date().getMonth() + 1
 )
+
+// This function add a custom title to dashboard date title and dialog date title.
+export const dateTitle = (walletDate: WalletDate) => {
+  // If wallet year is 'all', show'All time' to the title
+  if (walletDate.year === 'all') return 'All time'
+  // Otherwise wallet month is 'all', show only the year to the title
+  else if (walletDate.month === 'all') return walletDate.year
+
+  // If none of them are 'all', then show 'Month Year' to the title
+  return `${getMonthName(new Date(walletDate.year, walletDate.month))} ${
+    walletDate.year
+  }`
+}
