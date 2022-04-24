@@ -1,10 +1,11 @@
 import { Budget } from '@custom-types'
-import { Box, Stack, Typography } from '@mui/material'
+import { Box, IconButton, Stack, Tooltip, Typography } from '@mui/material'
 import { green, red } from '@mui/material/colors'
 import { getDayAndMonth } from '@utils/dates'
 import { BudgetType } from '@utils/enums'
 import { formatMoney } from '@utils/money'
 import { textCapitalize } from '@utils/string'
+import DeleteIcon from '@mui/icons-material/Delete'
 
 type Props = Budget & {
   isDialog?: boolean
@@ -46,8 +47,26 @@ export const BudgetDescription = ({
           color={color?.[type]?.main}
         >
           <Box component="span">{textCapitalize(description)}</Box>
-          <Box component="span" sx={{ width: '50%', textAlign: 'right' }}>
+          <Box
+            component="span"
+            sx={{
+              width: '50%',
+              display: 'flex',
+              justifyContent: 'flex-end',
+              alignItems: 'center',
+              gap: theme => theme.spacing(1),
+              textAlign: 'right'
+            }}
+          >
             {formatMoney(money)}
+            <Tooltip title="Delete" arrow>
+              <IconButton
+                aria-label="delete"
+                sx={{ p: 0, color: color?.[type]?.main }}
+              >
+                <DeleteIcon />
+              </IconButton>
+            </Tooltip>
           </Box>
         </Stack>
         <Typography
