@@ -47,7 +47,7 @@ export const BudgetDescription = ({
         >
           <Box component="span">{textCapitalize(description)}</Box>
           <Box component="span" sx={{ width: '50%', textAlign: 'right' }}>
-            $ {formatMoney(money)}
+            {formatMoney(money)}
           </Box>
         </Stack>
         <Typography

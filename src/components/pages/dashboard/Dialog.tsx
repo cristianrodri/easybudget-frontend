@@ -37,7 +37,7 @@ export const DialogBudgets = () => {
         <Box component="span">
           {textCapitalize(categoryDialog.name)} - {dateTitle(walletDate)}
         </Box>
-        <Box component="span">$ {formatMoney(categoryDialog.money)}</Box>
+        <Box component="span">{formatMoney(categoryDialog.money)}</Box>
       </DialogTitle>
       <DialogContent
         dividers

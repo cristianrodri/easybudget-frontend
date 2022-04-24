@@ -38,7 +38,7 @@ export const Budget = ({ colorType, money, isLoading }: Props) => {
               ]
           }}
         >
-          $ {formatMoney(money)}
+          {formatMoney(money)}
         </Typography>
       )}
       {isLoading ? (

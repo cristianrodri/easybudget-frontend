@@ -49,7 +49,7 @@ export const CategoryCard = (props: Props) => {
             color: colorWallet[type]
           }}
         >
-          $ {formatMoney(money)}
+          {formatMoney(money)}
         </Typography>
       </CardContent>
     </Card>
