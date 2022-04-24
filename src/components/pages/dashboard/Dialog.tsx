@@ -11,6 +11,7 @@ import { BudgetDescription } from './BudgetDescription'
 import { formatMoney } from '@utils/money'
 import { Box } from '@mui/material'
 import { dateTitle } from '@utils/dates'
+import { colorWallet } from '@utils/color'
 
 export const DialogBudgets = () => {
   const { values, dispatch } = useContext(Context)
@@ -37,7 +38,9 @@ export const DialogBudgets = () => {
         <Box component="span">
           {textCapitalize(categoryDialog.name)} - {dateTitle(walletDate)}
         </Box>
-        <Box component="span">{formatMoney(categoryDialog.money)}</Box>
+        <Box component="span" sx={{ color: colorWallet[categoryDialog.type] }}>
+          {formatMoney(categoryDialog.money)}
+        </Box>
       </DialogTitle>
       <DialogContent
         dividers
