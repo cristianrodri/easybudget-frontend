@@ -7,7 +7,7 @@ import DialogTitle from '@mui/material/DialogTitle'
 import { Context } from '@context/GlobalContext'
 import { closeCategoryDialog } from '@context/actions'
 import { textCapitalize } from '@utils/string'
-import { BudgetDescription } from './budgets/Budget'
+import { BudgetDescription } from './BudgetDescription'
 import { formatMoney } from '@utils/money'
 import { Box } from '@mui/material'
 import { dateTitle } from '@utils/dates'
@@ -48,7 +48,7 @@ export const DialogBudgets = () => {
         }}
       >
         {categoryDialog.budgets.map(budget => (
-          <BudgetDescription key={budget.id} {...budget} />
+          <BudgetDescription key={budget.id} {...budget} isDialog />
         ))}
       </DialogContent>
       <DialogActions>

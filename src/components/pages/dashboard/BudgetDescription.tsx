@@ -6,7 +6,9 @@ import { BudgetType } from '@utils/enums'
 import { formatMoney } from '@utils/money'
 import { textCapitalize } from '@utils/string'
 
-type Props = Budget
+type Props = Budget & {
+  isDialog?: boolean
+}
 
 const color = {
   [BudgetType.INCOME]: {
@@ -23,15 +25,18 @@ export const BudgetDescription = ({
   description,
   money,
   date,
-  category
+  category,
+  isDialog
 }: Props) => {
   const type = typeof category !== 'number' ? category.type : ('' as BudgetType)
 
   return (
     <Stack direction="row" spacing={2}>
-      <Stack color={color?.[type]?.main}>
-        {type === BudgetType.INCOME ? '+' : '-'}
-      </Stack>
+      {!isDialog && (
+        <Stack color={color?.[type]?.main}>
+          {type === BudgetType.INCOME ? '+' : '-'}
+        </Stack>
+      )}
       <Stack flexGrow={1}>
         <Stack
           direction="row"

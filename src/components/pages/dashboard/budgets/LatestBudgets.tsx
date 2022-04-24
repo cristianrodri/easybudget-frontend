@@ -1,5 +1,5 @@
 import { Stack, Typography } from '@mui/material'
-import { BudgetDescription } from './Budget'
+import { BudgetDescription } from '../BudgetDescription'
 import { Loading } from './Loading'
 import { useSWRLatestBudgets } from '@hooks/useSWRLatestBudgets'
 
