@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { AxiosError } from 'axios'
 import { errorResponse } from '@utils/error'
 import { ApiResponse, Budget } from '@custom-types'
-import { Status } from '@utils/enums'
+import { ApiMethod, Status } from '@utils/enums'
 import {
   jsonResponseError,
   jsonResponseSuccess,
@@ -14,7 +14,7 @@ export default async (
   req: NextApiRequest,
   res: NextApiResponse<ApiResponse<Budget>>
 ) => {
-  if (req.method === 'POST') {
+  if (req.method === ApiMethod.POST) {
     try {
       const { data } = await serverPostApi(
         'budgets',
@@ -31,7 +31,7 @@ export default async (
       res.status(status).json(jsonResponseError(message))
     }
   } else {
-    res.setHeader('Allow', ['POST'])
+    res.setHeader('Allow', [ApiMethod.POST])
     res.statusCode = Status.METHOD_NOT_ALLOWED
 
     res.json(jsonResponseError(methodNotAllowedMessage(req.method)))

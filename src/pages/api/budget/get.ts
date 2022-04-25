@@ -3,7 +3,7 @@ import { serverInstance as axios } from '@config/axios'
 import { AxiosError } from 'axios'
 import { errorResponse } from '@utils/error'
 import { ApiResponse, Budget } from '@custom-types'
-import { Status } from '@utils/enums'
+import { ApiMethod, Status } from '@utils/enums'
 import {
   jsonResponseError,
   jsonResponseSuccess,
@@ -14,7 +14,7 @@ export default async (
   req: NextApiRequest,
   res: NextApiResponse<ApiResponse<Budget[]>>
 ) => {
-  if (req.method === 'GET') {
+  if (req.method === ApiMethod.GET) {
     try {
       const { data, status } = await axios.get('/budgets', {
         headers: {
@@ -32,7 +32,7 @@ export default async (
       res.status(status).json(jsonResponseError(message))
     }
   } else {
-    res.setHeader('Allow', ['GET'])
+    res.setHeader('Allow', [ApiMethod.GET])
     res.statusCode = Status.METHOD_NOT_ALLOWED
 
     res.json(jsonResponseError(methodNotAllowedMessage(req.method)))
