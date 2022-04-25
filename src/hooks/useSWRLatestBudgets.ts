@@ -1,14 +1,9 @@
-import { Budget } from '@custom-types'
+import { ApiResponseSuccess, Budget } from '@custom-types'
 import useSWR from 'swr'
 import { clientInstance as axios } from '@config/axios'
 
-interface ApiResponse {
-  success: boolean
-  data: Budget[]
-}
-
 const fetcher = (url: string) =>
-  axios.get<ApiResponse>(url).then(res => res.data.data)
+  axios.get<ApiResponseSuccess<Budget[]>>(url).then(res => res.data.data)
 
 export const useSWRLatestBudgets = () => {
   const LIMIT_BUDGETS = 5

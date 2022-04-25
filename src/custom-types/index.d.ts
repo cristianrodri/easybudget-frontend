@@ -1,6 +1,6 @@
 import { BudgetType } from '@utils/enums'
 
-export interface Type {
+export interface AuthResponse {
   jwt: string
   user: User
 }
@@ -18,6 +18,8 @@ export interface User {
   avatar: Avatar | null
   categories: CategoryTypes[]
 }
+
+export type UpdateUser = Omit<User, 'categories'>
 
 export interface Formats {
   thumbnail: Avatar
@@ -58,3 +60,17 @@ export interface Budget {
 
 type AddCategory = Omit<CategoryTypes, 'budgets' | 'money'>
 type GetCategory = Omit<CategoryTypes, 'budgets'>
+export type CategoryApi = Omit<CategoryTypes, 'money'>
+
+// API
+export type ApiResponseSuccess<T> = {
+  success: true
+  data?: T
+}
+
+type ApiResponseError = {
+  success: false
+  message: string
+}
+
+type ApiResponse<T> = ApiResponseSuccess<T> | ApiResponseError

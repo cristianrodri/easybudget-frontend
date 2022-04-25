@@ -31,7 +31,7 @@ import CloseIcon from '@mui/icons-material/Close'
 import NumberFormat from 'react-number-format'
 import { number, object, SchemaOf, string } from 'yup'
 import { useFormik } from 'formik'
-import { Budget } from '@custom-types'
+import { ApiResponse, Budget } from '@custom-types'
 import { clientInstance as axios } from '@config/axios'
 import { BudgetType, SnackbarType } from '@utils/enums'
 import { Context } from '@context/GlobalContext'
@@ -49,10 +49,6 @@ interface Props {
 type FormTypes = Omit<Budget, 'id' | 'date' | 'category'> & {
   categoryId: number | string
 }
-
-type ApiResponse =
-  | { success: true; data: Budget }
-  | { success: false; message: string }
 
 const useStyles = makeStyles((theme: Theme) => ({
   appBar: {
@@ -120,7 +116,10 @@ const AddBudget = ({ openDialog, handleClose }: Props) => {
     },
     validationSchema,
     onSubmit: async values => {
-      const res = await axios.post<ApiResponse>('/api/budget/add', values)
+      const res = await axios.post<ApiResponse<Budget>>(
+        '/api/budget/add',
+        values
+      )
 
       if (res.data.success === true) {
         const newBudget = res.data.data

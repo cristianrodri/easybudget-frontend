@@ -1,20 +1,15 @@
 import useSWR from 'swr'
 import { clientInstance as axios } from '@config/axios'
-import { AddCategory, Budget, User } from '@custom-types'
+import { AddCategory, ApiResponseSuccess, Budget, User } from '@custom-types'
 
 interface Dates {
   start: string
   end: string
 }
 
-interface ApiResponse {
-  success: boolean
-  user: User
-}
-
 // Fetcher function when useSWR hook api is called
 const fetcher = (url: string) =>
-  axios.get<ApiResponse>(url).then(res => res.data.user)
+  axios.get<ApiResponseSuccess<User>>(url).then(res => res.data.data)
 
 // Custom hook which get user data by useSWR hook
 export const useUserData = (date?: Dates) => {

@@ -16,7 +16,7 @@ import { clientInstance as axios } from '@config/axios'
 import { useContext } from 'react'
 import { Context } from '@context/GlobalContext'
 import { SnackbarType } from '@utils/enums'
-import { GetCategory } from '@custom-types'
+import { ApiResponse, CategoryTypes, GetCategory } from '@custom-types'
 import { useSWRCategories } from '@hooks/useSWRCategories'
 import { openSnackbar } from '@context/actions'
 
@@ -48,9 +48,12 @@ export const Form = ({ categories }: Props) => {
     onSubmit: async (values, helpers) => {
       helpers.setSubmitting(true)
 
-      const res = await axios.post('/api/categories/add', [values])
+      const res = await axios.post<ApiResponse<CategoryTypes[]>>(
+        '/api/categories/add',
+        [values]
+      )
 
-      if (res.data.success) {
+      if (res.data.success === true) {
         dispatch(
           openSnackbar(
             `${res.data.data[0].name} was added into ${res.data.data[0].type} category`,
@@ -60,7 +63,6 @@ export const Form = ({ categories }: Props) => {
 
         // Mutate categories by adding new category
         const updatedCategories = categoriesData.concat(res.data.data)
-        // const updatedData = { ...categoriesData, categories: updatedCategories }
 
         mutate(updatedCategories, false)
 
