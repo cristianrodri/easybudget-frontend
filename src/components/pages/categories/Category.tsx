@@ -7,15 +7,16 @@ import {
   ListItemText,
   Theme
 } from '@mui/material'
+import { useContext, useState } from 'react'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { GetCategory } from '@custom-types'
 import { clientInstance as axios } from '@config/axios'
 import { BudgetType, SnackbarType } from '@utils/enums'
-import { useContext, useState } from 'react'
 import { Context } from '@context/GlobalContext'
 import { DialogConfirm } from './DialogConfirm'
 import { useSWRCategories } from '@hooks/useSWRCategories'
 import { makeStyles } from '@mui/styles'
+import { openSnackbar } from '@context/actions'
 
 const useStyles = makeStyles((theme: Theme) => ({
   listItem: {
@@ -34,7 +35,7 @@ interface Props {
 
 export const Category = ({ budgetType, categories }: Props) => {
   const { data: categoriesData, mutate } = useSWRCategories(categories)
-  const { openSnackbar } = useContext(Context)
+  const { dispatch } = useContext(Context)
   const classes = useStyles()
   const [open, setOpen] = useState(false)
   const [idToDelete, setIdToDelete] = useState(null)
@@ -68,8 +69,10 @@ export const Category = ({ budgetType, categories }: Props) => {
     const res = await axios.delete(`/api/categories/delete/${idToDelete}`)
 
     if (res.data.success)
-      openSnackbar(`${res.data.data.name} deleted!`, SnackbarType.SUCCESS)
-    else openSnackbar(res.data.message, SnackbarType.ERROR)
+      dispatch(
+        openSnackbar(`${res.data.data.name} deleted!`, SnackbarType.SUCCESS)
+      )
+    else dispatch(openSnackbar(res.data.message, SnackbarType.ERROR))
 
     setIdToDelete(null)
     setMoney(null)

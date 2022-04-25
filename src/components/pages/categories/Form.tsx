@@ -18,6 +18,7 @@ import { Context } from '@context/GlobalContext'
 import { SnackbarType } from '@utils/enums'
 import { GetCategory } from '@custom-types'
 import { useSWRCategories } from '@hooks/useSWRCategories'
+import { openSnackbar } from '@context/actions'
 
 interface Props {
   categories: GetCategory[]
@@ -29,7 +30,7 @@ interface FormTypes {
 }
 
 export const Form = ({ categories }: Props) => {
-  const { openSnackbar } = useContext(Context)
+  const { dispatch } = useContext(Context)
   const { data: categoriesData, mutate } = useSWRCategories(categories)
   const ref = useFocus()
 
@@ -50,9 +51,11 @@ export const Form = ({ categories }: Props) => {
       const res = await axios.post('/api/categories/add', [values])
 
       if (res.data.success) {
-        openSnackbar(
-          `${res.data.data[0].name} was added into ${res.data.data[0].type} category`,
-          SnackbarType.SUCCESS
+        dispatch(
+          openSnackbar(
+            `${res.data.data[0].name} was added into ${res.data.data[0].type} category`,
+            SnackbarType.SUCCESS
+          )
         )
 
         // Mutate categories by adding new category
@@ -64,7 +67,7 @@ export const Form = ({ categories }: Props) => {
         helpers.resetForm()
         ref.current?.focus()
       } else {
-        openSnackbar(res.data.message, SnackbarType.ERROR)
+        dispatch(openSnackbar(res.data.message, SnackbarType.ERROR))
       }
 
       helpers.setSubmitting(false)

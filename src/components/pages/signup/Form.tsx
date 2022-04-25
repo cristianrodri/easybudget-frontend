@@ -1,3 +1,4 @@
+import { useContext } from 'react'
 import { TextField, Button, Box, Typography, useTheme } from '@mui/material'
 import { useFormik } from 'formik'
 import { object, string, SchemaOf, ref as yupRef } from 'yup'
@@ -5,9 +6,9 @@ import { clientInstance as axios } from '@config/axios'
 import { useRouter } from 'next/router'
 import { useFocus } from '@hooks/useFocus'
 import { FormLink } from '@components/common/FormLink'
-import { useContext } from 'react'
-import { Context } from '@context/GlobalContext'
 import { SnackbarType } from '@utils/enums'
+import { Context } from '@context/GlobalContext'
+import { openSnackbar } from '@context/actions'
 
 interface FormTypes {
   username: string
@@ -20,7 +21,7 @@ export const Form = () => {
   const theme = useTheme()
   const ref = useFocus()
   const router = useRouter()
-  const { openSnackbar } = useContext(Context)
+  const { dispatch } = useContext(Context)
 
   const validationSchema: SchemaOf<FormTypes> = object({
     username: string()
@@ -55,7 +56,7 @@ export const Form = () => {
       if (res.data.success) {
         router.push('dashboard')
       } else {
-        openSnackbar(res.data.message, SnackbarType.ERROR)
+        dispatch(openSnackbar(res.data.message, SnackbarType.ERROR))
       }
       setSubmitting(false)
     }

@@ -3,12 +3,11 @@ import {
   clientInstance as axiosClient,
   serverInstance as axios
 } from '@config/axios'
+import { openSnackbar } from '@context/actions'
 import { Context } from '@context/GlobalContext'
 import { User } from '@custom-types'
 import { useFocus } from '@hooks/useFocus'
-// import { useUserData } from '@hooks/useSWRUser'
 import { Box, Button, TextField, Typography } from '@mui/material'
-// import { currentMonth } from '@utils/dates'
 import { SnackbarType } from '@utils/enums'
 import { withAuthentication } from '@utils/middleware'
 import { useFormik } from 'formik'
@@ -25,7 +24,7 @@ interface FormTypes {
 }
 
 const Profile = ({ data }: Props) => {
-  const { openSnackbar } = useContext(Context)
+  const { dispatch } = useContext(Context)
   const ref = useFocus()
   const [readOnly, setReadOnly] = useState(true)
 
@@ -53,12 +52,14 @@ const Profile = ({ data }: Props) => {
       })
 
       if (res.data.success) {
-        openSnackbar(
-          'Profile data has been changed successfully',
-          SnackbarType.SUCCESS
+        dispatch(
+          openSnackbar(
+            'Profile data has been changed successfully',
+            SnackbarType.SUCCESS
+          )
         )
       } else {
-        openSnackbar(res.data.message, SnackbarType.ERROR)
+        dispatch(openSnackbar(res.data.message, SnackbarType.ERROR))
       }
 
       helpers.setSubmitting(false)

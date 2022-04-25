@@ -17,6 +17,7 @@ import { FormLink } from '@components/common/FormLink'
 import { Context } from '@context/GlobalContext'
 import { SnackbarType } from '@utils/enums'
 import { makeStyles } from '@mui/styles'
+import { openSnackbar } from '@context/actions'
 
 interface FormTypes {
   identifier: string
@@ -45,7 +46,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 export const Form = () => {
   const router = useRouter()
   const theme = useTheme()
-  const { openSnackbar } = useContext(Context)
+  const { dispatch } = useContext(Context)
   const ref = useFocus()
   const { title, textField, button } = useStyles()
 
@@ -67,7 +68,7 @@ export const Form = () => {
       if (res.data.success) {
         router.push('dashboard')
       } else {
-        openSnackbar(res.data.message, SnackbarType.ERROR)
+        dispatch(openSnackbar(res.data.message, SnackbarType.ERROR))
       }
       setSubmitting(false)
     }
