@@ -16,14 +16,14 @@ export default async (
 ) => {
   if (req.method === 'GET') {
     try {
-      const { data } = await axios.get('/budgets', {
+      const { data, status } = await axios.get('/budgets', {
         headers: {
           Authorization: 'Bearer ' + req.cookies.token
         },
         params: req.query
       })
 
-      res.status(Status.SUCCESS).json(jsonResponseSuccess(data))
+      res.status(status).json(jsonResponseSuccess(data))
     } catch (error) {
       const err = error as AxiosError
 

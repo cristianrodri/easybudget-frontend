@@ -17,12 +17,15 @@ export default async (
 ) => {
   if (req.method === ApiMethod.POST) {
     try {
-      const { data } = await axios.post<AuthResponse>('/auth/local', req.body)
+      const { data, status } = await axios.post<AuthResponse>(
+        '/auth/local',
+        req.body
+      )
 
       // Set Cookie
       res.setHeader('Set-Cookie', createCookie(data.jwt))
 
-      res.status(Status.SUCCESS).json(jsonResponseSuccess())
+      res.status(status).json(jsonResponseSuccess())
     } catch (error) {
       const err = error as AxiosError
 

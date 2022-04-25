@@ -16,13 +16,13 @@ export default async (
 ) => {
   if (req.method === ApiMethod.DELETE) {
     try {
-      const { data } = await serverDeleteApi(
+      const { data, status } = await serverDeleteApi(
         'categories',
         req.query.id,
         req.cookies.token
       )
 
-      res.status(Status.SUCCESS).json(jsonResponseSuccess(data))
+      res.status(status).json(jsonResponseSuccess(data))
     } catch (error) {
       const err = error as AxiosError
 

@@ -16,13 +16,13 @@ export default async (
 ) => {
   if (req.method === ApiMethod.GET) {
     try {
-      const { data } = await axios.get('/categories', {
+      const { data, status } = await axios.get('/categories', {
         headers: {
           Authorization: 'Bearer ' + req.cookies.token
         }
       })
 
-      res.status(Status.SUCCESS).json(jsonResponseSuccess(data))
+      res.status(status).json(jsonResponseSuccess(data))
     } catch (error) {
       const err = error as AxiosError
 

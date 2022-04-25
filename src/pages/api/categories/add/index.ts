@@ -22,7 +22,7 @@ export default async (
         }
       })
 
-      res.status(Status.SUCCESS).json(jsonResponseSuccess(data))
+      res.status(Status.CREATED).json(jsonResponseSuccess(data))
     } catch (error) {
       const err = error as AxiosError
 

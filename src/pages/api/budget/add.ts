@@ -16,13 +16,13 @@ export default async (
 ) => {
   if (req.method === 'POST') {
     try {
-      const { data, status } = await serverPostApi(
+      const { data } = await serverPostApi(
         'budgets',
         req.body,
         req.cookies.token
       )
 
-      res.status(status).json(jsonResponseSuccess(data))
+      res.status(Status.CREATED).json(jsonResponseSuccess(data))
     } catch (error) {
       const err = error as AxiosError
 
