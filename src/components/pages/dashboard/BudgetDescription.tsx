@@ -1,3 +1,4 @@
+import { useContext } from 'react'
 import { Budget } from '@custom-types'
 import { Box, IconButton, Stack, Tooltip, Typography } from '@mui/material'
 import { getDayAndMonth } from '@utils/dates'
@@ -6,6 +7,8 @@ import { formatMoney } from '@utils/money'
 import { textCapitalize } from '@utils/string'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { colorDescription } from '@utils/color'
+import { Context } from '@context/GlobalContext'
+import { openDialogDeletion } from '@context/actions'
 
 type Props = Budget & {
   isDialog?: boolean
@@ -18,7 +21,12 @@ export const BudgetDescription = ({
   category,
   isDialog
 }: Props) => {
+  const { dispatch } = useContext(Context)
   const type = typeof category !== 'number' ? category.type : ('' as BudgetType)
+
+  const handleDeleteClick = () => {
+    dispatch(openDialogDeletion())
+  }
 
   return (
     <Stack direction="row" spacing={2}>
@@ -52,6 +60,7 @@ export const BudgetDescription = ({
               <IconButton
                 aria-label="delete"
                 sx={{ p: 0, color: colorDescription?.[type]?.main }}
+                onClick={handleDeleteClick}
               >
                 <DeleteIcon />
               </IconButton>

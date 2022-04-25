@@ -3,6 +3,8 @@ import {
   ChangeWalletDate,
   CloseCategoryDialog,
   CloseSnackbar,
+  DialogDeletionClose,
+  DialogDeletionOpen,
   OpenSnackbar,
   ShowCategoryDialog
 } from './types'
@@ -53,9 +55,19 @@ export const closeCategoryDialog = (): CloseCategoryDialog => {
   return { type: Action.CLOSE_CATEGORY_DIALOG }
 }
 
+export const openDialogDeletion = (): DialogDeletionOpen => {
+  return { type: Action.DIALOG_DELETION_OPEN }
+}
+
+export const closeDialogDeletion = (): DialogDeletionClose => {
+  return { type: Action.DIALOG_DELETION_CLOSE }
+}
+
 export type ActionType =
   | OpenSnackbar
   | CloseSnackbar
   | ChangeWalletDate
   | ShowCategoryDialog
   | CloseCategoryDialog
+  | DialogDeletionOpen
+  | DialogDeletionClose

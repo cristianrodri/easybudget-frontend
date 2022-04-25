@@ -9,6 +9,7 @@ import LatestBudgets from '@components/pages/dashboard/budgets/LatestBudgets'
 import { Summary } from '@components/pages/dashboard/summary/Container'
 import { Categories } from '@components/pages/dashboard/categories/Container'
 import { DialogBudgets } from '@components/pages/dashboard/Dialog'
+import { DialogDeletion } from '@components/pages/dashboard/DialogDeletion'
 
 const Dashboard = () => {
   const [open, setOpen] = useState(false)
@@ -63,6 +64,7 @@ const Dashboard = () => {
       </Box>
       <AddBudget openDialog={open} handleClose={handleClose} />
       <DialogBudgets />
+      <DialogDeletion />
     </Layout>
   )
 }

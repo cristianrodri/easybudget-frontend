@@ -21,6 +21,9 @@ export interface ContextValues {
   // Category dialog state
   categoryDialog: CategoryDialog
   categoryDialogOpen: boolean
+
+  // Budget deletion dialog
+  dialogDeletionOpen: boolean
 }
 
 export type OpenSnackbar = {
@@ -47,4 +50,12 @@ export type ShowCategoryDialog = {
 
 export type CloseCategoryDialog = {
   type: Action.CLOSE_CATEGORY_DIALOG
+}
+
+export type DialogDeletionOpen = {
+  type: Action.DIALOG_DELETION_OPEN
+}
+
+export type DialogDeletionClose = {
+  type: Action.DIALOG_DELETION_CLOSE
 }

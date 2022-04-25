@@ -16,7 +16,8 @@ export const initialState: ContextValues = {
     money: 0,
     name: '',
     type: null
-  }
+  },
+  dialogDeletionOpen: false
 }
 
 export const reducer = (state = initialState, action: ActionType) => {
@@ -52,6 +53,18 @@ export const reducer = (state = initialState, action: ActionType) => {
       return {
         ...state,
         categoryDialogOpen: false
+      }
+
+    case Action.DIALOG_DELETION_OPEN:
+      return {
+        ...state,
+        dialogDeletionOpen: true
+      }
+
+    case Action.DIALOG_DELETION_CLOSE:
+      return {
+        ...state,
+        dialogDeletionOpen: false
       }
 
     default:
