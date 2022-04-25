@@ -1,8 +1,10 @@
 import { apiHeaders } from './api_headers'
 import { serverInstance as axios } from './axios'
 
+type UrlType = 'categories' | 'budgets'
+
 export const serverDeleteApi = async (
-  URL: string,
+  URL: UrlType,
   id: string | string[],
   token: string
 ) => {
@@ -11,7 +13,11 @@ export const serverDeleteApi = async (
   return res
 }
 
-export const serverPostApi = async <T>(URL: string, body: T, token: string) => {
+export const serverPostApi = async <T>(
+  URL: UrlType,
+  body: T,
+  token: string
+) => {
   const res = await axios.post(`/${URL}`, body, apiHeaders(token))
 
   return res
