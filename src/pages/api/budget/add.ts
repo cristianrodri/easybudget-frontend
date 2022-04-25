@@ -1,5 +1,4 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { serverInstance as axios } from '@config/axios'
 import { AxiosError } from 'axios'
 import { errorResponse } from '@utils/error'
 import { ApiResponse, Budget } from '@custom-types'
@@ -9,6 +8,7 @@ import {
   jsonResponseSuccess,
   methodNotAllowedMessage
 } from '@utils/api'
+import { serverPostApi } from '@config/api_server'
 
 export default async (
   req: NextApiRequest,
@@ -16,13 +16,13 @@ export default async (
 ) => {
   if (req.method === 'POST') {
     try {
-      const { data } = await axios.post('/budgets', req.body, {
-        headers: {
-          Authorization: 'Bearer ' + req.cookies.token
-        }
-      })
+      const { data, status } = await serverPostApi(
+        'budgets',
+        req.body,
+        req.cookies.token
+      )
 
-      res.status(Status.CREATED).json(jsonResponseSuccess(data))
+      res.status(status).json(jsonResponseSuccess(data))
     } catch (error) {
       const err = error as AxiosError
 

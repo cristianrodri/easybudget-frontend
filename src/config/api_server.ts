@@ -10,3 +10,9 @@ export const serverDeleteApi = async (
 
   return res
 }
+
+export const serverPostApi = async <T>(URL: string, body: T, token: string) => {
+  const res = await axios.post(`/${URL}`, body, apiHeaders(token))
+
+  return res
+}
