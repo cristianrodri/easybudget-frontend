@@ -10,13 +10,15 @@ import {
 } from '@utils/api'
 import { serverGetApi } from '@config/api_server'
 
+type DataResponse = GetCategory[]
+
 export default async (
   req: NextApiRequest,
-  res: NextApiResponse<ApiResponse<GetCategory[]>>
+  res: NextApiResponse<ApiResponse<DataResponse>>
 ) => {
   if (req.method === ApiMethod.GET) {
     try {
-      const { data, status } = await serverGetApi<GetCategory[]>(
+      const { data, status } = await serverGetApi<DataResponse>(
         '/categories',
         req.cookies.token
       )

@@ -10,13 +10,15 @@ import {
 } from '@utils/api'
 import { serverGetApi } from '@config/api_server'
 
+type DataResponse = User
+
 export default async (
   req: NextApiRequest,
-  res: NextApiResponse<ApiResponse<User>>
+  res: NextApiResponse<ApiResponse<DataResponse>>
 ) => {
   if (req.method === ApiMethod.GET) {
     try {
-      const { data, status } = await serverGetApi<User>(
+      const { data, status } = await serverGetApi<DataResponse>(
         'users/me',
         req.cookies.token,
         {

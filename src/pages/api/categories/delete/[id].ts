@@ -10,13 +10,15 @@ import {
   methodNotAllowedMessage
 } from '@utils/api'
 
+type DataResponse = CategoryApi
+
 export default async (
   req: NextApiRequest,
-  res: NextApiResponse<ApiResponse<CategoryApi>>
+  res: NextApiResponse<ApiResponse<DataResponse>>
 ) => {
   if (req.method === ApiMethod.DELETE) {
     try {
-      const { data, status } = await serverDeleteApi(
+      const { data, status } = await serverDeleteApi<DataResponse>(
         'categories',
         req.cookies.token,
         {

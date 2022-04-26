@@ -10,13 +10,15 @@ import {
 } from '@utils/api'
 import { serverPutApi } from '@config/api_server'
 
+type DataResponse = UpdateUser
+
 export default async (
   req: NextApiRequest,
-  res: NextApiResponse<ApiResponse<UpdateUser>>
+  res: NextApiResponse<ApiResponse<DataResponse>>
 ) => {
   if (req.method === ApiMethod.PUT) {
     try {
-      const { data, status } = await serverPutApi<UpdateUser>(
+      const { data, status } = await serverPutApi<DataResponse>(
         'users/me',
         req.body,
         req.cookies.token,

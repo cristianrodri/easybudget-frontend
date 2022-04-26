@@ -10,13 +10,15 @@ import {
 } from '@utils/api'
 import { serverPostApi } from '@config/api_server'
 
+type DataResponse = Budget
+
 export default async (
   req: NextApiRequest,
-  res: NextApiResponse<ApiResponse<Budget>>
+  res: NextApiResponse<ApiResponse<DataResponse>>
 ) => {
   if (req.method === ApiMethod.POST) {
     try {
-      const { data } = await serverPostApi(
+      const { data } = await serverPostApi<DataResponse>(
         'budgets',
         req.body,
         req.cookies.token

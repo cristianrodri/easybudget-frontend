@@ -10,13 +10,15 @@ import {
 } from '@utils/api'
 import { serverGetApi } from '@config/api_server'
 
+type DataResponse = Budget[]
+
 export default async (
   req: NextApiRequest,
-  res: NextApiResponse<ApiResponse<Budget[]>>
+  res: NextApiResponse<ApiResponse<DataResponse>>
 ) => {
   if (req.method === ApiMethod.GET) {
     try {
-      const { data, status } = await serverGetApi<Budget[]>(
+      const { data, status } = await serverGetApi<DataResponse>(
         '/categories',
         req.cookies.token,
         {

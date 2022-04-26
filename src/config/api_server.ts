@@ -45,12 +45,12 @@ export const serverPutApi = async <T>(
 }
 
 // Utility function for server DELETE api
-export const serverDeleteApi = async (
+export const serverDeleteApi = async <T>(
   URL: string,
   token: string,
   axiosConfig?: AxiosRequestConfig
 ) => {
-  const res = await axios.delete(`/${URL}`, apiHeaders(token, axiosConfig))
+  const res = await axios.delete<T>(`/${URL}`, apiHeaders(token, axiosConfig))
 
   return res
 }
