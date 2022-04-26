@@ -19,7 +19,7 @@ export default async (
   if (req.method === ApiMethod.POST) {
     try {
       const { data } = await serverPostApi<DataResponse>(
-        `/categories`,
+        `categories`,
         req.body,
         req.cookies.token
       )
