@@ -1,5 +1,4 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { serverInstance as axios } from '@config/axios'
 import { AxiosError } from 'axios'
 import { errorResponse } from '@utils/error'
 import { ApiResponse, CategoryTypes } from '@custom-types'
@@ -9,18 +8,21 @@ import {
   jsonResponseSuccess,
   methodNotAllowedMessage
 } from '@utils/api'
+import { serverPostApi } from '@config/api_server'
+
+type DataResponse = CategoryTypes[]
 
 export default async (
   req: NextApiRequest,
-  res: NextApiResponse<ApiResponse<CategoryTypes[]>>
+  res: NextApiResponse<ApiResponse<DataResponse>>
 ) => {
   if (req.method === ApiMethod.POST) {
     try {
-      const { data } = await axios.post(`/categories`, req.body, {
-        headers: {
-          Authorization: 'Bearer ' + req.cookies.token
-        }
-      })
+      const { data } = await serverPostApi<DataResponse>(
+        `/categories`,
+        req.body,
+        req.cookies.token
+      )
 
       res.status(Status.CREATED).json(jsonResponseSuccess(data))
     } catch (error) {
