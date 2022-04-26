@@ -45,7 +45,7 @@ const Profile = ({ data }: Props) => {
     onSubmit: async (values, helpers) => {
       helpers.setSubmitting(true)
 
-      const res = await axiosClient.put('/api/user/edit', values, {
+      const res = await axiosClient.put('/api/user/update', values, {
         params: {
           id: data.id
         }
