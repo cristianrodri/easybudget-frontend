@@ -19,11 +19,8 @@ export default async (
   if (req.method === ApiMethod.GET) {
     try {
       const { data, status } = await serverGetApi<DataResponse>(
-        'budgets',
-        req.cookies.token,
-        {
-          params: req.query
-        }
+        `budgets/${req.query.id}`,
+        req.cookies.token
       )
 
       res.status(status).json(jsonResponseSuccess(data))

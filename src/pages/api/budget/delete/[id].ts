@@ -19,11 +19,8 @@ export default async (
   if (req.method === ApiMethod.DELETE) {
     try {
       const { data, status } = await serverDeleteApi<DataResponse>(
-        'budgets',
-        req.cookies.token,
-        {
-          params: req.query.id
-        }
+        `budgets/${req.query.id}`,
+        req.cookies.token
       )
 
       res.status(status).json(jsonResponseSuccess(data))
