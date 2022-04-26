@@ -18,8 +18,10 @@ export default async (
     try {
       const { data, status } = await serverDeleteApi(
         'categories',
-        req.query.id,
-        req.cookies.token
+        req.cookies.token,
+        {
+          params: req.query.id
+        }
       )
 
       res.status(status).json(jsonResponseSuccess(data))

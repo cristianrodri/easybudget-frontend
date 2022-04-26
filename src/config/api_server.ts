@@ -2,9 +2,7 @@ import { AxiosRequestConfig } from 'axios'
 import { apiHeaders } from './api_headers'
 import { serverInstance as axios } from './axios'
 
-// This type will be used by delete api and post api functions
-type UrlType = 'categories' | 'budgets' | 'auth/local/register'
-
+// Utility function for server GET api
 export const serverGetApi = async <T>(
   URL: string,
   token: string,
@@ -15,8 +13,9 @@ export const serverGetApi = async <T>(
   return res
 }
 
+// Utility function for server POST api
 export const serverPostApi = async <T>(
-  URL: UrlType,
+  URL: string,
   body: { [key: string]: string },
   token?: string
 ) => {
@@ -29,6 +28,7 @@ export const serverPostApi = async <T>(
   return res
 }
 
+// Utility function for server PUT api
 export const serverPutApi = async <T>(
   URL: string,
   body: { [key: string]: string },
@@ -44,12 +44,13 @@ export const serverPutApi = async <T>(
   return res
 }
 
+// Utility function for server DELETE api
 export const serverDeleteApi = async (
-  URL: UrlType,
-  id: string | string[],
-  token: string
+  URL: string,
+  token: string,
+  axiosConfig?: AxiosRequestConfig
 ) => {
-  const res = await axios.delete(`/${URL}/${id}`, apiHeaders(token))
+  const res = await axios.delete(`/${URL}`, apiHeaders(token, axiosConfig))
 
   return res
 }
