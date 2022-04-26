@@ -1,5 +1,4 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { serverInstance as axios } from '@config/axios'
 import { AxiosError } from 'axios'
 import { errorResponse } from '@utils/error'
 import { ApiMethod, Status } from '@utils/enums'
@@ -9,6 +8,7 @@ import {
   jsonResponseSuccess,
   methodNotAllowedMessage
 } from '@utils/api'
+import { serverPutApi } from '@config/api_server'
 
 export default async (
   req: NextApiRequest,
@@ -16,14 +16,16 @@ export default async (
 ) => {
   if (req.method === ApiMethod.PUT) {
     try {
-      const { data, status } = await axios.put('/users/me', req.body, {
-        headers: {
-          Authorization: 'Bearer ' + req.cookies.token
-        },
-        params: {
-          id: req.query.id
+      const { data, status } = await serverPutApi<UpdateUser>(
+        'users/me',
+        req.body,
+        req.cookies.token,
+        {
+          params: {
+            id: req.query.id
+          }
         }
-      })
+      )
 
       res.status(status).json(jsonResponseSuccess(data))
     } catch (error) {

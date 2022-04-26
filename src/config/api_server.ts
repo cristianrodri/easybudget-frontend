@@ -15,16 +15,6 @@ export const serverGetApi = async <T>(
   return res
 }
 
-export const serverDeleteApi = async (
-  URL: UrlType,
-  id: string | string[],
-  token: string
-) => {
-  const res = await axios.delete(`/${URL}/${id}`, apiHeaders(token))
-
-  return res
-}
-
 export const serverPostApi = async <T>(
   URL: UrlType,
   body: { [key: string]: string },
@@ -35,6 +25,31 @@ export const serverPostApi = async <T>(
     body,
     token ? apiHeaders(token) : undefined
   )
+
+  return res
+}
+
+export const serverPutApi = async <T>(
+  URL: string,
+  body: { [key: string]: string },
+  token: string,
+  axiosConfig?: AxiosRequestConfig
+) => {
+  const res = await axios.put<T>(
+    `/${URL}`,
+    body,
+    apiHeaders(token, axiosConfig)
+  )
+
+  return res
+}
+
+export const serverDeleteApi = async (
+  URL: UrlType,
+  id: string | string[],
+  token: string
+) => {
+  const res = await axios.delete(`/${URL}/${id}`, apiHeaders(token))
 
   return res
 }
