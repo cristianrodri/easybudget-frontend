@@ -1,5 +1,4 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { serverInstance as axios } from '@config/axios'
 import { AxiosError } from 'axios'
 import { errorResponse } from '@utils/error'
 import { ApiResponse, GetCategory } from '@custom-types'
@@ -9,6 +8,7 @@ import {
   jsonResponseSuccess,
   methodNotAllowedMessage
 } from '@utils/api'
+import { serverGetApi } from '@config/api_server'
 
 export default async (
   req: NextApiRequest,
@@ -16,11 +16,10 @@ export default async (
 ) => {
   if (req.method === ApiMethod.GET) {
     try {
-      const { data, status } = await axios.get('/categories', {
-        headers: {
-          Authorization: 'Bearer ' + req.cookies.token
-        }
-      })
+      const { data, status } = await serverGetApi<GetCategory[]>(
+        '/categories',
+        req.cookies.token
+      )
 
       res.status(status).json(jsonResponseSuccess(data))
     } catch (error) {

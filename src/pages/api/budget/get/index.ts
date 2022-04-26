@@ -1,5 +1,4 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { serverInstance as axios } from '@config/axios'
 import { AxiosError } from 'axios'
 import { errorResponse } from '@utils/error'
 import { ApiResponse, Budget } from '@custom-types'
@@ -9,6 +8,7 @@ import {
   jsonResponseSuccess,
   methodNotAllowedMessage
 } from '@utils/api'
+import { serverGetApi } from '@config/api_server'
 
 export default async (
   req: NextApiRequest,
@@ -16,12 +16,13 @@ export default async (
 ) => {
   if (req.method === ApiMethod.GET) {
     try {
-      const { data, status } = await axios.get('/budgets', {
-        headers: {
-          Authorization: 'Bearer ' + req.cookies.token
-        },
-        params: req.query
-      })
+      const { data, status } = await serverGetApi<Budget[]>(
+        '/categories',
+        req.cookies.token,
+        {
+          params: req.query
+        }
+      )
 
       res.status(status).json(jsonResponseSuccess(data))
     } catch (error) {

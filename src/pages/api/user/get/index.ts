@@ -1,5 +1,4 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { serverInstance as axios } from '@config/axios'
 import { AxiosError } from 'axios'
 import { errorResponse } from '@utils/error'
 import { ApiMethod, Status } from '@utils/enums'
@@ -9,6 +8,7 @@ import {
   jsonResponseSuccess,
   methodNotAllowedMessage
 } from '@utils/api'
+import { serverGetApi } from '@config/api_server'
 
 export default async (
   req: NextApiRequest,
@@ -16,15 +16,16 @@ export default async (
 ) => {
   if (req.method === ApiMethod.GET) {
     try {
-      const { data, status } = await axios.get('/users/me', {
-        headers: {
-          Authorization: 'Bearer ' + req.cookies.token
-        },
-        params: {
-          budgets_date_start: req.query.budgets_date_start,
-          budgets_date_end: req.query.budgets_date_end
+      const { data, status } = await serverGetApi<User>(
+        'users/me',
+        req.cookies.token,
+        {
+          params: {
+            budgets_date_start: req.query.budgets_date_start,
+            budgets_date_end: req.query.budgets_date_end
+          }
         }
-      })
+      )
 
       res.status(status).json(jsonResponseSuccess(data))
     } catch (error) {

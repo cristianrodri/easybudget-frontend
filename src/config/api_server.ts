@@ -1,7 +1,19 @@
+import { AxiosRequestConfig } from 'axios'
 import { apiHeaders } from './api_headers'
 import { serverInstance as axios } from './axios'
 
-type UrlType = 'categories' | 'budgets'
+// This type will be used by delete api and post api functions
+type UrlType = 'categories' | 'budgets' | 'auth/local/register'
+
+export const serverGetApi = async <T>(
+  URL: string,
+  token: string,
+  axiosConfig?: AxiosRequestConfig
+) => {
+  const res = await axios.get<T>(`/${URL}`, apiHeaders(token, axiosConfig))
+
+  return res
+}
 
 export const serverDeleteApi = async (
   URL: UrlType,
@@ -15,10 +27,14 @@ export const serverDeleteApi = async (
 
 export const serverPostApi = async <T>(
   URL: UrlType,
-  body: T,
-  token: string
+  body: { [key: string]: string },
+  token?: string
 ) => {
-  const res = await axios.post(`/${URL}`, body, apiHeaders(token))
+  const res = await axios.post<T>(
+    `/${URL}`,
+    body,
+    token ? apiHeaders(token) : undefined
+  )
 
   return res
 }
