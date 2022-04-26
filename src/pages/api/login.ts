@@ -1,5 +1,4 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { serverInstance as axios } from '@config/axios'
 import { AxiosError } from 'axios'
 import { createCookie } from '@utils/cookie'
 import { errorResponse } from '@utils/error'
@@ -10,6 +9,7 @@ import {
   jsonResponseSuccess,
   methodNotAllowedMessage
 } from '@utils/api'
+import { serverPostApi } from '@config/api_server'
 
 export default async (
   req: NextApiRequest,
@@ -17,8 +17,8 @@ export default async (
 ) => {
   if (req.method === ApiMethod.POST) {
     try {
-      const { data, status } = await axios.post<AuthResponse>(
-        '/auth/local',
+      const { data, status } = await serverPostApi<AuthResponse>(
+        'auth/local',
         req.body
       )
 
