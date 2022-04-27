@@ -8,7 +8,7 @@ import { Header } from '@components/pages/dashboard/Header'
 import LatestBudgets from '@components/pages/dashboard/budgets/LatestBudgets'
 import { Summary } from '@components/pages/dashboard/summary/Container'
 import { Categories } from '@components/pages/dashboard/categories/Container'
-import { DialogBudgets } from '@components/pages/dashboard/Dialog'
+import { DialogCategory } from '@components/pages/dashboard/DialogCategory'
 import { DialogDeletion } from '@components/pages/dashboard/DialogDeletion'
 
 const Dashboard = () => {
@@ -63,7 +63,7 @@ const Dashboard = () => {
         </Fab>
       </Box>
       <AddBudget openDialog={open} handleClose={handleClose} />
-      <DialogBudgets />
+      <DialogCategory />
       <DialogDeletion />
     </Layout>
   )

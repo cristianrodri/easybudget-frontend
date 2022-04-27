@@ -13,7 +13,7 @@ import { Box } from '@mui/material'
 import { dateTitle } from '@utils/dates'
 import { colorWallet } from '@utils/color'
 
-export const DialogBudgets = () => {
+export const DialogCategory = () => {
   const { values, dispatch } = useContext(Context)
   const { categoryDialogOpen, categoryDialog, walletDate } = values
 
