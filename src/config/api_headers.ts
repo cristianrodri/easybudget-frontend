@@ -1,14 +1,14 @@
-import { AxiosRequestConfig } from 'axios'
+import { RequestConfig } from '@custom-types'
 
 export const apiHeaders = (
   token: string,
-  axiosConfig?: AxiosRequestConfig
-): AxiosRequestConfig => {
+  config?: RequestConfig
+): RequestConfig => {
   return {
     headers: {
       Authorization: 'Bearer ' + token
     },
     // Axios config can be added into the parameters
-    ...axiosConfig
+    ...config
   }
 }

@@ -1,56 +1,29 @@
-import { AxiosRequestConfig } from 'axios'
+import { BodyRequest, RequestConfig, Token, Url } from '@custom-types'
 import { apiHeaders } from './api_headers'
-import { serverInstance as axios } from './axios'
+import { serverInstance as api } from './axios'
 
 // Utility function for server GET api
-export const serverGetApi = async <T>(
-  URL: string,
-  token: string,
-  axiosConfig?: AxiosRequestConfig
-) => {
-  const res = await axios.get<T>(`/${URL}`, apiHeaders(token, axiosConfig))
-
-  return res
-}
+export const serverGetApi = <T>(
+  URL: Url,
+  token: Token,
+  config?: RequestConfig
+) => api.get<T>(`/${URL}`, apiHeaders(token, config))
 
 // Utility function for server POST api
-export const serverPostApi = async <T>(
-  URL: string,
-  body: { [key: string]: string },
-  token?: string
-) => {
-  const res = await axios.post<T>(
-    `/${URL}`,
-    body,
-    token ? apiHeaders(token) : undefined
-  )
-
-  return res
-}
+export const serverPostApi = <T>(url: Url, body: BodyRequest, token?: Token) =>
+  api.post<T>(`/${url}`, body, token ? apiHeaders(token) : undefined)
 
 // Utility function for server PUT api
-export const serverPutApi = async <T>(
-  URL: string,
-  body: { [key: string]: string },
-  token: string,
-  axiosConfig?: AxiosRequestConfig
-) => {
-  const res = await axios.put<T>(
-    `/${URL}`,
-    body,
-    apiHeaders(token, axiosConfig)
-  )
-
-  return res
-}
+export const serverPutApi = <T>(
+  url: Url,
+  body: BodyRequest,
+  token: Token,
+  config?: RequestConfig
+) => api.put<T>(`/${url}`, body, apiHeaders(token, config))
 
 // Utility function for server DELETE api
-export const serverDeleteApi = async <T>(
-  URL: string,
-  token: string,
-  axiosConfig?: AxiosRequestConfig
-) => {
-  const res = await axios.delete<T>(`/${URL}`, apiHeaders(token, axiosConfig))
-
-  return res
-}
+export const serverDeleteApi = <T>(
+  url: Url,
+  token: Token,
+  config?: RequestConfig
+) => api.delete<T>(`/${url}`, apiHeaders(token, config))

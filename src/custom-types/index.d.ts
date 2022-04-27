@@ -4,6 +4,7 @@ import { BudgetType } from '@utils/enums'
 export type Url = string
 export type BodyRequest = { [key: string]: string }
 export type RequestConfig = AxiosRequestConfig
+export type Token = string
 export interface AuthResponse {
   jwt: string
   user: User
