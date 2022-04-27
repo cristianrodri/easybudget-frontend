@@ -3,8 +3,9 @@ import PopupState, { bindMenu, bindTrigger } from 'material-ui-popup-state'
 import { useRouter } from 'next/router'
 import { SERVER_URL } from '@config/url'
 import { getAvatar } from '@utils/avatar'
-import { clientInstance as axios } from '@config/axios'
 import { useUserData } from '@hooks/useSWRUser'
+import { clientGetApi } from '@config/api_client'
+import { ApiResponseSuccess } from '@custom-types'
 
 export const AuthMenu = () => {
   const { data } = useUserData()
@@ -12,7 +13,7 @@ export const AuthMenu = () => {
   const router = useRouter()
 
   const logout = async () => {
-    const res = await axios.post<{ success: boolean }>('/api/logout')
+    const res = await clientGetApi<ApiResponseSuccess<never>>('/api/logout')
 
     if (res.data.success) router.push('/')
   }

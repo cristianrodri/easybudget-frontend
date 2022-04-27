@@ -1,15 +1,5 @@
 import { BudgetType } from '@utils/enums'
 
-/* API TYPES */
-export type Url = string
-export type BodyRequest = { [key: string]: string }
-export type RequestConfig = AxiosRequestConfig
-export type Token = string
-export interface AuthResponse {
-  jwt: string
-  user: User
-}
-
 export interface User {
   id: number
   username: string
@@ -67,7 +57,16 @@ type AddCategory = Omit<CategoryTypes, 'budgets' | 'money'>
 type GetCategory = Omit<CategoryTypes, 'budgets'>
 export type CategoryApi = Omit<CategoryTypes, 'money'>
 
-// API
+/* API TYPES */
+export type Url = string
+export type BodyRequest = { [key: string]: string }
+export type RequestConfig = AxiosRequestConfig
+export type Token = string
+export interface AuthResponse {
+  jwt: string
+  user: User
+}
+
 export type ApiResponseSuccess<T> = {
   success: true
   data?: T

@@ -1,11 +1,9 @@
 import { Layout } from '@components/Layout'
-import {
-  clientInstance as axiosClient,
-  serverInstance as axios
-} from '@config/axios'
+import { clientPutApi } from '@config/api_client'
+import { serverGetApi } from '@config/api_server'
 import { openSnackbar } from '@context/actions'
 import { Context } from '@context/GlobalContext'
-import { User } from '@custom-types'
+import { ApiResponse, UpdateUser, User } from '@custom-types'
 import { useFocus } from '@hooks/useFocus'
 import { Box, Button, TextField, Typography } from '@mui/material'
 import { SnackbarType } from '@utils/enums'
@@ -45,13 +43,17 @@ const Profile = ({ data }: Props) => {
     onSubmit: async (values, helpers) => {
       helpers.setSubmitting(true)
 
-      const res = await axiosClient.put('/api/user/update', values, {
-        params: {
-          id: data.id
+      const res = await clientPutApi<ApiResponse<UpdateUser>, FormTypes>(
+        'api/user/update',
+        values,
+        {
+          params: {
+            id: data.id
+          }
         }
-      })
+      )
 
-      if (res.data.success) {
+      if (res.data.success === true) {
         dispatch(
           openSnackbar(
             'Profile data has been changed successfully',
@@ -138,18 +140,17 @@ const Profile = ({ data }: Props) => {
 export default Profile
 
 export const getServerSideProps = withAuthentication<Props>(async ({ req }) => {
-  const { token } = req.cookies
-
-  const res = await axios.get<User>('/users/me', {
-    headers: {
-      Authorization: 'Bearer ' + token
-    },
+  const res = await serverGetApi<User>(
+    '/users/me',
+    req.cookies.token,
     // This api received all user data, including categories and budegts, therefore budgets data is not needed, that's why dates params is added with current date to the start and the end
-    params: {
-      budgets_date_start: new Date().toISOString(),
-      budgets_date_end: new Date().toISOString()
+    {
+      params: {
+        budgets_date_start: new Date().toISOString(),
+        budgets_date_end: new Date().toISOString()
+      }
     }
-  })
+  )
 
   return {
     props: {

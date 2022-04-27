@@ -12,13 +12,13 @@ import {
 import { useFocus } from '@hooks/useFocus'
 import { object, SchemaOf, string } from 'yup'
 import { useFormik } from 'formik'
-import { clientInstance as axios } from '@config/axios'
 import { useContext } from 'react'
 import { Context } from '@context/GlobalContext'
 import { SnackbarType } from '@utils/enums'
 import { ApiResponse, CategoryTypes, GetCategory } from '@custom-types'
 import { useSWRCategories } from '@hooks/useSWRCategories'
 import { openSnackbar } from '@context/actions'
+import { clientPostApi } from '@config/api_client'
 
 interface Props {
   categories: GetCategory[]
@@ -48,10 +48,10 @@ export const Form = ({ categories }: Props) => {
     onSubmit: async (values, helpers) => {
       helpers.setSubmitting(true)
 
-      const res = await axios.post<ApiResponse<CategoryTypes[]>>(
-        '/api/categories/add',
-        [values]
-      )
+      const res = await clientPostApi<
+        ApiResponse<CategoryTypes[]>,
+        FormTypes[]
+      >('api/categories/add', [values])
 
       if (res.data.success === true) {
         dispatch(

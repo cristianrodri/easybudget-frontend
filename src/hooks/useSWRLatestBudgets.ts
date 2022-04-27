@@ -1,15 +1,15 @@
-import { ApiResponseSuccess, Budget } from '@custom-types'
+import { ApiResponseSuccess, Budget, Url } from '@custom-types'
 import useSWR from 'swr'
-import { clientInstance as axios } from '@config/axios'
+import { clientGetApi } from '@config/api_client'
 
-const fetcher = (url: string) =>
-  axios.get<ApiResponseSuccess<Budget[]>>(url).then(res => res.data.data)
+const fetcher = (url: Url) =>
+  clientGetApi<ApiResponseSuccess<Budget[]>>(url).then(res => res.data.data)
 
 export const useSWRLatestBudgets = () => {
   const LIMIT_BUDGETS = 5
 
   const { data, mutate } = useSWR(
-    `/api/budget/get?_sort=date:DESC&_limit=${LIMIT_BUDGETS}&_categorydata=true`,
+    `api/budget/get?_sort=date:DESC&_limit=${LIMIT_BUDGETS}&_categorydata=true`,
     fetcher
   )
 

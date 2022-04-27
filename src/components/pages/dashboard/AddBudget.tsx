@@ -32,7 +32,6 @@ import NumberFormat from 'react-number-format'
 import { number, object, SchemaOf, string } from 'yup'
 import { useFormik } from 'formik'
 import { ApiResponse, Budget } from '@custom-types'
-import { clientInstance as axios } from '@config/axios'
 import { BudgetType, SnackbarType } from '@utils/enums'
 import { Context } from '@context/GlobalContext'
 import { useUserData } from '@hooks/useSWRUser'
@@ -40,6 +39,7 @@ import { makeStyles } from '@mui/styles'
 import { currentMonth } from '@utils/dates'
 import { useSWRLatestBudgets } from '@hooks/useSWRLatestBudgets'
 import { openSnackbar } from '@context/actions'
+import { clientPostApi } from '@config/api_client'
 
 interface Props {
   openDialog: boolean
@@ -116,8 +116,8 @@ const AddBudget = ({ openDialog, handleClose }: Props) => {
     },
     validationSchema,
     onSubmit: async values => {
-      const res = await axios.post<ApiResponse<Budget>>(
-        '/api/budget/add',
+      const res = await clientPostApi<ApiResponse<Budget>, FormTypes>(
+        'api/budget/add',
         values
       )
 

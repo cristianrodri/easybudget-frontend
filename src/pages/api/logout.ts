@@ -12,13 +12,13 @@ export default async (
   req: NextApiRequest,
   res: NextApiResponse<ApiResponse<never>>
 ) => {
-  if (req.method === ApiMethod.POST) {
+  if (req.method === ApiMethod.GET) {
     // Destroy cookie
     res.setHeader('Set-Cookie', deleteCookie())
 
     res.status(Status.SUCCESS).json(jsonResponseSuccess())
   } else {
-    res.setHeader('Allow', [ApiMethod.POST])
+    res.setHeader('Allow', [ApiMethod.GET])
     res.statusCode = Status.METHOD_NOT_ALLOWED
 
     res.json(jsonResponseError(methodNotAllowedMessage(req.method)))

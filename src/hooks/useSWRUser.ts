@@ -1,6 +1,6 @@
 import useSWR from 'swr'
-import { clientInstance as axios } from '@config/axios'
 import { AddCategory, ApiResponseSuccess, Budget, User } from '@custom-types'
+import { clientGetApi } from '@config/api_client'
 
 interface Dates {
   start: string
@@ -9,13 +9,13 @@ interface Dates {
 
 // Fetcher function when useSWR hook api is called
 const fetcher = (url: string) =>
-  axios.get<ApiResponseSuccess<User>>(url).then(res => res.data.data)
+  clientGetApi<ApiResponseSuccess<User>>(url).then(res => res.data.data)
 
 // Custom hook which get user data by useSWR hook
 export const useUserData = (date?: Dates) => {
   const API = date
-    ? `/api/user/get?budgets_date_start=${date.start}&budgets_date_end=${date.end}`
-    : '/api/user/get'
+    ? `api/user/get?budgets_date_start=${date.start}&budgets_date_end=${date.end}`
+    : 'api/user/get'
 
   const { data, mutate } = useSWR(API, fetcher)
 
