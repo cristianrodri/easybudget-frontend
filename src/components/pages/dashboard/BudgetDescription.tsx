@@ -15,6 +15,7 @@ type Props = Budget & {
 }
 
 export const BudgetDescription = ({
+  id,
   description,
   money,
   date,
@@ -25,7 +26,7 @@ export const BudgetDescription = ({
   const type = typeof category !== 'number' ? category.type : ('' as BudgetType)
 
   const handleDeleteClick = () => {
-    dispatch(openDialogDeletion())
+    dispatch(openDialogDeletion(id))
   }
 
   return (

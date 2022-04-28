@@ -5,13 +5,19 @@ import DialogActions from '@mui/material/DialogActions'
 import DialogTitle from '@mui/material/DialogTitle'
 import { Context } from '@context/GlobalContext'
 import { closeDialogDeletion } from '@context/actions'
+import { useSWRLatestBudgets } from '@hooks/useSWRLatestBudgets'
 
 export const DialogDeletion = () => {
   const { values, dispatch } = useContext(Context)
-  const { dialogDeletionOpen } = values
+  const { dialogDeletionOpen, budgetIdToDelete } = values
+  const { mutateBydeletingBudget } = useSWRLatestBudgets()
 
   const handleClose = () => {
     dispatch(closeDialogDeletion())
+  }
+
+  const handleDeletion = async () => {
+    mutateBydeletingBudget(budgetIdToDelete)
   }
 
   return (
@@ -28,7 +34,7 @@ export const DialogDeletion = () => {
         <Button onClick={handleClose} autoFocus>
           Disagree
         </Button>
-        <Button onClick={handleClose}>Agree</Button>
+        <Button onClick={handleDeletion}>Agree</Button>
       </DialogActions>
     </Dialog>
   )

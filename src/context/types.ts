@@ -24,6 +24,8 @@ export interface ContextValues {
 
   // Budget deletion dialog
   dialogDeletionOpen: boolean
+  budgetIdToDelete: number
+  isDeletingBudget: boolean
 }
 
 export type OpenSnackbar = {
@@ -54,8 +56,17 @@ export type CloseCategoryDialog = {
 
 export type DialogDeletionOpen = {
   type: Action.DIALOG_DELETION_OPEN
+  payload: number
 }
 
 export type DialogDeletionClose = {
   type: Action.DIALOG_DELETION_CLOSE
+}
+
+export type IsDeletingBudget = {
+  type: Action.IS_DELETING_BUDGET
+}
+
+export type BudgetHasBeenDeleted = {
+  type: Action.BUDGET_HAS_BEEN_DELETED
 }

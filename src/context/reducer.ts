@@ -17,10 +17,15 @@ export const initialState: ContextValues = {
     name: '',
     type: null
   },
-  dialogDeletionOpen: false
+  dialogDeletionOpen: false,
+  budgetIdToDelete: null,
+  isDeletingBudget: false
 }
 
-export const reducer = (state = initialState, action: ActionType) => {
+export const reducer = (
+  state = initialState,
+  action: ActionType
+): ContextValues => {
   switch (action.type) {
     case Action.OPEN_SNACKBAR:
       return {
@@ -58,13 +63,27 @@ export const reducer = (state = initialState, action: ActionType) => {
     case Action.DIALOG_DELETION_OPEN:
       return {
         ...state,
-        dialogDeletionOpen: true
+        dialogDeletionOpen: true,
+        budgetIdToDelete: action.payload
       }
 
     case Action.DIALOG_DELETION_CLOSE:
       return {
         ...state,
-        dialogDeletionOpen: false
+        dialogDeletionOpen: false,
+        budgetIdToDelete: null
+      }
+
+    case Action.IS_DELETING_BUDGET:
+      return {
+        ...state,
+        isDeletingBudget: true
+      }
+
+    case Action.BUDGET_HAS_BEEN_DELETED:
+      return {
+        ...state,
+        isDeletingBudget: false
       }
 
     default:

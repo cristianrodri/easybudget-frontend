@@ -1,10 +1,12 @@
 import {
+  BudgetHasBeenDeleted,
   CategoryDialog,
   ChangeWalletDate,
   CloseCategoryDialog,
   CloseSnackbar,
   DialogDeletionClose,
   DialogDeletionOpen,
+  IsDeletingBudget,
   OpenSnackbar,
   ShowCategoryDialog
 } from './types'
@@ -55,12 +57,20 @@ export const closeCategoryDialog = (): CloseCategoryDialog => {
   return { type: Action.CLOSE_CATEGORY_DIALOG }
 }
 
-export const openDialogDeletion = (): DialogDeletionOpen => {
-  return { type: Action.DIALOG_DELETION_OPEN }
+export const openDialogDeletion = (id: number): DialogDeletionOpen => {
+  return { type: Action.DIALOG_DELETION_OPEN, payload: id }
 }
 
 export const closeDialogDeletion = (): DialogDeletionClose => {
   return { type: Action.DIALOG_DELETION_CLOSE }
+}
+
+export const isDeletingBudget = (): IsDeletingBudget => {
+  return { type: Action.IS_DELETING_BUDGET }
+}
+
+export const budgetHasBeenDeleted = (): BudgetHasBeenDeleted => {
+  return { type: Action.BUDGET_HAS_BEEN_DELETED }
 }
 
 export type ActionType =
@@ -71,3 +81,5 @@ export type ActionType =
   | CloseCategoryDialog
   | DialogDeletionOpen
   | DialogDeletionClose
+  | IsDeletingBudget
+  | BudgetHasBeenDeleted
