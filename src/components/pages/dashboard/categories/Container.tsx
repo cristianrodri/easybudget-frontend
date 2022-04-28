@@ -2,7 +2,6 @@ import { Stack } from '@mui/material'
 import { BudgetType } from '@utils/enums'
 import { Category } from './Category'
 import { useUserData } from '@hooks/useSWRUser'
-import { currentMonth } from '@utils/dates'
 import { CategoryTypes } from '@custom-types'
 
 // Order categories in descending way by money
@@ -10,7 +9,7 @@ const sortedCategories = (a: CategoryTypes, b: CategoryTypes) =>
   b.money - a.money
 
 export const Categories = () => {
-  const { data } = useUserData(currentMonth)
+  const { data } = useUserData()
 
   const incomeData = data?.categories
     .filter(category => category.type === BudgetType.INCOME)

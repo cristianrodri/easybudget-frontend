@@ -1,11 +1,10 @@
 import { Stack } from '@mui/material'
 import { useUserData } from '@hooks/useSWRUser'
-import { currentMonth } from '@utils/dates'
 import { Budget } from './Budget'
 import { BudgetType } from '@utils/enums'
 
 export const Summary = () => {
-  const { data } = useUserData(currentMonth)
+  const { data } = useUserData()
 
   // Get all INCOME budgets of the provided date
   const moneyIncome = data?.categories.reduce(

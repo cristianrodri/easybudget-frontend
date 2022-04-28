@@ -1,21 +1,26 @@
+import { useContext } from 'react'
 import useSWR from 'swr'
 import { AddCategory, ApiResponseSuccess, Budget, User } from '@custom-types'
 import { clientGetApi } from '@config/api_client'
-
-interface Dates {
-  start: string
-  end: string
-}
+import { Context } from '@context/GlobalContext'
+import { getCustomDate } from '@utils/dates'
 
 // Fetcher function when useSWR hook api is called
 const fetcher = (url: string) =>
   clientGetApi<ApiResponseSuccess<User>>(url).then(res => res.data.data)
 
 // Custom hook which get user data by useSWR hook
-export const useUserData = (date?: Dates) => {
-  const API = date
-    ? `api/user/get?budgets_date_start=${date.start}&budgets_date_end=${date.end}`
-    : 'api/user/get'
+export const useUserData = () => {
+  const {
+    values: { walletDate }
+  } = useContext(Context)
+
+  const customDate = getCustomDate(walletDate)
+
+  const API =
+    walletDate.year !== 'all'
+      ? `api/user/get?budgets_date_start=${customDate.start}&budgets_date_end=${customDate.end}`
+      : 'api/user/get'
 
   const { data, mutate } = useSWR(API, fetcher)
 

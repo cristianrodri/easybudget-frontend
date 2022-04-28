@@ -36,7 +36,6 @@ import { BudgetType, SnackbarType } from '@utils/enums'
 import { Context } from '@context/GlobalContext'
 import { useUserData } from '@hooks/useSWRUser'
 import { makeStyles } from '@mui/styles'
-import { currentMonth } from '@utils/dates'
 import { useSWRLatestBudgets } from '@hooks/useSWRLatestBudgets'
 import { openSnackbar } from '@context/actions'
 import { clientPostApi } from '@config/api_client'
@@ -84,7 +83,7 @@ const Transition = forwardRef(function Transition(
 const AddBudget = ({ openDialog, handleClose }: Props) => {
   const { dispatch } = useContext(Context)
   const classes = useStyles()
-  const { data, mutateByAddingBudgetToCategory } = useUserData(currentMonth)
+  const { data, mutateByAddingBudgetToCategory } = useUserData()
   const { mutateByAddingNewBudget } = useSWRLatestBudgets()
   const [budgetType, setBudgetType] = useState<
     BudgetType.INCOME | BudgetType.EXPENSE
