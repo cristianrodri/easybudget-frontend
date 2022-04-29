@@ -12,12 +12,12 @@ import { useFormik } from 'formik'
 import { object, string, SchemaOf } from 'yup'
 import { useRouter } from 'next/router'
 import { useFocus } from '@hooks/useFocus'
-import { clientInstance as axios } from '@config/axios'
 import { FormLink } from '@components/common/FormLink'
 import { Context } from '@context/GlobalContext'
 import { SnackbarType } from '@utils/enums'
 import { makeStyles } from '@mui/styles'
 import { openSnackbar } from '@context/actions'
+import { clientPostApi } from '@config/api_client'
 
 interface FormTypes {
   identifier: string
@@ -64,11 +64,12 @@ export const Form = () => {
     onSubmit: async (values, { setSubmitting }) => {
       setSubmitting(true)
 
-      const res = await axios.post('/api/login', values)
-      if (res.data.success) {
+      const res = await clientPostApi('api/login', values)
+
+      if (res.success === true) {
         router.push('dashboard')
       } else {
-        dispatch(openSnackbar(res.data.message, SnackbarType.ERROR))
+        dispatch(openSnackbar(res.message, SnackbarType.ERROR))
       }
       setSubmitting(false)
     }

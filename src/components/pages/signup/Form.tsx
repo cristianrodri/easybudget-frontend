@@ -2,13 +2,13 @@ import { useContext } from 'react'
 import { TextField, Button, Box, Typography, useTheme } from '@mui/material'
 import { useFormik } from 'formik'
 import { object, string, SchemaOf, ref as yupRef } from 'yup'
-import { clientInstance as axios } from '@config/axios'
 import { useRouter } from 'next/router'
 import { useFocus } from '@hooks/useFocus'
 import { FormLink } from '@components/common/FormLink'
 import { SnackbarType } from '@utils/enums'
 import { Context } from '@context/GlobalContext'
 import { openSnackbar } from '@context/actions'
+import { clientPostApi } from '@config/api_client'
 
 interface FormTypes {
   username: string
@@ -52,11 +52,12 @@ export const Form = () => {
       const submittedValues = { ...values }
       delete submittedValues.confirmPassword
 
-      const res = await axios.post('/api/register', submittedValues)
-      if (res.data.success) {
+      const res = await clientPostApi('api/register', submittedValues)
+
+      if (res.success === true) {
         router.push('dashboard')
       } else {
-        dispatch(openSnackbar(res.data.message, SnackbarType.ERROR))
+        dispatch(openSnackbar(res.message, SnackbarType.ERROR))
       }
       setSubmitting(false)
     }
