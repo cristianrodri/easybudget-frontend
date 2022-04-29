@@ -3,7 +3,7 @@ import { clientPutApi } from '@config/api_client'
 import { serverGetApi } from '@config/api_server'
 import { openSnackbar } from '@context/actions'
 import { Context } from '@context/GlobalContext'
-import { ApiResponse, UpdateUser, User } from '@custom-types'
+import { UpdateUser, User } from '@custom-types'
 import { useFocus } from '@hooks/useFocus'
 import { Box, Button, TextField, Typography } from '@mui/material'
 import { SnackbarType } from '@utils/enums'
@@ -43,7 +43,7 @@ const Profile = ({ data }: Props) => {
     onSubmit: async (values, helpers) => {
       helpers.setSubmitting(true)
 
-      const res = await clientPutApi<ApiResponse<UpdateUser>, FormTypes>(
+      const res = await clientPutApi<UpdateUser, FormTypes>(
         'api/user/update',
         values,
         {
@@ -53,7 +53,7 @@ const Profile = ({ data }: Props) => {
         }
       )
 
-      if (res.data.success === true) {
+      if (res.success === true) {
         dispatch(
           openSnackbar(
             'Profile data has been changed successfully',
@@ -61,7 +61,7 @@ const Profile = ({ data }: Props) => {
           )
         )
       } else {
-        dispatch(openSnackbar(res.data.message, SnackbarType.ERROR))
+        dispatch(openSnackbar(res.message, SnackbarType.ERROR))
       }
 
       helpers.setSubmitting(false)

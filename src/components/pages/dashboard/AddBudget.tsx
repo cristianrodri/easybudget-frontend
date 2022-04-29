@@ -31,7 +31,7 @@ import CloseIcon from '@mui/icons-material/Close'
 import NumberFormat from 'react-number-format'
 import { number, object, SchemaOf, string } from 'yup'
 import { useFormik } from 'formik'
-import { ApiResponse, Budget } from '@custom-types'
+import { Budget } from '@custom-types'
 import { BudgetType, SnackbarType } from '@utils/enums'
 import { Context } from '@context/GlobalContext'
 import { useUserData } from '@hooks/useSWRUser'
@@ -115,13 +115,13 @@ const AddBudget = ({ openDialog, handleClose }: Props) => {
     },
     validationSchema,
     onSubmit: async values => {
-      const res = await clientPostApi<ApiResponse<Budget>, FormTypes>(
+      const res = await clientPostApi<Budget, FormTypes>(
         'api/budget/add',
         values
       )
 
-      if (res.data.success === true) {
-        const newBudget = res.data.data
+      if (res.success === true) {
+        const newBudget = res.data
 
         // Mutate SWR data by adding new budget into related category
         mutateByAddingBudgetToCategory(newBudget)
@@ -130,16 +130,13 @@ const AddBudget = ({ openDialog, handleClose }: Props) => {
         mutateByAddingNewBudget(newBudget)
 
         dispatch(
-          openSnackbar(
-            `${res.data.data.description} added!`,
-            SnackbarType.SUCCESS
-          )
+          openSnackbar(`${res.data.description} added!`, SnackbarType.SUCCESS)
         )
 
         // Close the dialog
         handleDialogClose()
       } else {
-        dispatch(openSnackbar(res.data.message, SnackbarType.ERROR))
+        dispatch(openSnackbar(res.message, SnackbarType.ERROR))
       }
     }
   })

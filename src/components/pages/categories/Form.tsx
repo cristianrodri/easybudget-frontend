@@ -15,7 +15,7 @@ import { useFormik } from 'formik'
 import { useContext } from 'react'
 import { Context } from '@context/GlobalContext'
 import { SnackbarType } from '@utils/enums'
-import { ApiResponse, CategoryTypes, GetCategory } from '@custom-types'
+import { CategoryTypes, GetCategory } from '@custom-types'
 import { useSWRCategories } from '@hooks/useSWRCategories'
 import { openSnackbar } from '@context/actions'
 import { clientPostApi } from '@config/api_client'
@@ -48,28 +48,28 @@ export const Form = ({ categories }: Props) => {
     onSubmit: async (values, helpers) => {
       helpers.setSubmitting(true)
 
-      const res = await clientPostApi<
-        ApiResponse<CategoryTypes[]>,
-        FormTypes[]
-      >('api/categories/add', [values])
+      const res = await clientPostApi<CategoryTypes[], FormTypes[]>(
+        'api/categories/add',
+        [values]
+      )
 
-      if (res.data.success === true) {
+      if (res.success === true) {
         dispatch(
           openSnackbar(
-            `${res.data.data[0].name} was added into ${res.data.data[0].type} category`,
+            `${res.data[0].name} was added into ${res.data[0].type} category`,
             SnackbarType.SUCCESS
           )
         )
 
         // Mutate categories by adding new category
-        const updatedCategories = categoriesData.concat(res.data.data)
+        const updatedCategories = categoriesData.concat(res.data)
 
         mutate(updatedCategories, false)
 
         helpers.resetForm()
         ref.current?.focus()
       } else {
-        dispatch(openSnackbar(res.data.message, SnackbarType.ERROR))
+        dispatch(openSnackbar(res.message, SnackbarType.ERROR))
       }
 
       helpers.setSubmitting(false)

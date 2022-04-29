@@ -5,7 +5,6 @@ import { SERVER_URL } from '@config/url'
 import { getAvatar } from '@utils/avatar'
 import { useUserData } from '@hooks/useSWRUser'
 import { clientGetApi } from '@config/api_client'
-import { ApiResponseSuccess } from '@custom-types'
 
 export const AuthMenu = () => {
   const { data } = useUserData()
@@ -13,9 +12,9 @@ export const AuthMenu = () => {
   const router = useRouter()
 
   const logout = async () => {
-    const res = await clientGetApi<ApiResponseSuccess<never>>('/api/logout')
+    const res = await clientGetApi('/api/logout')
 
-    if (res.data.success) router.push('/')
+    if (res.success) router.push('/')
   }
 
   if (!data) return null

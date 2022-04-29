@@ -9,7 +9,7 @@ import {
 } from '@mui/material'
 import { useContext, useState } from 'react'
 import DeleteIcon from '@mui/icons-material/Delete'
-import { ApiResponse, CategoryApi, GetCategory } from '@custom-types'
+import { CategoryApi, GetCategory } from '@custom-types'
 import { BudgetType, SnackbarType } from '@utils/enums'
 import { Context } from '@context/GlobalContext'
 import { DialogConfirm } from './DialogConfirm'
@@ -66,15 +66,13 @@ export const Category = ({ budgetType, categories }: Props) => {
     )
 
     mutate(updatedCategories, false)
-    const res = await clientDeleteApi<ApiResponse<CategoryApi>>(
+    const res = await clientDeleteApi<CategoryApi>(
       `api/categories/delete/${idToDelete}`
     )
 
-    if (res.data.success === true)
-      dispatch(
-        openSnackbar(`${res.data.data.name} deleted!`, SnackbarType.SUCCESS)
-      )
-    else dispatch(openSnackbar(res.data.message, SnackbarType.ERROR))
+    if (res.success === true)
+      dispatch(openSnackbar(`${res.data.name} deleted!`, SnackbarType.SUCCESS))
+    else dispatch(openSnackbar(res.message, SnackbarType.ERROR))
 
     setIdToDelete(null)
     setMoney(null)

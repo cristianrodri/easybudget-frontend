@@ -1,13 +1,13 @@
 import { useContext } from 'react'
 import useSWR from 'swr'
-import { AddCategory, ApiResponseSuccess, Budget, User } from '@custom-types'
+import { AddCategory, Budget, User } from '@custom-types'
 import { clientGetApi } from '@config/api_client'
 import { Context } from '@context/GlobalContext'
 import { getCustomDate } from '@utils/dates'
 
 // Fetcher function when useSWR hook api is called
 const fetcher = (url: string) =>
-  clientGetApi<ApiResponseSuccess<User>>(url).then(res => res.data.data)
+  clientGetApi<User>(url).then(res => res.success === true && res.data)
 
 // Custom hook which get user data by useSWR hook
 export const useUserData = () => {

@@ -1,12 +1,12 @@
 import { useContext } from 'react'
-import { ApiResponseSuccess, Budget, Url } from '@custom-types'
+import { Budget, Url } from '@custom-types'
 import useSWR from 'swr'
 import { clientGetApi } from '@config/api_client'
 import { Context } from '@context/GlobalContext'
 import { budgetHasBeenDeleted, isDeletingBudget } from '@context/actions'
 
 const fetcher = (url: Url) =>
-  clientGetApi<ApiResponseSuccess<Budget[]>>(url).then(res => res.data.data)
+  clientGetApi<Budget[]>(url).then(res => res.success === true && res.data)
 
 export const useSWRLatestBudgets = () => {
   const LIMIT_BUDGETS = 5
@@ -27,13 +27,13 @@ export const useSWRLatestBudgets = () => {
 
     // Check if budget has been deleted by comparing the current length with the new length
     if (filteredBudgets.length !== data.length) {
-      mutate(async prevData => {
+      mutate(async prevBudgets => {
         dispatch(isDeletingBudget())
 
-        const { data } = await clientGetApi<typeof prevData>(API_URL)
+        const res = await clientGetApi<Budget[]>(API_URL)
         dispatch(budgetHasBeenDeleted())
 
-        return data
+        return res.success === true ? res.data : prevBudgets
       })
     }
   }
