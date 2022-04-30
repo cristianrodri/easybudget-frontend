@@ -1,4 +1,4 @@
-import { CategoryTypes } from '@custom-types'
+import { Budget, CategoryTypes } from '@custom-types'
 import { SnackbarType } from '@utils/enums'
 import { Action } from './enum'
 
@@ -24,7 +24,7 @@ export interface ContextValues {
 
   // Budget deletion dialog
   dialogDeletionOpen: boolean
-  budgetIdToDelete: number
+  budgetToDelete: Budget
   isDeletingBudget: boolean
 }
 
@@ -56,7 +56,7 @@ export type CloseCategoryDialog = {
 
 export type DialogDeletionOpen = {
   type: Action.DIALOG_DELETION_OPEN
-  payload: number
+  payload: Budget
 }
 
 export type DialogDeletionClose = {

@@ -51,7 +51,7 @@ export const DialogCategory = () => {
         }}
       >
         {categoryDialog.budgets.map(budget => (
-          <BudgetDescription key={budget.id} {...budget} isDialog />
+          <BudgetDescription key={budget.id} budget={budget} isDialog />
         ))}
       </DialogContent>
       <DialogActions>

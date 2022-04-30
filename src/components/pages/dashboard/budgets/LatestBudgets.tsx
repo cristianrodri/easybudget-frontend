@@ -2,9 +2,14 @@ import { Stack, Typography } from '@mui/material'
 import { BudgetDescription } from '../BudgetDescription'
 import { Loading } from './Loading'
 import { useSWRLatestBudgets } from '@hooks/useSWRLatestBudgets'
+import { useContext } from 'react'
+import { Context } from '@context/GlobalContext'
 
 const LatestBudgets = () => {
   const { data } = useSWRLatestBudgets()
+  const {
+    values: { isDeletingBudget }
+  } = useContext(Context)
 
   return (
     <Stack
@@ -17,10 +22,13 @@ const LatestBudgets = () => {
       </Typography>
       {/* Budgets Container */}
       <Stack px={4} py={2} spacing={2}>
-        {data?.map(budget => (
-          <BudgetDescription key={budget.id} {...budget} />
-        ))}
-        {!data && Array.from({ length: 5 }, (_, i) => <Loading key={i} />)}
+        {!isDeletingBudget &&
+          data?.map(budget => (
+            <BudgetDescription key={budget.id} budget={budget} />
+          ))}
+        {!data || isDeletingBudget
+          ? Array.from({ length: 5 }, (_, i) => <Loading key={i} />)
+          : null}
       </Stack>
     </Stack>
   )

@@ -12,6 +12,7 @@ import {
 } from './types'
 import { Action } from './enum'
 import { SnackbarType } from '@utils/enums'
+import { Budget } from '@custom-types'
 
 export const openSnackbar = (
   message: string,
@@ -57,8 +58,8 @@ export const closeCategoryDialog = (): CloseCategoryDialog => {
   return { type: Action.CLOSE_CATEGORY_DIALOG }
 }
 
-export const openDialogDeletion = (id: number): DialogDeletionOpen => {
-  return { type: Action.DIALOG_DELETION_OPEN, payload: id }
+export const openDialogDeletion = (budget: Budget): DialogDeletionOpen => {
+  return { type: Action.DIALOG_DELETION_OPEN, payload: budget }
 }
 
 export const closeDialogDeletion = (): DialogDeletionClose => {

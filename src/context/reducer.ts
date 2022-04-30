@@ -18,7 +18,7 @@ export const initialState: ContextValues = {
     type: null
   },
   dialogDeletionOpen: false,
-  budgetIdToDelete: null,
+  budgetToDelete: null,
   isDeletingBudget: false
 }
 
@@ -64,14 +64,14 @@ export const reducer = (
       return {
         ...state,
         dialogDeletionOpen: true,
-        budgetIdToDelete: action.payload
+        budgetToDelete: action.payload
       }
 
     case Action.DIALOG_DELETION_CLOSE:
       return {
         ...state,
         dialogDeletionOpen: false,
-        budgetIdToDelete: null
+        budgetToDelete: null
       }
 
     case Action.IS_DELETING_BUDGET:
@@ -83,7 +83,8 @@ export const reducer = (
     case Action.BUDGET_HAS_BEEN_DELETED:
       return {
         ...state,
-        isDeletingBudget: false
+        isDeletingBudget: false,
+        budgetToDelete: null
       }
 
     default:

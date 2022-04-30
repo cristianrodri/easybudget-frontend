@@ -22,8 +22,8 @@ export const useSWRLatestBudgets = () => {
   }
 
   // This function will be called to delete a budget by mutating it if some budget has been deleted
-  const mutateBydeletingBudget = (id: number) => {
-    const filteredBudgets = data.filter(b => b.id !== id)
+  const mutateBydeletingBudget = (budget: Budget) => {
+    const filteredBudgets = data.filter(b => b.id !== budget.id)
 
     // Check if budget has been deleted by comparing the current length with the new length
     if (filteredBudgets.length !== data.length) {
@@ -31,10 +31,9 @@ export const useSWRLatestBudgets = () => {
         dispatch(isDeletingBudget())
 
         const res = await clientGetApi<Budget[]>(API_URL)
-        dispatch(budgetHasBeenDeleted())
 
         return res.success === true ? res.data : prevBudgets
-      })
+      }).then(() => dispatch(budgetHasBeenDeleted()))
     }
   }
 

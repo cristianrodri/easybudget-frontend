@@ -10,23 +10,18 @@ import { colorDescription } from '@utils/color'
 import { Context } from '@context/GlobalContext'
 import { openDialogDeletion } from '@context/actions'
 
-type Props = Budget & {
+type Props = {
+  budget: Budget
   isDialog?: boolean
 }
 
-export const BudgetDescription = ({
-  id,
-  description,
-  money,
-  date,
-  category,
-  isDialog
-}: Props) => {
+export const BudgetDescription = ({ budget, isDialog }: Props) => {
   const { dispatch } = useContext(Context)
+  const { description, money, date, category } = budget
   const type = typeof category !== 'number' ? category.type : ('' as BudgetType)
 
   const handleDeleteClick = () => {
-    dispatch(openDialogDeletion(id))
+    dispatch(openDialogDeletion(budget))
   }
 
   return (
