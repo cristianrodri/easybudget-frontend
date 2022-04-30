@@ -2,6 +2,7 @@ import {
   BudgetHasBeenDeleted,
   CategoryDialog,
   ChangeWalletDate,
+  ClearGlobalState,
   CloseCategoryDialog,
   CloseSnackbar,
   DialogDeletionClose,
@@ -74,6 +75,10 @@ export const budgetHasBeenDeleted = (): BudgetHasBeenDeleted => {
   return { type: Action.BUDGET_HAS_BEEN_DELETED }
 }
 
+export const clearGlobalState = (): ClearGlobalState => {
+  return { type: Action.CLEAR_GLOBAL_STATE }
+}
+
 export type ActionType =
   | OpenSnackbar
   | CloseSnackbar
@@ -84,3 +89,4 @@ export type ActionType =
   | DialogDeletionClose
   | IsDeletingBudget
   | BudgetHasBeenDeleted
+  | ClearGlobalState

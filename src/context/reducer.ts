@@ -87,6 +87,9 @@ export const reducer = (
         budgetToDelete: null
       }
 
+    case Action.CLEAR_GLOBAL_STATE:
+      return initialState
+
     default:
       return state
   }
