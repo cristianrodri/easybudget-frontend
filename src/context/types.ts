@@ -70,3 +70,7 @@ export type IsDeletingBudget = {
 export type BudgetHasBeenDeleted = {
   type: Action.BUDGET_HAS_BEEN_DELETED
 }
+
+export type ClearGlobalState = {
+  type: Action.CLEAR_GLOBAL_STATE
+}
