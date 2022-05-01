@@ -2,33 +2,15 @@ import {
   AppBar,
   Button,
   Dialog,
-  FormControl,
-  FormControlLabel,
-  FormHelperText,
-  FormLabel,
   IconButton,
-  InputLabel,
-  MenuItem,
-  Radio,
-  RadioGroup,
-  Select,
   Slide,
-  TextField,
   Theme,
   Toolbar,
   Typography
 } from '@mui/material'
 import { TransitionProps } from '@mui/material/transitions/transition'
-import {
-  ChangeEvent,
-  forwardRef,
-  ReactElement,
-  Ref,
-  useContext,
-  useState
-} from 'react'
+import { forwardRef, ReactElement, Ref, useContext, useState } from 'react'
 import CloseIcon from '@mui/icons-material/Close'
-import NumberFormat from 'react-number-format'
 import { number, object, SchemaOf, string } from 'yup'
 import { useFormik } from 'formik'
 import { Budget } from '@custom-types'
@@ -39,6 +21,10 @@ import { makeStyles } from '@mui/styles'
 import { useSWRLatestBudgets } from '@hooks/useSWRLatestBudgets'
 import { openSnackbar } from '@context/actions'
 import { clientPostApi } from '@config/api_client'
+import { MoneyFormat } from './form/MoneyFormat'
+import { Description } from './form/Description'
+import { BudgetTypeRadio } from './form/BudgetTypeRadio'
+import { CategorySelect } from './form/CategorySelect'
 
 interface Props {
   openDialog: boolean
@@ -141,15 +127,6 @@ const AddBudget = ({ openDialog, handleClose }: Props) => {
     }
   })
 
-  const handleChangeRadio = (e: ChangeEvent<HTMLInputElement>) => {
-    setBudgetType(e.target.value as BudgetType)
-    // When budget type is changed in radio button, display the first "budget type" into the select
-    const firstBudgetType = categories.find(
-      category => category.type === e.target.value
-    )
-    formik.setFieldValue('categoryId', firstBudgetType.id)
-  }
-
   const handleDialogClose = () => {
     formik.resetForm()
 
@@ -192,83 +169,31 @@ const AddBudget = ({ openDialog, handleClose }: Props) => {
         onSubmit={formik.handleSubmit}
         id="add-budget-form"
       >
-        <TextField
-          id="description"
-          label="Description"
-          name="description"
-          value={formik.values.description}
-          onChange={formik.handleChange}
-          variant="outlined"
-          fullWidth
-          error={
-            formik.touched.description && Boolean(formik.errors.description)
-          }
-          helperText={formik.touched.description && formik.errors.description}
+        <Description
+          description={formik.values.description}
+          handleChange={formik.handleChange}
+          touched={formik.touched.description}
+          error={formik.errors.description}
         />
-        <NumberFormat
-          id="money"
-          label="Amount"
-          name="money"
-          value={formik.values.money}
-          onValueChange={e => formik.setFieldValue('money', e.floatValue)}
-          customInput={TextField}
-          variant="outlined"
-          fullWidth
-          error={formik.touched.money && Boolean(formik.errors.money)}
-          helperText={formik.touched.money && formik.errors.money}
-          thousandSeparator="."
-          decimalSeparator=","
-          isNumericString
-          prefix="$"
+        <MoneyFormat
+          money={formik.values.money}
+          setFieldValue={formik.setFieldValue}
+          touched={formik.touched.money}
+          error={formik.errors.money}
         />
-        <FormControl component="fieldset">
-          <FormLabel component="legend">Budget Type</FormLabel>
-          <RadioGroup
-            row
-            aria-label="Type"
-            name="type"
-            onChange={handleChangeRadio}
-          >
-            <FormControlLabel
-              value="income"
-              control={<Radio />}
-              label="Income"
-            />
-            <FormControlLabel
-              value="expense"
-              control={<Radio />}
-              label="Expense"
-            />
-          </RadioGroup>
-        </FormControl>
-        <FormControl className={classes.formControlSelect}>
-          <InputLabel id="select-label">Category</InputLabel>
-          <Select
-            labelId="select-label"
-            id="categoryId"
-            name="categoryId"
-            value={formik.values.categoryId}
-            defaultValue={''}
-            onChange={formik.handleChange}
-            label="Category"
-            error={
-              formik.touched.categoryId && Boolean(formik.errors.categoryId)
-            }
-          >
-            {categories?.map(category => (
-              <MenuItem
-                key={category.id}
-                value={category.id}
-                style={{ display: budgetType !== category.type ? 'none' : '' }}
-              >
-                {category.name}
-              </MenuItem>
-            ))}
-          </Select>
-          <FormHelperText sx={{ color: theme => theme.palette.error.main }}>
-            {formik.touched.categoryId && formik.errors.categoryId}
-          </FormHelperText>
-        </FormControl>
+        <BudgetTypeRadio
+          setBudgetType={setBudgetType}
+          categories={categories}
+          setFieldValue={formik.setFieldValue}
+        />
+        <CategorySelect
+          categoryId={formik.values.categoryId}
+          categories={categories}
+          handleChange={formik.handleChange}
+          touched={formik.touched.categoryId}
+          error={formik.errors.categoryId}
+          budgetType={budgetType}
+        />
       </form>
     </Dialog>
   )

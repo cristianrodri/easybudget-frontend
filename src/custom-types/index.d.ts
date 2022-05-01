@@ -1,4 +1,5 @@
 import { BudgetType } from '@utils/enums'
+import { ChangeEvent } from 'react'
 
 export interface User {
   id: number
@@ -78,3 +79,11 @@ type ApiResponseError = {
 }
 
 type ApiResponse<T> = ApiResponseSuccess<T> | ApiResponseError
+
+/* FORMIK CUSTOM TYPES */
+type FormikHandleChange = {
+  (e: ChangeEvent): void
+  <T_1 = string | ChangeEvent>(field: T_1): T_1 extends ChangeEvent
+    ? void
+    : (e: string | ChangeEvent) => void
+}
