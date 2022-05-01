@@ -31,7 +31,7 @@ const Dashboard = () => {
         justifyContent="center"
         spacing={1}
       >
-        <Stack flex={1}>
+        <Stack flex={1} sx={{ minWidth: '70%' }}>
           <Header />
           <Summary />
           <Categories />
