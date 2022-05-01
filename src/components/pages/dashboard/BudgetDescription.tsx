@@ -1,26 +1,53 @@
 import { useContext } from 'react'
 import { Budget } from '@custom-types'
-import { Box, IconButton, Stack, Tooltip, Typography } from '@mui/material'
+import {
+  Box,
+  IconButton,
+  Stack,
+  Theme,
+  Tooltip,
+  Typography
+} from '@mui/material'
 import { getDayAndMonth } from '@utils/dates'
 import { BudgetType } from '@utils/enums'
 import { formatMoney } from '@utils/money'
 import { textCapitalize } from '@utils/string'
 import DeleteIcon from '@mui/icons-material/Delete'
+import EditIcon from '@mui/icons-material/Edit'
 import { colorDescription } from '@utils/color'
 import { Context } from '@context/GlobalContext'
 import { openDialogDeletion } from '@context/actions'
+import { makeStyles } from '@mui/styles'
 
 type Props = {
   budget: Budget
   isDialog?: boolean
 }
 
+const useStyles = makeStyles<Theme, { type: BudgetType }>(() => ({
+  icon: ({ type }) => ({
+    padding: 0,
+    color: colorDescription?.[type]?.main,
+    opacity: '0.5',
+    transition: 'opacity 0.3s',
+    '&:hover': {
+      opacity: '1',
+      backgroundColor: 'transparent'
+    }
+  })
+}))
+
 export const BudgetDescription = ({ budget, isDialog }: Props) => {
   const { dispatch } = useContext(Context)
   const { description, money, date, category } = budget
   const type = typeof category !== 'number' ? category.type : ('' as BudgetType)
+  const classes = useStyles({ type })
 
-  const handleDeleteClick = () => {
+  const handleEdit = () => {
+    return undefined
+  }
+
+  const handleDelete = () => {
     dispatch(openDialogDeletion(budget))
   }
 
@@ -52,11 +79,20 @@ export const BudgetDescription = ({ budget, isDialog }: Props) => {
             }}
           >
             {formatMoney(money)}
+            <Tooltip title="Edit" arrow>
+              <IconButton
+                aria-label="edit"
+                className={classes.icon}
+                onClick={handleEdit}
+              >
+                <EditIcon />
+              </IconButton>
+            </Tooltip>
             <Tooltip title="Delete" arrow>
               <IconButton
                 aria-label="delete"
-                sx={{ p: 0, color: colorDescription?.[type]?.main }}
-                onClick={handleDeleteClick}
+                className={classes.icon}
+                onClick={handleDelete}
               >
                 <DeleteIcon />
               </IconButton>

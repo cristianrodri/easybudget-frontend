@@ -10,6 +10,7 @@ import { Summary } from '@components/pages/dashboard/summary/Container'
 import { Categories } from '@components/pages/dashboard/categories/Container'
 import { DialogCategory } from '@components/pages/dashboard/DialogCategory'
 import { DialogDeletion } from '@components/pages/dashboard/DialogDeletion'
+import { DialogEdition } from '@components/pages/dashboard/DialogEdition'
 
 const Dashboard = () => {
   const [open, setOpen] = useState(false)
@@ -65,6 +66,7 @@ const Dashboard = () => {
       <AddBudget openDialog={open} handleClose={handleClose} />
       <DialogCategory />
       <DialogDeletion />
+      <DialogEdition />
     </Layout>
   )
 }

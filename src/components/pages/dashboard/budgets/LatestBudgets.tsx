@@ -13,7 +13,7 @@ const LatestBudgets = () => {
 
   return (
     <Stack
-      width={380}
+      width={420}
       sx={{ backgroundColor: theme => theme.palette.grey[200] }}
       alignSelf="baseline"
     >
