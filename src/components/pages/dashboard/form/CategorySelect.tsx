@@ -5,12 +5,12 @@ import {
   MenuItem,
   Select
 } from '@mui/material'
-import { AddCategory, FormikHandleChange } from '@custom-types'
+import { FormikHandleChange } from '@custom-types'
 import { BudgetType } from '@utils/enums'
+import { useUserData } from '@hooks/useSWRUser'
 
 interface Props {
   categoryId: string | number
-  categories: AddCategory[]
   handleChange: FormikHandleChange
   touched: boolean
   error: string
@@ -19,12 +19,19 @@ interface Props {
 
 export const CategorySelect = ({
   categoryId,
-  categories,
   handleChange,
   touched,
   error,
   budgetType
 }: Props) => {
+  const { data } = useUserData()
+
+  const categories = data?.categories.map(({ id, type, name }) => ({
+    id,
+    name,
+    type
+  }))
+
   return (
     <FormControl
       sx={{

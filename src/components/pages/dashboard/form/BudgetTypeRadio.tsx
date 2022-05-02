@@ -7,13 +7,12 @@ import {
   RadioGroup
 } from '@mui/material'
 import { BudgetType } from '@utils/enums'
-import { AddCategory } from '@custom-types'
 import { FormikErrors } from 'formik'
+import { useUserData } from '@hooks/useSWRUser'
 type CategoryId = {
   categoryId: string
 }
 interface Props {
-  categories: AddCategory[]
   setFieldValue: (
     field: 'categoryId',
     value: number,
@@ -22,11 +21,15 @@ interface Props {
   setBudgetType: (value: SetStateAction<BudgetType>) => void
 }
 
-export const BudgetTypeRadio = ({
-  categories,
-  setFieldValue,
-  setBudgetType
-}: Props) => {
+export const BudgetTypeRadio = ({ setFieldValue, setBudgetType }: Props) => {
+  const { data } = useUserData()
+
+  const categories = data?.categories.map(({ id, type, name }) => ({
+    id,
+    name,
+    type
+  }))
+
   const handleChangeRadio = (e: ChangeEvent<HTMLInputElement>) => {
     setBudgetType(e.target.value as BudgetType) // When budget type is changed in radio button, display the first "budget type" into the select
 

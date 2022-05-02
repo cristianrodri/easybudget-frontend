@@ -11,8 +11,6 @@ import {
 import { TransitionProps } from '@mui/material/transitions/transition'
 import { forwardRef, ReactElement, Ref, useContext, useState } from 'react'
 import CloseIcon from '@mui/icons-material/Close'
-import { number, object, SchemaOf, string } from 'yup'
-import { useFormik } from 'formik'
 import { Budget } from '@custom-types'
 import { BudgetType, SnackbarType } from '@utils/enums'
 import { Context } from '@context/GlobalContext'
@@ -25,6 +23,7 @@ import { MoneyFormat } from './form/MoneyFormat'
 import { Description } from './form/Description'
 import { BudgetTypeRadio } from './form/BudgetTypeRadio'
 import { CategorySelect } from './form/CategorySelect'
+import { useBudgetFormik } from '@hooks/useBudgetFormik'
 
 interface Props {
   openDialog: boolean
@@ -69,38 +68,19 @@ const Transition = forwardRef(function Transition(
 const AddBudget = ({ openDialog, handleClose }: Props) => {
   const { dispatch } = useContext(Context)
   const classes = useStyles()
-  const { data, mutateByAddingBudgetToCategory } = useUserData()
+  const { mutateByAddingBudgetToCategory } = useUserData()
   const { mutateByAddingNewBudget } = useSWRLatestBudgets()
   const [budgetType, setBudgetType] = useState<
     BudgetType.INCOME | BudgetType.EXPENSE
   >(null)
 
-  const categories = data?.categories.map(({ id, type, name }) => ({
-    id,
-    name,
-    type
-  }))
-
-  const validationSchema: SchemaOf<FormTypes> = object({
-    description: string()
-      .required('Description is required')
-      .min(2, 'Description must be at least 2 characters')
-      .max(50, 'Description must be at most 50 characters'),
-    money: number()
-      .transform(value => (isNaN(value) ? undefined : value))
-      .required('Amount is required')
-      .min(1, 'Amount must be greater than 0'),
-    categoryId: number().required('Category is required')
-  })
-
-  const formik = useFormik<FormTypes>({
-    initialValues: {
+  const formik = useBudgetFormik(
+    {
       description: '',
       money: null,
       categoryId: ''
     },
-    validationSchema,
-    onSubmit: async values => {
+    async values => {
       const res = await clientPostApi<Budget, FormTypes>(
         'api/budget/add',
         values
@@ -125,7 +105,7 @@ const AddBudget = ({ openDialog, handleClose }: Props) => {
         dispatch(openSnackbar(res.message, SnackbarType.ERROR))
       }
     }
-  })
+  )
 
   const handleDialogClose = () => {
     formik.resetForm()
@@ -183,12 +163,10 @@ const AddBudget = ({ openDialog, handleClose }: Props) => {
         />
         <BudgetTypeRadio
           setBudgetType={setBudgetType}
-          categories={categories}
           setFieldValue={formik.setFieldValue}
         />
         <CategorySelect
           categoryId={formik.values.categoryId}
-          categories={categories}
           handleChange={formik.handleChange}
           touched={formik.touched.categoryId}
           error={formik.errors.categoryId}
