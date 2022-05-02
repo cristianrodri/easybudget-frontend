@@ -1,33 +1,45 @@
 import { TextField } from '@mui/material'
 import { FormikErrors } from 'formik'
-import NumberFormat from 'react-number-format'
+import NumberFormat, { NumberFormatValues } from 'react-number-format'
 
 type MoneyType = { money: number }
 
-interface Props {
+type Props = {
   money: number
-  setFieldValue: (
+  touched?: boolean
+  error?: string
+  // Handling provided by formik
+  setFieldValue?: (
     field: 'money',
     value: number,
     shouldValidate?: boolean | undefined
   ) => Promise<FormikErrors<MoneyType>> | Promise<void>
-  touched: boolean
-  error: string
+  handleChange?: (values: NumberFormatValues) => void
 }
 
 export const MoneyFormat = ({
   money,
   setFieldValue,
   touched,
-  error
+  error,
+  handleChange
 }: Props) => {
+  const handleChangeMoney = (values: NumberFormatValues) => {
+    // If setFieldValue prop is provided, it means that the value is changed by formik, otherwise, is changed by the component which is provided its own state
+    if (!!setFieldValue) {
+      setFieldValue('money', values.floatValue)
+      return
+    }
+
+    handleChange(values)
+  }
   return (
     <NumberFormat
       id="money"
       label="Amount"
       name="money"
       value={money}
-      onValueChange={values => setFieldValue('money', values.floatValue)}
+      onValueChange={handleChangeMoney}
       customInput={TextField}
       variant="outlined"
       fullWidth
