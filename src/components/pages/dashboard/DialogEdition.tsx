@@ -59,7 +59,10 @@ export const DialogEdition = () => {
         sx={{
           display: 'flex',
           flexDirection: 'column',
-          gap: theme => theme.spacing(3)
+          gap: theme => theme.spacing(3),
+          '& > :first-child': {
+            mt: theme => theme.spacing(1)
+          }
         }}
       >
         <Description
