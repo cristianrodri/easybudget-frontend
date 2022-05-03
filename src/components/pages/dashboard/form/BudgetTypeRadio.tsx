@@ -7,17 +7,12 @@ import {
   RadioGroup
 } from '@mui/material'
 import { BudgetType } from '@utils/enums'
-import { FormikErrors } from 'formik'
 import { useUserData } from '@hooks/useSWRUser'
-type CategoryId = {
-  categoryId: string
-}
+import { FormikSetFieldType } from '@custom-types'
+
 interface Props {
-  setFieldValue: (
-    field: 'categoryId',
-    value: number,
-    shouldValidate?: boolean | undefined
-  ) => Promise<FormikErrors<CategoryId>> | Promise<void>
+  // Handling function provided by formik
+  setFieldValue: FormikSetFieldType<'categoryId', number>
   setBudgetType: (value: SetStateAction<BudgetType>) => void
 }
 

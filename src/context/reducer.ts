@@ -19,7 +19,9 @@ export const initialState: ContextValues = {
   },
   dialogDeletionOpen: false,
   budgetToDelete: null,
-  isDeletingBudget: false
+  isDeletingBudget: false,
+  dialogEditionOpen: false,
+  budgetToUpdate: null
 }
 
 export const reducer = (
@@ -85,6 +87,20 @@ export const reducer = (
         ...state,
         isDeletingBudget: false,
         budgetToDelete: null
+      }
+
+    case Action.DIALOG_EDITION_OPEN:
+      return {
+        ...state,
+        dialogEditionOpen: true,
+        budgetToUpdate: action.payload
+      }
+
+    case Action.DIALOG_EDITION_CLOSE:
+      return {
+        ...state,
+        dialogEditionOpen: false,
+        budgetToUpdate: null
       }
 
     case Action.CLEAR_GLOBAL_STATE:

@@ -1,23 +1,22 @@
-import { useState } from 'react'
 import TextField from '@mui/material/TextField'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
+import { FormikSetFieldType } from '@custom-types'
 
-export default function MaterialUIPickers() {
-  const [value, setValue] = useState<Date | null>(new Date())
+interface Props {
+  date: string
+  setFieldValue: FormikSetFieldType<'date', string>
+}
 
-  const handleChange = (newValue: Date | null) => {
-    setValue(newValue)
-  }
-
+export const DatePickerBudget = ({ date, setFieldValue }: Props) => {
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <DateTimePicker
         label="Date and Time"
         inputFormat="dd-MMM-yyyy HH:mm"
-        value={value}
-        onChange={handleChange}
+        value={new Date(date)}
+        onChange={newDate => setFieldValue('date', newDate.toISOString())}
         renderInput={params => <TextField {...params} />}
       />
     </LocalizationProvider>

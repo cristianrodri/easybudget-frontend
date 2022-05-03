@@ -1,18 +1,27 @@
 import { Budget } from '@custom-types'
 import { FormikHelpers, useFormik } from 'formik'
-import { number, object, SchemaOf, string } from 'yup'
+import { date, number, object, SchemaOf, string } from 'yup'
 
-type FormTypes = Omit<Budget, 'id' | 'date' | 'category'> & {
+export type AddTypes = Omit<Budget, 'id' | 'date' | 'category'> & {
   categoryId: number | string
 }
 
+export type EditTypes = AddTypes & Pick<Budget, 'date'>
+
+type FormTypes = AddTypes | EditTypes
+
 export const useBudgetFormik = (
-  initialValues: FormTypes,
+  type: 'add' | 'update',
   onSubmit: (
     values: FormTypes,
     formikHelpers?: FormikHelpers<FormTypes>
   ) => void
 ) => {
+  // If the parameter type is "update" the validation schema should have the date property, otherwise just is not included. Same applies to initialValues with the date property
+  const schemaDate =
+    type === 'update' ? { date: date().required('Date is required') } : {}
+  const dateValue = type === 'update' ? { date: null } : {}
+
   const validationSchema: SchemaOf<FormTypes> = object({
     description: string()
       .required('Description is required')
@@ -22,11 +31,17 @@ export const useBudgetFormik = (
       .transform(value => (isNaN(value) ? undefined : value))
       .required('Amount is required')
       .min(1, 'Amount must be greater than 0'),
-    categoryId: number().required('Category is required')
+    categoryId: number().required('Category is required'),
+    ...schemaDate
   })
 
   const formik = useFormik<FormTypes>({
-    initialValues,
+    initialValues: {
+      description: '',
+      money: null,
+      categoryId: '',
+      ...dateValue
+    },
     validationSchema,
     onSubmit
   })

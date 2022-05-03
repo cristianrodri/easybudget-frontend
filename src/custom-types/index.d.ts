@@ -87,3 +87,9 @@ type FormikHandleChange = {
     ? void
     : (e: string | ChangeEvent) => void
 }
+
+type FormikSetFieldType<T, D> = (
+  field: T,
+  value: D,
+  shouldValidate?: boolean | undefined
+) => Promise<FormikErrors<{ [T]: D }>> | Promise<void>

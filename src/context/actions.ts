@@ -7,6 +7,8 @@ import {
   CloseSnackbar,
   DialogDeletionClose,
   DialogDeletionOpen,
+  DialogEditionClose,
+  DialogEditionOpen,
   IsDeletingBudget,
   OpenSnackbar,
   ShowCategoryDialog
@@ -75,6 +77,14 @@ export const budgetHasBeenDeleted = (): BudgetHasBeenDeleted => {
   return { type: Action.BUDGET_HAS_BEEN_DELETED }
 }
 
+export const openDialogEdition = (budget: Budget): DialogEditionOpen => {
+  return { type: Action.DIALOG_EDITION_OPEN, payload: budget }
+}
+
+export const closeDialogEdition = (): DialogEditionClose => {
+  return { type: Action.DIALOG_EDITION_CLOSE }
+}
+
 export const clearGlobalState = (): ClearGlobalState => {
   return { type: Action.CLEAR_GLOBAL_STATE }
 }
@@ -89,4 +99,6 @@ export type ActionType =
   | DialogDeletionClose
   | IsDeletingBudget
   | BudgetHasBeenDeleted
+  | DialogEditionOpen
+  | DialogEditionClose
   | ClearGlobalState

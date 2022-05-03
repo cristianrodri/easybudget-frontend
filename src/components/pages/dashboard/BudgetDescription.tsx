@@ -16,7 +16,7 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
 import { colorDescription } from '@utils/color'
 import { Context } from '@context/GlobalContext'
-import { openDialogDeletion } from '@context/actions'
+import { openDialogDeletion, openDialogEdition } from '@context/actions'
 import { makeStyles } from '@mui/styles'
 
 type Props = {
@@ -44,7 +44,7 @@ export const BudgetDescription = ({ budget, isDialog }: Props) => {
   const classes = useStyles({ type })
 
   const handleEdit = () => {
-    return undefined
+    dispatch(openDialogEdition(budget))
   }
 
   const handleDelete = () => {

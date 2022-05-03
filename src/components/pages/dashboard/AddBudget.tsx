@@ -74,38 +74,28 @@ const AddBudget = ({ openDialog, handleClose }: Props) => {
     BudgetType.INCOME | BudgetType.EXPENSE
   >(null)
 
-  const formik = useBudgetFormik(
-    {
-      description: '',
-      money: null,
-      categoryId: ''
-    },
-    async values => {
-      const res = await clientPostApi<Budget, FormTypes>(
-        'api/budget/add',
-        values
+  const formik = useBudgetFormik('add', async values => {
+    const res = await clientPostApi<Budget, FormTypes>('api/budget/add', values)
+
+    if (res.success === true) {
+      const newBudget = res.data
+
+      // Mutate SWR data by adding new budget into related category
+      mutateByAddingBudgetToCategory(newBudget)
+
+      // Mutate Latest budgets data by adding new budget to SWR data
+      mutateByAddingNewBudget(newBudget)
+
+      dispatch(
+        openSnackbar(`${res.data.description} added!`, SnackbarType.SUCCESS)
       )
 
-      if (res.success === true) {
-        const newBudget = res.data
-
-        // Mutate SWR data by adding new budget into related category
-        mutateByAddingBudgetToCategory(newBudget)
-
-        // Mutate Latest budgets data by adding new budget to SWR data
-        mutateByAddingNewBudget(newBudget)
-
-        dispatch(
-          openSnackbar(`${res.data.description} added!`, SnackbarType.SUCCESS)
-        )
-
-        // Close the dialog
-        handleDialogClose()
-      } else {
-        dispatch(openSnackbar(res.message, SnackbarType.ERROR))
-      }
+      // Close the dialog
+      handleDialogClose()
+    } else {
+      dispatch(openSnackbar(res.message, SnackbarType.ERROR))
     }
-  )
+  })
 
   const handleDialogClose = () => {
     formik.resetForm()
