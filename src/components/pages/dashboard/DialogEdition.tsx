@@ -12,30 +12,36 @@ import { CategorySelect } from './form/CategorySelect'
 import { Description } from './form/Description'
 import { Context } from '@context/GlobalContext'
 import { closeDialogEdition } from '@context/actions'
-import { AddCategory } from '@custom-types'
 import { DatePickerBudget } from './DatePickerBudget'
+import { useUserData } from '@hooks/useSWRUser'
+import { getCategoryDataFromBudget } from '@utils/budget'
 
 export const DialogEdition = () => {
   const { values, dispatch } = useContext(Context)
+  const { data } = useUserData()
   const { budgetToUpdate: budget, dialogEditionOpen } = values
   const [budgetType, setBudgetType] = useState<
     BudgetType.INCOME | BudgetType.EXPENSE
   >(null)
-
-  useEffect(() => {
-    if (budget) {
-      formik.setFieldValue('description', budget.description)
-      formik.setFieldValue('money', budget.money)
-      formik.setFieldValue('categoryId', (budget.category as AddCategory).id)
-      setBudgetType((budget.category as AddCategory).type)
-      formik.setFieldValue('date', budget ? new Date(budget.date) : null)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [budget])
-
   const formik = useBudgetFormik('update', async () => {
     return
   })
+
+  useEffect(() => {
+    if (budget) {
+      const budgetCategory = getCategoryDataFromBudget(
+        budget.category,
+        data.categories
+      )
+
+      formik.setFieldValue('description', budget.description)
+      formik.setFieldValue('money', budget.money)
+      formik.setFieldValue('categoryId', budgetCategory.id)
+      setBudgetType(budgetCategory.type)
+      formik.setFieldValue('date', new Date(budget.date))
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [budget])
 
   const handleClose = () => {
     dispatch(closeDialogEdition())
