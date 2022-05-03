@@ -11,12 +11,17 @@ import { useUserData } from '@hooks/useSWRUser'
 import { FormikSetFieldType } from '@custom-types'
 
 interface Props {
+  budgetType: BudgetType
+  setBudgetType: (value: SetStateAction<BudgetType>) => void
   // Handling function provided by formik
   setFieldValue: FormikSetFieldType<'categoryId', number>
-  setBudgetType: (value: SetStateAction<BudgetType>) => void
 }
 
-export const BudgetTypeRadio = ({ setFieldValue, setBudgetType }: Props) => {
+export const BudgetTypeRadio = ({
+  budgetType,
+  setFieldValue,
+  setBudgetType
+}: Props) => {
   const { data } = useUserData()
 
   const categories = data?.categories.map(({ id, type, name }) => ({
@@ -43,8 +48,18 @@ export const BudgetTypeRadio = ({ setFieldValue, setBudgetType }: Props) => {
         name="type"
         onChange={handleChangeRadio}
       >
-        <FormControlLabel value="income" control={<Radio />} label="Income" />
-        <FormControlLabel value="expense" control={<Radio />} label="Expense" />
+        <FormControlLabel
+          value="income"
+          control={<Radio />}
+          checked={budgetType === BudgetType.INCOME}
+          label="Income"
+        />
+        <FormControlLabel
+          value="expense"
+          control={<Radio />}
+          checked={budgetType === BudgetType.EXPENSE}
+          label="Expense"
+        />
       </RadioGroup>
     </FormControl>
   )

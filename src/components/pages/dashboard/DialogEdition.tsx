@@ -23,11 +23,13 @@ export const DialogEdition = () => {
   >(null)
 
   useEffect(() => {
-    formik.setFieldValue('description', budget?.description)
-    formik.setFieldValue('money', budget?.money)
-    formik.setFieldValue('categoryId', (budget?.category as AddCategory)?.id)
-    setBudgetType((budget?.category as AddCategory)?.type)
-    formik.setFieldValue('date', budget ? new Date(budget.date) : null)
+    if (budget) {
+      formik.setFieldValue('description', budget.description)
+      formik.setFieldValue('money', budget.money)
+      formik.setFieldValue('categoryId', (budget.category as AddCategory).id)
+      setBudgetType((budget.category as AddCategory).type)
+      formik.setFieldValue('date', budget ? new Date(budget.date) : null)
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [budget])
 
@@ -67,6 +69,7 @@ export const DialogEdition = () => {
           error={formik.errors.money}
         />
         <BudgetTypeRadio
+          budgetType={budgetType}
           setBudgetType={setBudgetType}
           setFieldValue={formik.setFieldValue}
         />

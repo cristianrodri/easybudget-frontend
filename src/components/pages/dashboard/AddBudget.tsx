@@ -152,6 +152,7 @@ const AddBudget = ({ openDialog, handleClose }: Props) => {
           error={formik.errors.money}
         />
         <BudgetTypeRadio
+          budgetType={budgetType}
           setBudgetType={setBudgetType}
           setFieldValue={formik.setFieldValue}
         />
