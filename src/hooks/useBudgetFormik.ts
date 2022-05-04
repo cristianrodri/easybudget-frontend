@@ -6,9 +6,9 @@ export type AddTypes = Omit<Budget, 'id' | 'date' | 'category'> & {
   categoryId: number | string
 }
 
-export type EditTypes = AddTypes & Pick<Budget, 'date'>
+export type EditBudgetTypes = AddTypes & Pick<Budget, 'date'>
 
-type FormTypes = AddTypes | EditTypes
+type FormTypes = AddTypes | EditBudgetTypes
 
 export const useBudgetFormik = (
   type: 'add' | 'update',

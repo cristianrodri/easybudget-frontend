@@ -7,7 +7,7 @@ import DialogTitle from '@mui/material/DialogTitle'
 import { MoneyFormat } from './form/MoneyFormat'
 import { BudgetType } from '@utils/enums'
 import { BudgetTypeRadio } from './form/BudgetTypeRadio'
-import { EditTypes, useBudgetFormik } from '@hooks/useBudgetFormik'
+import { EditBudgetTypes, useBudgetFormik } from '@hooks/useBudgetFormik'
 import { CategorySelect } from './form/CategorySelect'
 import { Description } from './form/Description'
 import { Context } from '@context/GlobalContext'
@@ -23,8 +23,8 @@ export const DialogEdition = () => {
   const [budgetType, setBudgetType] = useState<
     BudgetType.INCOME | BudgetType.EXPENSE
   >(null)
-  const formik = useBudgetFormik('update', async () => {
-    return
+  const formik = useBudgetFormik('update', async (values: EditBudgetTypes) => {
+    return values
   })
 
   useEffect(() => {
@@ -90,7 +90,7 @@ export const DialogEdition = () => {
           budgetType={budgetType}
         />
         <DatePickerBudget
-          date={(formik.values as EditTypes).date}
+          date={(formik.values as EditBudgetTypes).date}
           setFieldValue={formik.setFieldValue}
         />
       </DialogContent>

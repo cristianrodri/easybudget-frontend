@@ -51,3 +51,9 @@ export const dateTitle = (walletDate: WalletDate) => {
     new Date(walletDate.year as number, walletDate.month as number)
   )} ${walletDate.year as number}`
 }
+
+// Check if the first date of the parameter is less than the second date of the parameter
+export const isBeforeDate = (
+  firstDate: Date | string,
+  secondDate: Date | string
+) => new Date(firstDate).getTime() < new Date(secondDate).getTime()
