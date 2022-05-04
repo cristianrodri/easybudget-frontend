@@ -45,6 +45,10 @@ export const DialogEdition = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [budget])
 
+  const handleEdit = () => {
+    formik.handleSubmit()
+  }
+
   const handleClose = () => {
     dispatch(closeDialogEdition())
   }
@@ -98,7 +102,7 @@ export const DialogEdition = () => {
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>Cancel</Button>
-        <Button onClick={handleClose}>Edit</Button>
+        <Button onClick={handleEdit}>Edit</Button>
       </DialogActions>
     </Dialog>
   )
