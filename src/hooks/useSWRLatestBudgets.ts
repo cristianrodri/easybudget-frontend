@@ -20,10 +20,8 @@ export const useSWRLatestBudgets = () => {
   const { data: userData } = useUserData()
   const { data, mutate } = useSWR(API_URL, fetcher)
 
-  const reloadAPI = () => {
-    mutate(async prevBudgets => {
-      dispatch(isReloadingBudget())
-
+  const reloadLatestBudgetsAPI = async () => {
+    return mutate(async prevBudgets => {
       const res = await clientGetApi<Budget[]>(API_URL)
 
       return res.success === true ? res.data : prevBudgets
@@ -39,13 +37,19 @@ export const useSWRLatestBudgets = () => {
   }
 
   /* MUTATE BY DELETING */
-  // This function will be called to delete a budget by mutating it if some budget has been deleted
-  const mutateBydeletingBudget = (budget: Budget) => {
+  // Check if some budget has been deleted by comparing the current length with the new length
+  const isDeletedBudgetFromLatest = (budget: Budget) => {
     const filteredBudgets = data.filter(b => b.id !== budget.id)
 
-    // Check if budget has been deleted by comparing the current length with the new length
-    if (filteredBudgets.length !== data.length) {
-      reloadAPI()
+    if (filteredBudgets.length !== data.length) return true
+
+    return false
+  }
+
+  // This function will be called to delete a budget by mutating it if some budget has been deleted
+  const loadLatestBudgets = (budget: Budget) => {
+    if (isDeletedBudgetFromLatest(budget)) {
+      dispatch(isReloadingBudget())
     }
   }
 
@@ -62,7 +66,7 @@ export const useSWRLatestBudgets = () => {
       const lastBudget = data[LIMIT_BUDGETS - 1]
 
       if (isBeforeDate(budgetEditionForm.date, lastBudget.date)) {
-        reloadAPI()
+        reloadLatestBudgetsAPI()
         return
       }
 
@@ -90,7 +94,9 @@ export const useSWRLatestBudgets = () => {
     data,
     mutate,
     mutateByAddingNewBudget,
-    mutateBydeletingBudget,
-    mutateByEditionBudget
+    loadLatestBudgets,
+    mutateByEditionBudget,
+    isDeletedBudgetFromLatest,
+    reloadLatestBudgetsAPI
   }
 }

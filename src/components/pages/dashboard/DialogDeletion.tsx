@@ -14,7 +14,11 @@ import { SnackbarType } from '@utils/enums'
 export const DialogDeletion = () => {
   const { values, dispatch } = useContext(Context)
   const { dialogDeletionOpen, budgetToDelete } = values
-  const { mutateBydeletingBudget } = useSWRLatestBudgets()
+  const {
+    loadLatestBudgets,
+    isDeletedBudgetFromLatest,
+    reloadLatestBudgetsAPI
+  } = useSWRLatestBudgets()
   const { mutateCategoryByDeletingBudget } = useUserData()
 
   const handleClose = () => {
@@ -24,8 +28,8 @@ export const DialogDeletion = () => {
   const handleDeletion = async () => {
     dispatch(closeDialogDeletion())
 
-    // Mutate latest budgets data if it applies
-    mutateBydeletingBudget(budgetToDelete)
+    // The latest budgets will be using loading component if the deleted budget is within
+    loadLatestBudgets(budgetToDelete)
 
     // Mutate categories by deleting the budget and updating the money
     mutateCategoryByDeletingBudget(budgetToDelete)
@@ -35,6 +39,11 @@ export const DialogDeletion = () => {
     )
 
     if (res.success === true) {
+      // If deleted budget comes from latest budgets, call the API to update the data and keep using the loading component
+      if (isDeletedBudgetFromLatest(budgetToDelete)) {
+        await reloadLatestBudgetsAPI()
+      }
+
       dispatch(
         openSnackbar(
           `${res.data.description} has been deleted successfully`,
