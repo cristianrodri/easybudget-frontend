@@ -8,7 +8,7 @@ import { Context } from '@context/GlobalContext'
 const LatestBudgets = () => {
   const { data } = useSWRLatestBudgets()
   const {
-    values: { isDeletingBudget }
+    values: { isReloadingBudget }
   } = useContext(Context)
 
   return (
@@ -22,11 +22,11 @@ const LatestBudgets = () => {
       </Typography>
       {/* Budgets Container */}
       <Stack px={4} py={2} spacing={2}>
-        {!isDeletingBudget &&
+        {!isReloadingBudget &&
           data?.map(budget => (
             <BudgetDescription key={budget.id} budget={budget} />
           ))}
-        {!data || isDeletingBudget
+        {!data || isReloadingBudget
           ? Array.from({ length: 5 }, (_, i) => <Loading key={i} />)
           : null}
       </Stack>

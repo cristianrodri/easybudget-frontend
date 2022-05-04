@@ -3,11 +3,11 @@ import { Budget, Url } from '@custom-types'
 import useSWR from 'swr'
 import { clientGetApi } from '@config/api_client'
 import { Context } from '@context/GlobalContext'
-import { budgetHasBeenDeleted, isDeletingBudget } from '@context/actions'
 import { EditBudgetTypes } from './useBudgetFormik'
 import { isBeforeDate } from '@utils/dates'
 import { getCategoryDataFromBudget } from '@utils/budget'
 import { useUserData } from './useSWRUser'
+import { budgetHasBeenReloaded, isReloadingBudget } from '@context/actions'
 
 const fetcher = (url: Url) =>
   clientGetApi<Budget[]>(url).then(res => res.success === true && res.data)
@@ -20,6 +20,17 @@ export const useSWRLatestBudgets = () => {
   const { data: userData } = useUserData()
   const { data, mutate } = useSWR(API_URL, fetcher)
 
+  const reloadAPI = () => {
+    mutate(async prevBudgets => {
+      dispatch(isReloadingBudget())
+
+      const res = await clientGetApi<Budget[]>(API_URL)
+
+      return res.success === true ? res.data : prevBudgets
+    }).then(() => dispatch(budgetHasBeenReloaded()))
+  }
+
+  /* MUTATE BY ADDING */
   // This function will be called after a budget is created in post API
   const mutateByAddingNewBudget = (newBudget: Budget) => {
     const updatedBudgets = [newBudget, ...data.slice(0, LIMIT_BUDGETS - 1)]
@@ -27,22 +38,18 @@ export const useSWRLatestBudgets = () => {
     mutate(updatedBudgets, false)
   }
 
+  /* MUTATE BY DELETING */
   // This function will be called to delete a budget by mutating it if some budget has been deleted
   const mutateBydeletingBudget = (budget: Budget) => {
     const filteredBudgets = data.filter(b => b.id !== budget.id)
 
     // Check if budget has been deleted by comparing the current length with the new length
     if (filteredBudgets.length !== data.length) {
-      mutate(async prevBudgets => {
-        dispatch(isDeletingBudget())
-
-        const res = await clientGetApi<Budget[]>(API_URL)
-
-        return res.success === true ? res.data : prevBudgets
-      }).then(() => dispatch(budgetHasBeenDeleted()))
+      reloadAPI()
     }
   }
 
+  /* MUTATE BY EDITING */
   // This function will be called to update a budget by mutating it if the updated budgets belongs to latest budgets data
   const mutateByEditionBudget = (budgetEditionForm: EditBudgetTypes) => {
     const foundBudget = data.find(budget => budget.id === budgetToUpdate.id)
@@ -55,7 +62,7 @@ export const useSWRLatestBudgets = () => {
       const lastBudget = data[LIMIT_BUDGETS - 1]
 
       if (isBeforeDate(budgetEditionForm.date, lastBudget.date)) {
-        // RELOAD THE API
+        reloadAPI()
         return
       }
 

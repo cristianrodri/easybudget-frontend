@@ -15,16 +15,18 @@ import { closeDialogEdition } from '@context/actions'
 import { DatePickerBudget } from './DatePickerBudget'
 import { useUserData } from '@hooks/useSWRUser'
 import { getCategoryDataFromBudget } from '@utils/budget'
+import { useSWRLatestBudgets } from '@hooks/useSWRLatestBudgets'
 
 export const DialogEdition = () => {
   const { values, dispatch } = useContext(Context)
   const { data } = useUserData()
+  const { mutateByEditionBudget } = useSWRLatestBudgets()
   const { budgetToUpdate: budget, dialogEditionOpen } = values
   const [budgetType, setBudgetType] = useState<
     BudgetType.INCOME | BudgetType.EXPENSE
   >(null)
   const formik = useBudgetFormik('update', async (values: EditBudgetTypes) => {
-    return values
+    mutateByEditionBudget(values)
   })
 
   useEffect(() => {
@@ -60,7 +62,7 @@ export const DialogEdition = () => {
           display: 'flex',
           flexDirection: 'column',
           gap: theme => theme.spacing(3),
-          '& > :first-child': {
+          '& > :first-of-type': {
             mt: theme => theme.spacing(1)
           }
         }}

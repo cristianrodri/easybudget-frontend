@@ -25,7 +25,7 @@ export interface ContextValues {
   // Budget deletion dialog
   dialogDeletionOpen: boolean
   budgetToDelete: Budget
-  isDeletingBudget: boolean
+  isReloadingBudget: boolean
 
   // Budget edition dialog
   dialogEditionOpen: boolean
@@ -67,12 +67,12 @@ export type DialogDeletionClose = {
   type: Action.DIALOG_DELETION_CLOSE
 }
 
-export type IsDeletingBudget = {
-  type: Action.IS_DELETING_BUDGET
+export type IsReloadingBudget = {
+  type: Action.IS_RELOADING_BUDGET
 }
 
-export type BudgetHasBeenDeleted = {
-  type: Action.BUDGET_HAS_BEEN_DELETED
+export type BudgetHasBeenReloaded = {
+  type: Action.BUDGET_HAS_BEEN_RELOADED
 }
 
 export type DialogEditionOpen = {

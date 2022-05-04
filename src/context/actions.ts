@@ -1,5 +1,5 @@
 import {
-  BudgetHasBeenDeleted,
+  BudgetHasBeenReloaded,
   CategoryDialog,
   ChangeWalletDate,
   ClearGlobalState,
@@ -9,7 +9,7 @@ import {
   DialogDeletionOpen,
   DialogEditionClose,
   DialogEditionOpen,
-  IsDeletingBudget,
+  IsReloadingBudget,
   OpenSnackbar,
   ShowCategoryDialog
 } from './types'
@@ -69,12 +69,12 @@ export const closeDialogDeletion = (): DialogDeletionClose => {
   return { type: Action.DIALOG_DELETION_CLOSE }
 }
 
-export const isDeletingBudget = (): IsDeletingBudget => {
-  return { type: Action.IS_DELETING_BUDGET }
+export const isReloadingBudget = (): IsReloadingBudget => {
+  return { type: Action.IS_RELOADING_BUDGET }
 }
 
-export const budgetHasBeenDeleted = (): BudgetHasBeenDeleted => {
-  return { type: Action.BUDGET_HAS_BEEN_DELETED }
+export const budgetHasBeenReloaded = (): BudgetHasBeenReloaded => {
+  return { type: Action.BUDGET_HAS_BEEN_RELOADED }
 }
 
 export const openDialogEdition = (budget: Budget): DialogEditionOpen => {
@@ -97,8 +97,8 @@ export type ActionType =
   | CloseCategoryDialog
   | DialogDeletionOpen
   | DialogDeletionClose
-  | IsDeletingBudget
-  | BudgetHasBeenDeleted
+  | IsReloadingBudget
+  | BudgetHasBeenReloaded
   | DialogEditionOpen
   | DialogEditionClose
   | ClearGlobalState
