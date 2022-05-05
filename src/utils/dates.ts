@@ -1,4 +1,5 @@
 import { WalletDate } from '@context/types'
+import { Budget } from '@custom-types'
 
 export const isAllTime = (walletDate: WalletDate) => walletDate.year === 'all'
 const isCompleteYear = (walletDate: WalletDate) => walletDate.month === 'all'
@@ -57,3 +58,6 @@ export const isBeforeDate = (
   firstDate: Date | string,
   secondDate: Date | string
 ) => new Date(firstDate).getTime() < new Date(secondDate).getTime()
+
+export const sortBudgetsByDescDate = (a: Budget, b: Budget) =>
+  new Date(a.date).getTime() < new Date(b.date).getTime() ? 1 : -1

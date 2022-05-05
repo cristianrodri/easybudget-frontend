@@ -4,7 +4,7 @@ import useSWR from 'swr'
 import { clientGetApi } from '@config/api_client'
 import { Context } from '@context/GlobalContext'
 import { EditBudgetTypes } from './useBudgetFormik'
-import { isBeforeDate } from '@utils/dates'
+import { isBeforeDate, sortBudgetsByDescDate } from '@utils/dates'
 import { getCategoryDataFromBudget } from '@utils/budget'
 import { useUserData } from './useSWRUser'
 import { budgetHasBeenReloaded, isReloadingBudget } from '@context/actions'
@@ -28,6 +28,11 @@ export const useSWRLatestBudgets = () => {
     }).then(() => dispatch(budgetHasBeenReloaded()))
   }
 
+  // Reload Latest Budgets component by dispatching isReloadingBudget from global state
+  const reloadLatestBudgets = () => {
+    dispatch(isReloadingBudget())
+  }
+
   /* MUTATE BY ADDING */
   // This function will be called after a budget is created in post API
   const mutateByAddingNewBudget = (newBudget: Budget) => {
@@ -46,45 +51,55 @@ export const useSWRLatestBudgets = () => {
     return false
   }
 
-  // This function will be called to delete a budget by mutating it if some budget has been deleted
-  const loadLatestBudgets = (budget: Budget) => {
+  // This function make Latest Budgets loading if deleted budget comes from "Latest Budgets"
+  const loadLatestBudgetsByDeleting = (budget: Budget) => {
     if (isDeletedBudgetFromLatest(budget)) {
-      dispatch(isReloadingBudget())
+      reloadLatestBudgets()
     }
   }
 
   /* MUTATE BY EDITING */
+
+  // Check if the updated budget date is moved backwards from the last budget date into the "Latest Budgets"
+  const isDateBudgetMovedBackwards = (updatedBudgetDate: Date | string) => {
+    const lastBudget = data[LIMIT_BUDGETS - 1]
+
+    if (isBeforeDate(updatedBudgetDate, lastBudget.date)) return true
+
+    return false
+  }
+
   // This function will be called to update a budget by mutating it if the updated budgets belongs to latest budgets data
   const mutateByEditionBudget = (budgetEditionForm: EditBudgetTypes) => {
     const foundBudget = data.find(budget => budget.id === budgetToUpdate.id)
 
     /*
       If budgetToUpdate id is found into the Latest budgets data (by foundBudget):
-        - firstly verify if the date of the budgetEditionForm is before than the last budget of the Latest budgets data, if it is, then just update the LatestBudgets by reloading the API. Otherwise update the latest budget data by mapping the latest budgets and then mutate it
+        - firstly verify if the date of the budgetEditionForm is before than the last budget of the Latest budgets data, if it is, call the reloadLatestBudgets function make the LatestBudgets component loading . Otherwise update the latest budget data by mapping the latest budgets and then mutate it
     */
     if (foundBudget) {
-      const lastBudget = data[LIMIT_BUDGETS - 1]
-
-      if (isBeforeDate(budgetEditionForm.date, lastBudget.date)) {
-        reloadLatestBudgetsAPI()
+      if (isDateBudgetMovedBackwards(budgetEditionForm.date)) {
+        reloadLatestBudgets()
         return
       }
 
-      const updatedBudgets = data.map(budget => {
-        if (budget.id === budgetToUpdate.id) {
-          budget.category = getCategoryDataFromBudget(
-            budgetEditionForm.categoryId as number,
-            userData.categories
-          )
-          budget.date = new Date(budgetEditionForm.date).toISOString()
-          budget.description = budgetEditionForm.description
-          budget.money = budgetEditionForm.money
+      const updatedBudgets = data
+        .map(budget => {
+          if (budget.id === budgetToUpdate.id) {
+            budget.category = getCategoryDataFromBudget(
+              budgetEditionForm.categoryId as number,
+              userData.categories
+            )
+            budget.date = new Date(budgetEditionForm.date).toISOString()
+            budget.description = budgetEditionForm.description
+            budget.money = budgetEditionForm.money
+
+            return budget
+          }
 
           return budget
-        }
-
-        return budget
-      })
+        })
+        .sort(sortBudgetsByDescDate)
 
       mutate(updatedBudgets, false)
     }
@@ -94,9 +109,10 @@ export const useSWRLatestBudgets = () => {
     data,
     mutate,
     mutateByAddingNewBudget,
-    loadLatestBudgets,
+    loadLatestBudgetsByDeleting,
     mutateByEditionBudget,
     isDeletedBudgetFromLatest,
+    isDateBudgetMovedBackwards,
     reloadLatestBudgetsAPI
   }
 }

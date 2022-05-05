@@ -15,7 +15,7 @@ export const DialogDeletion = () => {
   const { values, dispatch } = useContext(Context)
   const { dialogDeletionOpen, budgetToDelete } = values
   const {
-    loadLatestBudgets,
+    loadLatestBudgetsByDeleting,
     isDeletedBudgetFromLatest,
     reloadLatestBudgetsAPI
   } = useSWRLatestBudgets()
@@ -29,7 +29,7 @@ export const DialogDeletion = () => {
     dispatch(closeDialogDeletion())
 
     // The latest budgets will be using loading component if the deleted budget is within
-    loadLatestBudgets(budgetToDelete)
+    loadLatestBudgetsByDeleting(budgetToDelete)
 
     // Mutate categories by deleting the budget and updating the money
     mutateCategoryByDeletingBudget(budgetToDelete)
@@ -39,7 +39,7 @@ export const DialogDeletion = () => {
     )
 
     if (res.success === true) {
-      // If deleted budget comes from latest budgets, call the API to update the data and keep using the loading component
+      // If deleted budget comes from latest budgets, call the API to update the data and keep using the loading component into the "LatestBudgets" component
       if (isDeletedBudgetFromLatest(budgetToDelete)) {
         await reloadLatestBudgetsAPI()
       }

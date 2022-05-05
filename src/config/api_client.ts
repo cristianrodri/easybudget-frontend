@@ -23,10 +23,10 @@ export const clientPostApi = <T, R>(url: Url, bodyRequest: R) =>
     .catch(error)
 
 // Utility function for client PUT api
-export const clientPutApi = <T, R>(
+export const clientPutApi = <T, R = unknown>(
   url: Url,
   bodyRequest: R,
-  config: RequestConfig
+  config?: RequestConfig
 ) =>
   api
     .put<ApiResponseSuccess<T>>(`/${url}`, bodyRequest, config)
