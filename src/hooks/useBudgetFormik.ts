@@ -2,19 +2,19 @@ import { Budget } from '@custom-types'
 import { FormikHelpers, useFormik } from 'formik'
 import { date, number, object, SchemaOf, string } from 'yup'
 
-export type AddTypes = Omit<Budget, 'id' | 'date' | 'category'> & {
-  categoryId: number | string
+export type AddBudgetTypes = Omit<Budget, 'id' | 'date' | 'category'> & {
+  category: number | string
 }
 
-export type EditBudgetTypes = AddTypes & Pick<Budget, 'date'>
+export type EditBudgetTypes = AddBudgetTypes & Pick<Budget, 'date'>
 
-type FormTypes = AddTypes | EditBudgetTypes
+export type BudgetFormTypes = AddBudgetTypes | EditBudgetTypes
 
 export const useBudgetFormik = (
   type: 'add' | 'update',
   onSubmit: (
-    values: FormTypes,
-    formikHelpers?: FormikHelpers<FormTypes>
+    values: BudgetFormTypes,
+    formikHelpers?: FormikHelpers<BudgetFormTypes>
   ) => void
 ) => {
   // If the parameter type is "update" the validation schema should have the date property, otherwise just is not included. Same applies to initialValues with the date property
@@ -22,7 +22,7 @@ export const useBudgetFormik = (
     type === 'update' ? { date: date().required('Date is required') } : {}
   const dateValue = type === 'update' ? { date: null } : {}
 
-  const validationSchema: SchemaOf<FormTypes> = object({
+  const validationSchema: SchemaOf<BudgetFormTypes> = object({
     description: string()
       .required('Description is required')
       .min(2, 'Description must be at least 2 characters')
@@ -31,15 +31,15 @@ export const useBudgetFormik = (
       .transform(value => (isNaN(value) ? undefined : value))
       .required('Amount is required')
       .min(1, 'Amount must be greater than 0'),
-    categoryId: number().required('Category is required'),
+    category: number().required('Category is required'),
     ...schemaDate
   })
 
-  const formik = useFormik<FormTypes>({
+  const formik = useFormik<BudgetFormTypes>({
     initialValues: {
       description: '',
       money: null,
-      categoryId: '',
+      category: '',
       ...dateValue
     },
     validationSchema,

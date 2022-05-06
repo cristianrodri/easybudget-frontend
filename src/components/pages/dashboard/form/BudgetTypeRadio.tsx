@@ -14,7 +14,7 @@ interface Props {
   budgetType: BudgetType
   setBudgetType: (value: SetStateAction<BudgetType>) => void
   // Handling function provided by formik
-  setFieldValue: FormikSetFieldType<'categoryId', number>
+  setFieldValue: FormikSetFieldType<'category', number>
 }
 
 export const BudgetTypeRadio = ({
@@ -36,7 +36,7 @@ export const BudgetTypeRadio = ({
     const firstBudgetType = categories.find(
       category => category.type === e.target.value
     )
-    setFieldValue('categoryId', firstBudgetType.id)
+    setFieldValue('category', firstBudgetType.id)
   }
 
   return (

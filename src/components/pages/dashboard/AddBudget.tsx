@@ -23,15 +23,11 @@ import { MoneyFormat } from './form/MoneyFormat'
 import { Description } from './form/Description'
 import { BudgetTypeRadio } from './form/BudgetTypeRadio'
 import { CategorySelect } from './form/CategorySelect'
-import { useBudgetFormik } from '@hooks/useBudgetFormik'
+import { AddBudgetTypes, useBudgetFormik } from '@hooks/useBudgetFormik'
 
 interface Props {
   openDialog: boolean
   handleClose: () => void
-}
-
-type FormTypes = Omit<Budget, 'id' | 'date' | 'category'> & {
-  categoryId: number | string
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -75,7 +71,10 @@ const AddBudget = ({ openDialog, handleClose }: Props) => {
   >(null)
 
   const formik = useBudgetFormik('add', async values => {
-    const res = await clientPostApi<Budget, FormTypes>('api/budget/add', values)
+    const res = await clientPostApi<Budget, AddBudgetTypes>(
+      'api/budget/add',
+      values
+    )
 
     if (res.success === true) {
       const newBudget = res.data
@@ -157,10 +156,10 @@ const AddBudget = ({ openDialog, handleClose }: Props) => {
           setFieldValue={formik.setFieldValue}
         />
         <CategorySelect
-          categoryId={formik.values.categoryId}
+          categoryId={formik.values.category}
           handleChange={formik.handleChange}
-          touched={formik.touched.categoryId}
-          error={formik.errors.categoryId}
+          touched={formik.touched.category}
+          error={formik.errors.category}
           budgetType={budgetType}
         />
       </form>

@@ -69,6 +69,8 @@ export const useUserData = () => {
     mutate(mutatedData, false)
   }
 
+  // const mutateCategoryByEditingBudget = () => {}
+
   return {
     data,
     mutate,

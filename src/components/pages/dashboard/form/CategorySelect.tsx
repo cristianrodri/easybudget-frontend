@@ -43,8 +43,8 @@ export const CategorySelect = ({
       <InputLabel id="select-label">Category</InputLabel>
       <Select
         labelId="select-label"
-        id="categoryId"
-        name="categoryId"
+        id="category"
+        name="category"
         value={categoryId}
         defaultValue={''}
         onChange={handleChange}

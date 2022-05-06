@@ -33,7 +33,7 @@ export const DialogEdition = () => {
   >(null)
 
   const formik = useBudgetFormik('update', async (values: EditBudgetTypes) => {
-    // The latest budgets will be using loading component if the date of the updated budget has been before
+    // The latest budgets will be using loading component if the date of the updated budget has been changed backwards
     mutateByEditionBudget(values)
 
     dispatch(closeDialogEdition())
@@ -67,7 +67,7 @@ export const DialogEdition = () => {
 
       formik.setFieldValue('description', budget.description)
       formik.setFieldValue('money', budget.money)
-      formik.setFieldValue('categoryId', budgetCategory.id)
+      formik.setFieldValue('category', budgetCategory.id)
       setBudgetType(budgetCategory.type)
       formik.setFieldValue('date', new Date(budget.date))
     }
@@ -118,10 +118,10 @@ export const DialogEdition = () => {
           setFieldValue={formik.setFieldValue}
         />
         <CategorySelect
-          categoryId={formik.values.categoryId}
+          categoryId={formik.values.category}
           handleChange={formik.handleChange}
-          touched={formik.touched.categoryId}
-          error={formik.errors.categoryId}
+          touched={formik.touched.category}
+          error={formik.errors.category}
           budgetType={budgetType}
         />
         <DatePickerBudget
