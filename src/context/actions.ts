@@ -1,6 +1,5 @@
 import {
   BudgetHasBeenReloaded,
-  CategoryDialog,
   ChangeWalletDate,
   ClearGlobalState,
   CloseCategoryDialog,
@@ -15,7 +14,7 @@ import {
 } from './types'
 import { Action } from './enum'
 import { SnackbarType } from '@utils/enums'
-import { Budget } from '@custom-types'
+import { Budget, CategoryTypes } from '@custom-types'
 
 export const openSnackbar = (
   message: string,
@@ -49,7 +48,7 @@ export const changeWalletDate = (
 }
 
 export const showCategoryDialog = (
-  category: CategoryDialog
+  category: CategoryTypes
 ): ShowCategoryDialog => {
   return {
     type: Action.OPEN_CATEGORY_DIALOG,

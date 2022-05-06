@@ -21,7 +21,7 @@ import { Budget } from '@custom-types'
 
 export const DialogEdition = () => {
   const { values, dispatch } = useContext(Context)
-  const { data } = useUserData()
+  const { data, mutateCategoryByEditingBudget } = useUserData()
   const {
     mutateByEditionBudget,
     isDateBudgetMovedBackwards,
@@ -35,6 +35,8 @@ export const DialogEdition = () => {
   const formik = useBudgetFormik('update', async (values: EditBudgetTypes) => {
     // The latest budgets will be using loading component if the date of the updated budget has been changed backwards
     mutateByEditionBudget(values)
+
+    mutateCategoryByEditingBudget(values)
 
     dispatch(closeDialogEdition())
 

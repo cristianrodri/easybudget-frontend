@@ -71,7 +71,10 @@ export const useSWRLatestBudgets = () => {
 
   // This function will be called to update a budget by mutating it if the updated budgets belongs to latest budgets data
   const mutateByEditionBudget = (budgetEditionForm: EditBudgetTypes) => {
-    const foundBudget = data.find(budget => budget.id === budgetToUpdate.id)
+    const mutatedData = [...data]
+    const foundBudget = mutatedData.find(
+      budget => budget.id === budgetToUpdate.id
+    )
 
     /*
       If budgetToUpdate id is found into the Latest budgets data (by foundBudget):
@@ -83,7 +86,7 @@ export const useSWRLatestBudgets = () => {
         return
       }
 
-      const updatedBudgets = data
+      const updatedBudgets = mutatedData
         .map(budget => {
           if (budget.id === budgetToUpdate.id) {
             budget.category = getCategoryDataFromBudget(

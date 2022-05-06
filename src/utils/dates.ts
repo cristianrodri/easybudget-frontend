@@ -4,7 +4,7 @@ import { Budget } from '@custom-types'
 export const isAllTime = (walletDate: WalletDate) => walletDate.year === 'all'
 const isCompleteYear = (walletDate: WalletDate) => walletDate.month === 'all'
 
-// this function return a start ISO date and an end ISO date, which is useful when need to add api params to get budgets by specific date in database
+// This function return a start ISO date and an end ISO date, which is useful when need to add api params to get budgets by specific date in database
 export const getCustomDate = (walletDate: WalletDate) => {
   const { year, month } = walletDate
 
@@ -59,5 +59,23 @@ export const isBeforeDate = (
   secondDate: Date | string
 ) => new Date(firstDate).getTime() < new Date(secondDate).getTime()
 
+// Sort budgets by date in descending order
 export const sortBudgetsByDescDate = (a: Budget, b: Budget) =>
   new Date(a.date).getTime() < new Date(b.date).getTime() ? 1 : -1
+
+// Check if the provided budget date is between into the wallet date
+export const dateIsBetween = (walletDate: WalletDate, budgetDate: string) => {
+  const { start, end } = getCustomDate(walletDate)
+
+  // If start and end are equals to empty, return automatically true because wallet date covers all the user budgets
+  if (start === '' && end === '') return true
+
+  // If the budget date is greater than or equal to the "start wallet date" and is less than or equal to "end wallet date" return true because the budget date matches the wallet date
+  if (
+    new Date(budgetDate).getTime() >= new Date(start).getTime() &&
+    new Date(budgetDate).getTime() <= new Date(end).getTime()
+  )
+    return true
+
+  return false
+}

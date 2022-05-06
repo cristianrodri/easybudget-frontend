@@ -12,6 +12,7 @@ export const initialState: ContextValues = {
   },
   categoryDialogOpen: false,
   categoryDialog: {
+    id: null,
     budgets: [],
     money: 0,
     name: '',

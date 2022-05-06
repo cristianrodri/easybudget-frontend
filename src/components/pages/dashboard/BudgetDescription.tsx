@@ -44,7 +44,8 @@ export const BudgetDescription = ({ budget, isDialog }: Props) => {
   const classes = useStyles({ type })
 
   const handleEdit = () => {
-    dispatch(openDialogEdition(budget))
+    // The budget parameter is pass by spread object because it needs to be unmutable
+    dispatch(openDialogEdition({ ...budget }))
   }
 
   const handleDelete = () => {

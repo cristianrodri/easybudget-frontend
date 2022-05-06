@@ -2,9 +2,6 @@ import { Budget, CategoryTypes } from '@custom-types'
 import { SnackbarType } from '@utils/enums'
 import { Action } from './enum'
 
-// Context
-export type CategoryDialog = Omit<CategoryTypes, 'id'>
-
 export interface WalletDate {
   year: number | 'all'
   month: number | 'all'
@@ -19,7 +16,7 @@ export interface ContextValues {
   walletDate: WalletDate
 
   // Category dialog state
-  categoryDialog: CategoryDialog
+  categoryDialog: CategoryTypes
   categoryDialogOpen: boolean
 
   // Budget deletion dialog
@@ -51,7 +48,7 @@ export type ChangeWalletDate = {
 
 export type ShowCategoryDialog = {
   type: Action.OPEN_CATEGORY_DIALOG
-  payload: CategoryDialog
+  payload: CategoryTypes
 }
 
 export type CloseCategoryDialog = {
