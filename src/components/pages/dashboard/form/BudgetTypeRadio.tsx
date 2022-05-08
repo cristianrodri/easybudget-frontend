@@ -1,14 +1,8 @@
 import { ChangeEvent, SetStateAction } from 'react'
-import {
-  FormControl,
-  FormControlLabel,
-  FormLabel,
-  Radio,
-  RadioGroup
-} from '@mui/material'
 import { BudgetType } from '@utils/enums'
 import { useUserData } from '@hooks/useSWRUser'
 import { FormikSetFieldType } from '@custom-types'
+import { BudgetTypeFormControl } from '@components/common/BudgetTypeFormControl'
 
 interface Props {
   budgetType: BudgetType
@@ -40,27 +34,9 @@ export const BudgetTypeRadio = ({
   }
 
   return (
-    <FormControl component="fieldset">
-      <FormLabel component="legend">Budget Type</FormLabel>
-      <RadioGroup
-        row
-        aria-label="Type"
-        name="type"
-        onChange={handleChangeRadio}
-      >
-        <FormControlLabel
-          value="income"
-          control={<Radio />}
-          checked={budgetType === BudgetType.INCOME}
-          label="Income"
-        />
-        <FormControlLabel
-          value="expense"
-          control={<Radio />}
-          checked={budgetType === BudgetType.EXPENSE}
-          label="Expense"
-        />
-      </RadioGroup>
-    </FormControl>
+    <BudgetTypeFormControl
+      budgetType={budgetType}
+      handleChange={handleChangeRadio}
+    />
   )
 }
