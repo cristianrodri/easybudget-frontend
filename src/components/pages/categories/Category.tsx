@@ -11,6 +11,7 @@ import { BudgetType } from '@utils/enums'
 import { DialogDeletion } from './DialogDeletion'
 import { useSWRCategories } from '@hooks/useSWRCategories'
 import { ActionData } from '@components/common/ActionData'
+import { DialogEdition } from './DialogEdition'
 
 interface Props {
   budgetType: BudgetType
@@ -20,17 +21,30 @@ interface Props {
 export const Category = ({ budgetType, categories }: Props) => {
   const { data: categoriesData } = useSWRCategories(categories)
   const [openDialogDeletion, setOpenDialogDeletion] = useState(false)
+  const [openDialogEdition, setOpenDialogEdition] = useState(false)
   const [category, setCategory] = useState<GetCategory>(null)
   const filteredCategories = categoriesData.filter(c => c.type === budgetType)
 
+  /* HANDLE DELETE DIALOG */
   const handleDelete = (category: GetCategory) => () => {
     setCategory(category)
-
     setOpenDialogDeletion(true)
   }
 
-  const handleClose = () => {
+  const handleCloseDeletion = () => {
+    setCategory(null)
     setOpenDialogDeletion(false)
+  }
+
+  /* HANDLE EDIT DIALOG */
+  const handleEdit = (category: GetCategory) => () => {
+    setCategory(category)
+    setOpenDialogEdition(true)
+  }
+
+  const handleCloseEdition = () => {
+    setCategory(null)
+    setOpenDialogEdition(false)
   }
 
   return (
@@ -52,7 +66,10 @@ export const Category = ({ budgetType, categories }: Props) => {
               <ListItemSecondaryAction
                 sx={{ right: theme => theme.spacing(1) }}
               >
-                <ActionData actionType="edit" handleClick={() => ''} />
+                <ActionData
+                  actionType="edit"
+                  handleClick={handleEdit(category)}
+                />
                 <ActionData
                   actionType="delete"
                   handleClick={handleDelete(category)}
@@ -66,9 +83,17 @@ export const Category = ({ budgetType, categories }: Props) => {
       {openDialogDeletion && (
         <DialogDeletion
           open={openDialogDeletion}
-          handleClose={handleClose}
+          handleClose={handleCloseDeletion}
           category={category}
           setCategory={setCategory}
+        />
+      )}
+
+      {openDialogEdition && (
+        <DialogEdition
+          open={openDialogEdition}
+          handleClose={handleCloseEdition}
+          category={category}
         />
       )}
     </>
