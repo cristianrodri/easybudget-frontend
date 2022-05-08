@@ -5,14 +5,11 @@ import {
   ListItemSecondaryAction,
   ListItemText
 } from '@mui/material'
-import { useContext, useState } from 'react'
-import { CategoryApi, GetCategory } from '@custom-types'
-import { BudgetType, SnackbarType } from '@utils/enums'
-import { Context } from '@context/GlobalContext'
-import { DialogConfirm } from './DialogConfirm'
+import { useState } from 'react'
+import { GetCategory } from '@custom-types'
+import { BudgetType } from '@utils/enums'
+import { DialogDeletion } from './DialogDeletion'
 import { useSWRCategories } from '@hooks/useSWRCategories'
-import { openSnackbar } from '@context/actions'
-import { clientDeleteApi } from '@config/api_client'
 import { ActionData } from '@components/common/ActionData'
 
 interface Props {
@@ -21,61 +18,28 @@ interface Props {
 }
 
 export const Category = ({ budgetType, categories }: Props) => {
-  const { data: categoriesData, mutate } = useSWRCategories(categories)
-  const { dispatch } = useContext(Context)
-  const [open, setOpen] = useState(false)
-  const [idToDelete, setIdToDelete] = useState(null)
-  // The below money variable is used to ckeck when some category is trying to delete
-  const [money, setMoney] = useState(null)
-  const category = categoriesData.filter(c => c.type === budgetType)
+  const { data: categoriesData } = useSWRCategories(categories)
+  const [openDialogDeletion, setOpenDialogDeletion] = useState(false)
+  const [category, setCategory] = useState<GetCategory>(null)
+  const filteredCategories = categoriesData.filter(c => c.type === budgetType)
 
-  const handleDelete = (id: number, money: number) => () => {
-    setIdToDelete(id)
-    setMoney(money)
+  const handleDelete = (category: GetCategory) => () => {
+    setCategory(category)
 
-    setOpen(true)
-  }
-
-  const handleDeletion = async () => {
-    // if money is greater than 0, this category has budget related to it, therefore it cannot be deleted.
-    if (money > 0) {
-      alert(
-        'You cannot delete this category because it has budget data related to it.'
-      )
-      return
-    }
-
-    handleClose()
-
-    const updatedCategories = categoriesData.filter(
-      category => category.id !== idToDelete
-    )
-
-    mutate(updatedCategories, false)
-
-    const res = await clientDeleteApi<CategoryApi>(
-      `api/categories/delete/${idToDelete}`
-    )
-
-    if (res.success === true)
-      dispatch(openSnackbar(`${res.data.name} deleted!`, SnackbarType.SUCCESS))
-    else dispatch(openSnackbar(res.message, SnackbarType.ERROR))
-
-    setIdToDelete(null)
-    setMoney(null)
+    setOpenDialogDeletion(true)
   }
 
   const handleClose = () => {
-    setOpen(false)
+    setOpenDialogDeletion(false)
   }
 
   return (
     <>
       <Box>
         <List>
-          {category.map(({ id, name, money }) => (
+          {filteredCategories.map(category => (
             <ListItem
-              key={id}
+              key={category.id}
               sx={{
                 backgroundColor: theme => theme.palette.grey[300],
                 width: 200,
@@ -84,14 +48,14 @@ export const Category = ({ budgetType, categories }: Props) => {
                 }
               }}
             >
-              <ListItemText primary={name} />
+              <ListItemText primary={category.name} />
               <ListItemSecondaryAction
                 sx={{ right: theme => theme.spacing(1) }}
               >
                 <ActionData actionType="edit" handleClick={() => ''} />
                 <ActionData
                   actionType="delete"
-                  handleClick={handleDelete(id, money)}
+                  handleClick={handleDelete(category)}
                 />
               </ListItemSecondaryAction>
             </ListItem>
@@ -99,11 +63,12 @@ export const Category = ({ budgetType, categories }: Props) => {
         </List>
       </Box>
 
-      {open && (
-        <DialogConfirm
-          open={open}
+      {openDialogDeletion && (
+        <DialogDeletion
+          open={openDialogDeletion}
           handleClose={handleClose}
-          handleDeletion={handleDeletion}
+          category={category}
+          setCategory={setCategory}
         />
       )}
     </>

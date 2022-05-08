@@ -10,7 +10,7 @@ const fetcher = (url: Url) =>
     res => res.success === true && res.data
   )
 
-export const useSWRCategories = (fallbackData: CategoriesDataResponse) => {
+export const useSWRCategories = (fallbackData?: CategoriesDataResponse) => {
   const { data, mutate } = useSWR('api/categories/get', fetcher, {
     fallbackData
   })
