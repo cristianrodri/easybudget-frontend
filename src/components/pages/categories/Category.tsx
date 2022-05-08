@@ -1,32 +1,19 @@
 import {
   Box,
-  IconButton,
   List,
   ListItem,
   ListItemSecondaryAction,
-  ListItemText,
-  Theme
+  ListItemText
 } from '@mui/material'
 import { useContext, useState } from 'react'
-import DeleteIcon from '@mui/icons-material/Delete'
 import { CategoryApi, GetCategory } from '@custom-types'
 import { BudgetType, SnackbarType } from '@utils/enums'
 import { Context } from '@context/GlobalContext'
 import { DialogConfirm } from './DialogConfirm'
 import { useSWRCategories } from '@hooks/useSWRCategories'
-import { makeStyles } from '@mui/styles'
 import { openSnackbar } from '@context/actions'
 import { clientDeleteApi } from '@config/api_client'
-
-const useStyles = makeStyles((theme: Theme) => ({
-  listItem: {
-    backgroundColor: theme.palette.grey[300],
-    width: 200
-  },
-  listItemBorder: {
-    borderBottom: `1px solid ${theme.palette.grey[400]}`
-  }
-}))
+import { ActionData } from '@components/common/ActionData'
 
 interface Props {
   budgetType: BudgetType
@@ -36,7 +23,6 @@ interface Props {
 export const Category = ({ budgetType, categories }: Props) => {
   const { data: categoriesData, mutate } = useSWRCategories(categories)
   const { dispatch } = useContext(Context)
-  const classes = useStyles()
   const [open, setOpen] = useState(false)
   const [idToDelete, setIdToDelete] = useState(null)
   // The below money variable is used to ckeck when some category is trying to delete
@@ -66,6 +52,7 @@ export const Category = ({ budgetType, categories }: Props) => {
     )
 
     mutate(updatedCategories, false)
+
     const res = await clientDeleteApi<CategoryApi>(
       `api/categories/delete/${idToDelete}`
     )
@@ -86,22 +73,26 @@ export const Category = ({ budgetType, categories }: Props) => {
     <>
       <Box>
         <List>
-          {category.map(({ id, name, money }, i, arr) => (
+          {category.map(({ id, name, money }) => (
             <ListItem
               key={id}
-              className={`${classes.listItem}${
-                i < arr.length - 1 ? ' ' + classes.listItemBorder : ''
-              }`}
+              sx={{
+                backgroundColor: theme => theme.palette.grey[300],
+                width: 200,
+                '&:not(:last-of-type)': {
+                  borderBottom: theme => `1px solid ${theme.palette.grey[400]}`
+                }
+              }}
             >
               <ListItemText primary={name} />
-              <ListItemSecondaryAction>
-                <IconButton
-                  edge="end"
-                  aria-label="delete"
-                  onClick={handleDelete(id, money)}
-                >
-                  <DeleteIcon />
-                </IconButton>
+              <ListItemSecondaryAction
+                sx={{ right: theme => theme.spacing(1) }}
+              >
+                <ActionData actionType="edit" handleClick={() => ''} />
+                <ActionData
+                  actionType="delete"
+                  handleClick={handleDelete(id, money)}
+                />
               </ListItemSecondaryAction>
             </ListItem>
           ))}
