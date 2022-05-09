@@ -22,7 +22,7 @@ export const DateSelect = ({ dateType, data }: Props) => {
         labelId={`select-${dateType}-label`}
         id={`select-${dateType}`}
         value={walletDate[dateType]}
-        label="Year"
+        label={textCapitalize(dateType)}
       >
         {data.map(d => (
           <MenuItem key={d} value={d}>
