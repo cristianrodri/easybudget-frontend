@@ -1,8 +1,49 @@
 import { WalletDate } from '@context/types'
 import { Budget } from '@custom-types'
 
+type CustomDate = Date | string
+
+export const MONTH = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December'
+]
+
 export const isAllTime = (walletDate: WalletDate) => walletDate.year === 'all'
 const isCompleteYear = (walletDate: WalletDate) => walletDate.month === 'all'
+
+export const getYear = (date: CustomDate) => new Date(date).getFullYear()
+
+// This function gets and array of years. The current year -1 until the oldDate year
+export const getPrevYears = (oldDate: CustomDate) => {
+  const currentYear = new Date().getFullYear()
+
+  const yearsDiff = currentYear - getYear(oldDate)
+  const years = Array.from({ length: yearsDiff }, (_, i) => currentYear - i - 1)
+
+  return years
+}
+
+// This function gets and array of months by index. The current month index until 0
+export const getMonths = () => {
+  const currentMonthIndex = new Date().getMonth()
+
+  const months = Array.from(
+    { length: currentMonthIndex + 1 },
+    (_, i) => currentMonthIndex - i
+  )
+
+  return months
+}
 
 // This function return a start ISO date and an end ISO date, which is useful when need to add api params to get budgets by specific date in database
 export const getCustomDate = (walletDate: WalletDate) => {
@@ -31,13 +72,13 @@ export const getCustomDate = (walletDate: WalletDate) => {
   }
 }
 
-export const getDateWithZero = (date: Date | string) =>
+export const getDateWithZero = (date: CustomDate) =>
   +`0${new Date(date).getDate()}`.slice(-2)
 
-export const getMonthName = (date: Date | string) =>
+export const getMonthName = (date: CustomDate) =>
   new Date(date).toLocaleString('en-us', { month: 'long' })
 
-export const getDayAndMonth = (date: Date | string) =>
+export const getDayAndMonth = (date: CustomDate) =>
   `${getDateWithZero(date)} ${getMonthName(date)}`
 
 // This function add a custom title to dashboard date title and dialog date title.
@@ -54,10 +95,8 @@ export const dateTitle = (walletDate: WalletDate) => {
 }
 
 // Check if the first date of the parameter is less than the second date of the parameter
-export const isBeforeDate = (
-  firstDate: Date | string,
-  secondDate: Date | string
-) => new Date(firstDate).getTime() < new Date(secondDate).getTime()
+export const isBeforeDate = (firstDate: CustomDate, secondDate: CustomDate) =>
+  new Date(firstDate).getTime() < new Date(secondDate).getTime()
 
 // Sort budgets by date in descending order
 export const sortBudgetsByDescDate = (a: Budget, b: Budget) =>

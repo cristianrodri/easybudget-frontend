@@ -1,25 +1,27 @@
-import { useContext } from 'react'
-import {
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  Stack,
-  Typography
-} from '@mui/material'
-import { makeStyles } from '@mui/styles'
+import { useContext, useEffect, useState } from 'react'
+import { Stack, Typography } from '@mui/material'
 import { Context } from '@context/GlobalContext'
-import { dateTitle } from '@utils/dates'
-
-const useStyles = makeStyles(() => ({
-  formControl: {
-    width: 120
-  }
-}))
+import { dateTitle, getMonths, getPrevYears } from '@utils/dates'
+import { DateSelect } from './DateSelect'
+import { Budget } from '@custom-types'
+import { clientGetApi } from '@config/api_client'
 
 export const Header = () => {
-  const { formControl } = useStyles()
   const { values } = useContext(Context)
+  // The initYear will store the current year until the oldest budget year. That date will be received by calling an api below. Meanwhile, the initYear will store the current year
+  const [years, setYears] = useState([new Date().getFullYear()])
+
+  useEffect(() => {
+    const API_URL = `api/budget/get?_sort=date:ASC&_limit=1`
+
+    clientGetApi<Budget[]>(API_URL).then(res => {
+      if (res.success === true) {
+        const oldestBudgetDate = res.data[0].date
+        setYears([...years, ...getPrevYears(oldestBudgetDate)])
+      }
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <Stack
@@ -40,34 +42,10 @@ export const Header = () => {
       </Typography>
       <Stack direction="row" spacing={2}>
         {/* Select year */}
-        <FormControl className={formControl}>
-          <InputLabel id="select-year-label">Year</InputLabel>
-          <Select
-            labelId="select-year-label"
-            id="select-year"
-            value={2022}
-            label="Year"
-          >
-            <MenuItem value={2022}>2022</MenuItem>
-            <MenuItem value={2021}>2021</MenuItem>
-            <MenuItem value={2020}>2020</MenuItem>
-            <MenuItem value={2019}>2019</MenuItem>
-          </Select>
-        </FormControl>
+        {/* If the years length is one, that means that years array only contains current year, therefore it's not necessary to show year select component*/}
+        {years.length > 1 ? <DateSelect dateType="year" data={years} /> : null}
         {/* Select month */}
-        <FormControl className={formControl}>
-          <InputLabel id="select-label-month">Month</InputLabel>
-          <Select
-            labelId="select-label-month"
-            id="select-month"
-            value={'March'}
-            label="Month"
-          >
-            <MenuItem value={'March'}>March</MenuItem>
-            <MenuItem value={'February'}>February</MenuItem>
-            <MenuItem value={'January'}>January</MenuItem>
-          </Select>
-        </FormControl>
+        <DateSelect dateType="month" data={getMonths()} />
       </Stack>
     </Stack>
   )
