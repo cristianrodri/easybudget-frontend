@@ -94,6 +94,7 @@ export const Category = ({ budgetType, categories }: Props) => {
           open={openDialogEdition}
           handleClose={handleCloseEdition}
           category={category}
+          setCategory={setCategory}
         />
       )}
     </>
