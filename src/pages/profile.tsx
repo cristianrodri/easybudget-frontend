@@ -141,7 +141,7 @@ export default Profile
 
 export const getServerSideProps = withAuthentication<Props>(async ({ req }) => {
   const res = await serverGetApi<User>(
-    '/users/me',
+    'users/me',
     req.cookies.token,
     // This api received all user data, including categories and budegts, therefore budgets data is not needed, that's why dates params is added with current date to the start and the end
     {
