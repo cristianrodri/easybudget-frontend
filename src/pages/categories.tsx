@@ -1,5 +1,4 @@
 import { Box, Typography, useTheme } from '@mui/material'
-import { serverInstance as axios } from '@config/axios'
 import { Layout } from '@components/Layout'
 import { withAuthentication } from '@utils/middleware'
 import { GetCategory } from '@custom-types'
@@ -7,6 +6,7 @@ import { BudgetType } from '@utils/enums'
 import { Category } from '@components/pages/categories/Category'
 import { Form } from '@components/pages/categories/Form'
 import { useSWRCategories } from '@hooks/useSWRCategories'
+import { serverGetApi } from '@config/api_server'
 
 interface Props {
   categories: GetCategory[]
@@ -60,13 +60,7 @@ const Categories = ({ categories }: Props) => {
 }
 
 export const getServerSideProps = withAuthentication<Props>(async ({ req }) => {
-  const { token } = req.cookies
-
-  const res = await axios.get('/categories', {
-    headers: {
-      Authorization: 'Bearer ' + token
-    }
-  })
+  const res = await serverGetApi<GetCategory[]>('categories', req.cookies.token)
 
   return {
     props: {
