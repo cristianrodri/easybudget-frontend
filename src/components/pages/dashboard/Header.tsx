@@ -10,8 +10,10 @@ import { DateType } from '@utils/enums'
 export const Header = () => {
   const { values } = useContext(Context)
   const { walletDate } = values
+  const currentYear = new Date().getFullYear()
   // The years state will store an array of the current year until the oldest budget year. The initial state starts with one value which is the current year.
-  const [years, setYears] = useState([new Date().getFullYear()])
+  const [years, setYears] = useState([currentYear])
+  const [months, setMonths] = useState(getMonths('from-current'))
 
   useEffect(() => {
     const API_URL = `api/budget/get?_sort=date:ASC&_limit=1`
@@ -24,6 +26,13 @@ export const Header = () => {
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  useEffect(() => {
+    // Change the month select values in base of the selected year
+    if (walletDate.year !== currentYear) setMonths(getMonths('all'))
+    else if (walletDate.year === currentYear)
+      setMonths(getMonths('from-current'))
+  }, [walletDate.year, currentYear])
 
   return (
     <Stack
@@ -51,7 +60,7 @@ export const Header = () => {
         {/* Select month */}
         {/* If the wallet date year is 'all', it means that is not necessary to show the month select component because the dashboard is showing all the user budgets */}
         {walletDate.year !== 'all' ? (
-          <DateSelect dateType={DateType.MONTH} data={getMonths()} />
+          <DateSelect dateType={DateType.MONTH} data={months} />
         ) : null}
       </Stack>
     </Stack>

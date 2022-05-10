@@ -34,12 +34,12 @@ export const getPrevYears = (oldDate: CustomDate) => {
 }
 
 // This function gets and array of months by index. The current month index until 0
-export const getMonths = () => {
-  const currentMonthIndex = new Date().getMonth()
+export const getMonths = (qty: 'all' | 'from-current') => {
+  const monthIndex = qty === 'all' ? 11 : new Date().getMonth()
 
   const months = Array.from(
-    { length: currentMonthIndex + 1 },
-    (_, i) => currentMonthIndex - i
+    { length: monthIndex + 1 },
+    (_, i) => monthIndex - i
   )
 
   return months
