@@ -1,6 +1,7 @@
 import { ContextValues } from './types'
 import { ActionType } from './actions'
 import { Action } from './enum'
+import { DateType } from '@utils/enums'
 
 export const initialState: ContextValues = {
   snackbarOpen: false,
@@ -49,6 +50,12 @@ export const reducer = (
         ...state,
         walletDate: {
           ...state.walletDate,
+          // If the payload dateType belongs to year and the payload value (year) is different from the current year, the wallet month value is 'all', otherwise if the payload year is the current year, the month value is the current month
+          month:
+            action.payload.dateType === DateType.YEAR &&
+            action.payload.value !== new Date().getFullYear()
+              ? 'all'
+              : new Date().getMonth(),
           [action.payload.dateType]: action.payload.value
         }
       }

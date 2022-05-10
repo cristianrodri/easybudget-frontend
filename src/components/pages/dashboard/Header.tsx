@@ -29,9 +29,11 @@ export const Header = () => {
 
   useEffect(() => {
     // Change the month select values in base of the selected year
-    if (walletDate.year !== currentYear) setMonths(getMonths('all'))
-    else if (walletDate.year === currentYear)
+    if (walletDate.year !== currentYear) {
+      setMonths(getMonths('all'))
+    } else if (walletDate.year === currentYear) {
       setMonths(getMonths('from-current'))
+    }
   }, [walletDate.year, currentYear])
 
   return (
