@@ -10,10 +10,11 @@ import {
   DialogEditionOpen,
   IsReloadingBudget,
   OpenSnackbar,
-  ShowCategoryDialog
+  ShowCategoryDialog,
+  WalletDateValue
 } from './types'
 import { Action } from './enum'
-import { SnackbarType } from '@utils/enums'
+import { DateType, SnackbarType } from '@utils/enums'
 import { Budget, CategoryTypes } from '@custom-types'
 
 export const openSnackbar = (
@@ -34,16 +35,12 @@ export const closeSnackbar = (): CloseSnackbar => {
 }
 
 export const changeWalletDate = (
-  date: string,
-  allMonths?: boolean,
-  allTime?: boolean
+  dateType: DateType,
+  value: WalletDateValue
 ): ChangeWalletDate => {
   return {
     type: Action.CHANGE_WALLET_DATE,
-    payload: {
-      year: allTime ? 'all' : new Date(date).getFullYear(),
-      month: allMonths ? 'all' : new Date(date).getMonth()
-    }
+    payload: { dateType, value }
   }
 }
 

@@ -20,3 +20,8 @@ export enum Status {
   CREATED = 201,
   METHOD_NOT_ALLOWED = 405
 }
+
+export enum DateType {
+  MONTH = 'month',
+  YEAR = 'year'
+}

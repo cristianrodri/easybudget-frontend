@@ -5,10 +5,12 @@ import { dateTitle, getMonths, getPrevYears } from '@utils/dates'
 import { DateSelect } from './DateSelect'
 import { Budget } from '@custom-types'
 import { clientGetApi } from '@config/api_client'
+import { DateType } from '@utils/enums'
 
 export const Header = () => {
   const { values } = useContext(Context)
-  // The initYear will store the current year until the oldest budget year. That date will be received by calling an api below. Meanwhile, the initYear will store the current year
+  const { walletDate } = values
+  // The years state will store an array of the current year until the oldest budget year. The initial state starts with one value which is the current year.
   const [years, setYears] = useState([new Date().getFullYear()])
 
   useEffect(() => {
@@ -38,14 +40,19 @@ export const Header = () => {
       }}
     >
       <Typography variant="h4" component="h1">
-        Wallet - {dateTitle(values.walletDate)}
+        Wallet - {dateTitle(walletDate)}
       </Typography>
       <Stack direction="row" spacing={2}>
         {/* Select year */}
         {/* If the years length is one, that means that years array only contains current year, therefore it's not necessary to show year select component*/}
-        {years.length > 1 ? <DateSelect dateType="year" data={years} /> : null}
+        {years.length > 1 ? (
+          <DateSelect dateType={DateType.YEAR} data={years} />
+        ) : null}
         {/* Select month */}
-        <DateSelect dateType="month" data={getMonths()} />
+        {/* If the wallet date year is 'all', it means that is not necessary to show the month select component because the dashboard is showing all the user budgets */}
+        {walletDate.year !== 'all' ? (
+          <DateSelect dateType={DateType.MONTH} data={getMonths()} />
+        ) : null}
       </Stack>
     </Stack>
   )

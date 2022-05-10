@@ -1,10 +1,12 @@
 import { Budget, CategoryTypes } from '@custom-types'
-import { SnackbarType } from '@utils/enums'
+import { DateType, SnackbarType } from '@utils/enums'
 import { Action } from './enum'
 
+export type WalletDateValue = number | 'all'
+
 export interface WalletDate {
-  year: number | 'all'
-  month: number | 'all'
+  year: WalletDateValue
+  month: WalletDateValue
 }
 export interface ContextValues {
   // Snackbar state
@@ -43,7 +45,7 @@ export type CloseSnackbar = {
 
 export type ChangeWalletDate = {
   type: Action.CHANGE_WALLET_DATE
-  payload: WalletDate
+  payload: { dateType: DateType; value: WalletDateValue }
 }
 
 export type ShowCategoryDialog = {

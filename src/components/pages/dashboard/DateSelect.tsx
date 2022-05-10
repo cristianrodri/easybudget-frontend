@@ -1,17 +1,30 @@
 import { useContext } from 'react'
 import { Context } from '@context/GlobalContext'
-import { FormControl, InputLabel, MenuItem, Select } from '@mui/material'
+import {
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent
+} from '@mui/material'
 import { textCapitalize } from '@utils/string'
 import { MONTH } from '@utils/dates'
+import { DateType } from '@utils/enums'
+import { WalletDateValue } from '@context/types'
+import { changeWalletDate } from '@context/actions'
 
 interface Props {
-  dateType: 'month' | 'year'
+  dateType: DateType
   data: number[]
 }
 
 export const DateSelect = ({ dateType, data }: Props) => {
-  const { values } = useContext(Context)
+  const { values, dispatch } = useContext(Context)
   const { walletDate } = values
+
+  const handleChange = (e: SelectChangeEvent<WalletDateValue>) => {
+    dispatch(changeWalletDate(dateType, e.target.value as WalletDateValue))
+  }
 
   return (
     <FormControl sx={{ width: 120 }}>
@@ -23,14 +36,15 @@ export const DateSelect = ({ dateType, data }: Props) => {
         id={`select-${dateType}`}
         value={walletDate[dateType]}
         label={textCapitalize(dateType)}
+        onChange={handleChange}
       >
         {data.map(d => (
           <MenuItem key={d} value={d}>
-            {dateType === 'month' ? MONTH[d] : d}
+            {dateType === DateType.MONTH ? MONTH[d] : d}
           </MenuItem>
         ))}
         <MenuItem value={'all'}>
-          {dateType === 'month' ? 'All Year' : 'All Time'}
+          {dateType === DateType.MONTH ? 'All Year' : 'All Time'}
         </MenuItem>
       </Select>
     </FormControl>

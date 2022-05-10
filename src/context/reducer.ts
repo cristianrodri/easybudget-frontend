@@ -47,7 +47,10 @@ export const reducer = (
     case Action.CHANGE_WALLET_DATE:
       return {
         ...state,
-        walletDate: action.payload
+        walletDate: {
+          ...state.walletDate,
+          [action.payload.dateType]: action.payload.value
+        }
       }
 
     case Action.OPEN_CATEGORY_DIALOG:

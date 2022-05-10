@@ -84,7 +84,7 @@ export const getDayAndMonth = (date: CustomDate) =>
 // This function add a custom title to dashboard date title and dialog date title.
 export const dateTitle = (walletDate: WalletDate) => {
   // If wallet year is 'all', show'All time' to the title
-  if (isAllTime(walletDate)) return 'All time'
+  if (isAllTime(walletDate)) return 'All Time'
   // Otherwise if the wallet month is 'all', show only the year to the title
   else if (isCompleteYear(walletDate)) return walletDate.year
 
