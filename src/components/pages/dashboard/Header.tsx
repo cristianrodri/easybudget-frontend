@@ -20,7 +20,7 @@ export const Header = () => {
 
     clientGetApi<Budget[]>(API_URL).then(res => {
       if (res.success === true) {
-        const oldestBudgetDate = res.data[0].date
+        const oldestBudgetDate = res.data[0]?.date ?? new Date()
         setYears([...years, ...getPrevYears(oldestBudgetDate)])
       }
     })
