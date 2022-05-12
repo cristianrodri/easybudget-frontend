@@ -55,7 +55,7 @@ export const Form = () => {
       const res = await clientPostApi('api/register', submittedValues)
 
       if (res.success === true) {
-        router.push('dashboard')
+        router.push('categories')
       } else {
         dispatch(openSnackbar(res.message, SnackbarType.ERROR))
       }
