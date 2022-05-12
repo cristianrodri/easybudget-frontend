@@ -11,8 +11,14 @@ import { Categories } from '@components/pages/dashboard/categories/Container'
 import { DialogCategory } from '@components/pages/dashboard/DialogCategory'
 import { DialogDeletion } from '@components/pages/dashboard/DialogDeletion'
 import { DialogEdition } from '@components/pages/dashboard/DialogEdition'
+import { serverGetApi } from '@config/api_server'
+import { AlertCategory } from '@components/pages/dashboard/AlertCategory'
 
-const Dashboard = () => {
+interface Props {
+  categoriesCount: number
+}
+
+const Dashboard = ({ categoriesCount }: Props) => {
   const [open, setOpen] = useState(false)
 
   const handleOpen = () => {
@@ -34,36 +40,44 @@ const Dashboard = () => {
       >
         <Stack flex={1} sx={{ minWidth: '70%' }}>
           <Header />
+          {/* If the user has no categories yet, show an alert to urge the user create some */}
+          {categoriesCount === 0 ? <AlertCategory /> : null}
           <Summary />
           <Categories />
         </Stack>
         <LatestBudgets />
       </Stack>
-      <Box
-        position="fixed"
-        right="0"
-        bottom="0"
-        sx={{
-          paddingBottom: {
-            xs: 2,
-            sm: 3
-          },
-          paddingRight: {
-            xs: 2,
-            sm: 3
-          }
-        }}
-      >
-        <Fab
-          color="primary"
-          aria-label="add"
-          title="Create Budget"
-          onClick={handleOpen}
-        >
-          <AddIcon />
-        </Fab>
-      </Box>
-      <AddBudget openDialog={open} handleClose={handleClose} />
+      {/* Only show the add budget icon if the user has categories */}
+      {categoriesCount > 0 ? (
+        <>
+          <Box
+            position="fixed"
+            right="0"
+            bottom="0"
+            sx={{
+              paddingBottom: {
+                xs: 2,
+                sm: 3
+              },
+              paddingRight: {
+                xs: 2,
+                sm: 3
+              }
+            }}
+          >
+            <Fab
+              color="primary"
+              aria-label="add"
+              title="Create Budget"
+              onClick={handleOpen}
+            >
+              <AddIcon />
+            </Fab>
+          </Box>
+
+          <AddBudget openDialog={open} handleClose={handleClose} />
+        </>
+      ) : null}
       <DialogCategory />
       <DialogDeletion />
       <DialogEdition />
@@ -71,6 +85,14 @@ const Dashboard = () => {
   )
 }
 
-export const getServerSideProps = withAuthentication()
+export const getServerSideProps = withAuthentication<Props>(async ({ req }) => {
+  const res = await serverGetApi<number>('categories/count', req.cookies.token)
+
+  return {
+    props: {
+      categoriesCount: res.data
+    }
+  }
+})
 
 export default Dashboard
