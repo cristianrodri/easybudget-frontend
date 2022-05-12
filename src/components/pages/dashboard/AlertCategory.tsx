@@ -8,7 +8,7 @@ export const AlertCategory = () => {
       severity="warning"
       color="error"
       sx={{
-        mt: theme => theme.spacing(2),
+        my: theme => theme.spacing(2),
         width: '50%',
         alignSelf: 'center'
       }}

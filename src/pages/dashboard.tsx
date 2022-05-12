@@ -38,10 +38,10 @@ const Dashboard = ({ categoriesCount }: Props) => {
         justifyContent="center"
         spacing={1}
       >
+        {/* If the user has no categories yet, show an alert to urge the user create some */}
+        {categoriesCount === 0 ? <AlertCategory /> : null}
         <Stack flex={1} sx={{ minWidth: '70%' }}>
           <Header />
-          {/* If the user has no categories yet, show an alert to urge the user create some */}
-          {categoriesCount === 0 ? <AlertCategory /> : null}
           <Summary />
           <Categories />
         </Stack>
