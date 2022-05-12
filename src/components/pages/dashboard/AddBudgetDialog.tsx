@@ -61,7 +61,7 @@ const Transition = forwardRef(function Transition(
   )
 })
 
-const AddBudget = ({ openDialog, handleClose }: Props) => {
+export const AddBudgetDialog = ({ openDialog, handleClose }: Props) => {
   const { dispatch } = useContext(Context)
   const classes = useStyles()
   const { mutateByAddingBudgetToCategory } = useUserData()
@@ -166,5 +166,3 @@ const AddBudget = ({ openDialog, handleClose }: Props) => {
     </Dialog>
   )
 }
-
-export default AddBudget

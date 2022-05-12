@@ -1,9 +1,6 @@
-import { useState } from 'react'
-import { Box, Fab, Stack } from '@mui/material'
-import AddIcon from '@mui/icons-material/Add'
+import { Stack } from '@mui/material'
 import { Layout } from '@components/Layout'
 import { withAuthentication } from '@utils/middleware'
-import AddBudget from '@components/pages/dashboard/AddBudget'
 import { Header } from '@components/pages/dashboard/Header'
 import LatestBudgets from '@components/pages/dashboard/budgets/LatestBudgets'
 import { Summary } from '@components/pages/dashboard/summary/Container'
@@ -13,22 +10,13 @@ import { DialogDeletion } from '@components/pages/dashboard/DialogDeletion'
 import { DialogEdition } from '@components/pages/dashboard/DialogEdition'
 import { serverGetApi } from '@config/api_server'
 import { AlertCategory } from '@components/pages/dashboard/AlertCategory'
+import { AddBudgetIcon } from '@components/pages/dashboard/AddBudgetIcon'
 
 interface Props {
   categoriesCount: number
 }
 
 const Dashboard = ({ categoriesCount }: Props) => {
-  const [open, setOpen] = useState(false)
-
-  const handleOpen = () => {
-    setOpen(true)
-  }
-
-  const handleClose = () => {
-    setOpen(false)
-  }
-
   return (
     <Layout title="Dashboard">
       <Stack
@@ -48,36 +36,7 @@ const Dashboard = ({ categoriesCount }: Props) => {
         <LatestBudgets />
       </Stack>
       {/* Only show the add budget icon if the user has categories */}
-      {categoriesCount > 0 ? (
-        <>
-          <Box
-            position="fixed"
-            right="0"
-            bottom="0"
-            sx={{
-              paddingBottom: {
-                xs: 2,
-                sm: 3
-              },
-              paddingRight: {
-                xs: 2,
-                sm: 3
-              }
-            }}
-          >
-            <Fab
-              color="primary"
-              aria-label="add"
-              title="Create Budget"
-              onClick={handleOpen}
-            >
-              <AddIcon />
-            </Fab>
-          </Box>
-
-          <AddBudget openDialog={open} handleClose={handleClose} />
-        </>
-      ) : null}
+      {categoriesCount > 0 ? <AddBudgetIcon /> : null}
       <DialogCategory />
       <DialogDeletion />
       <DialogEdition />
