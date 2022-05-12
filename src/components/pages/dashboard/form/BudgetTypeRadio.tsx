@@ -8,7 +8,7 @@ interface Props {
   budgetType: BudgetType
   setBudgetType: (value: SetStateAction<BudgetType>) => void
   // Handling function provided by formik
-  setFieldValue: FormikSetFieldType<'category', number>
+  setFieldValue: FormikSetFieldType<'category', number | string>
 }
 
 export const BudgetTypeRadio = ({
@@ -25,12 +25,15 @@ export const BudgetTypeRadio = ({
   }))
 
   const handleChangeRadio = (e: ChangeEvent<HTMLInputElement>) => {
-    setBudgetType(e.target.value as BudgetType) // When budget type is changed in radio button, display the first "budget type" into the select
+    setBudgetType(e.target.value as BudgetType)
 
+    // When budget type is changed in radio button, display the first "budget type" into the select
     const firstBudgetType = categories.find(
       category => category.type === e.target.value
     )
-    setFieldValue('category', firstBudgetType.id)
+
+    // If the type checked has no related categories, set the field value with empty string
+    setFieldValue('category', firstBudgetType?.id ?? '')
   }
 
   return (
