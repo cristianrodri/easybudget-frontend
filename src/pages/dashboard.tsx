@@ -11,12 +11,14 @@ import { DialogEdition } from '@components/pages/dashboard/DialogEdition'
 import { serverGetApi } from '@config/api_server'
 import { AlertCategory } from '@components/pages/dashboard/AlertCategory'
 import { AddBudgetIcon } from '@components/pages/dashboard/AddBudgetIcon'
+import { Budget } from '@custom-types'
 
 interface Props {
   categoriesCount: number
+  oldestBudgetDate: string
 }
 
-const Dashboard = ({ categoriesCount }: Props) => {
+const Dashboard = ({ categoriesCount, oldestBudgetDate }: Props) => {
   return (
     <Layout title="Dashboard">
       <Stack
@@ -29,7 +31,7 @@ const Dashboard = ({ categoriesCount }: Props) => {
         {/* If the user has no categories yet, show an alert to urge the user create some */}
         {categoriesCount === 0 ? <AlertCategory /> : null}
         <Stack flex={1} sx={{ minWidth: '70%' }}>
-          <Header />
+          <Header oldestBudgetDate={oldestBudgetDate} />
           <Summary />
           <Categories />
         </Stack>
@@ -45,11 +47,22 @@ const Dashboard = ({ categoriesCount }: Props) => {
 }
 
 export const getServerSideProps = withAuthentication<Props>(async ({ req }) => {
-  const res = await serverGetApi<number>('categories/count', req.cookies.token)
+  // Get the categories count
+  const { data: categoriesCount } = await serverGetApi<number>(
+    'categories/count',
+    req.cookies.token
+  )
+
+  // Get the oldest budget
+  const { data: oldestBudget } = await serverGetApi<Budget[]>(
+    'budgets?_sort=date:ASC&_limit=1',
+    req.cookies.token
+  )
 
   return {
     props: {
-      categoriesCount: res.data
+      categoriesCount,
+      oldestBudgetDate: oldestBudget[0]?.date ?? new Date().toISOString()
     }
   }
 })
