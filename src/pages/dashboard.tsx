@@ -1,3 +1,4 @@
+import { SWRConfig } from 'swr'
 import { Stack } from '@mui/material'
 import { Layout } from '@components/Layout'
 import { withAuthentication } from '@utils/middleware'
@@ -20,29 +21,31 @@ interface Props {
 
 const Dashboard = ({ categoriesCount, oldestBudgetDate }: Props) => {
   return (
-    <Layout title="Dashboard">
-      <Stack
-        my={2}
-        direction="row"
-        flexWrap="wrap"
-        justifyContent="center"
-        spacing={1}
-      >
-        {/* If the user has no categories yet, show an alert to urge the user create some */}
-        {categoriesCount === 0 ? <AlertCategory /> : null}
-        <Stack flex={1} sx={{ minWidth: '70%' }}>
-          <Header oldestBudgetDate={oldestBudgetDate} />
-          <Summary />
-          <Categories />
+    <SWRConfig value={{ provider: () => new Map() }}>
+      <Layout title="Dashboard">
+        <Stack
+          my={2}
+          direction="row"
+          flexWrap="wrap"
+          justifyContent="center"
+          spacing={1}
+        >
+          {/* If the user has no categories yet, show an alert to urge the user create some */}
+          {categoriesCount === 0 ? <AlertCategory /> : null}
+          <Stack flex={1} sx={{ minWidth: '70%' }}>
+            <Header oldestBudgetDate={oldestBudgetDate} />
+            <Summary />
+            <Categories />
+          </Stack>
+          <LatestBudgets />
         </Stack>
-        <LatestBudgets />
-      </Stack>
-      {/* Only show the add budget icon if the user has categories */}
-      {categoriesCount > 0 ? <AddBudgetIcon /> : null}
-      <DialogCategory />
-      <DialogDeletion />
-      <DialogEdition />
-    </Layout>
+        {/* Only show the add budget icon if the user has categories */}
+        {categoriesCount > 0 ? <AddBudgetIcon /> : null}
+        <DialogCategory />
+        <DialogDeletion />
+        <DialogEdition />
+      </Layout>
+    </SWRConfig>
   )
 }
 
