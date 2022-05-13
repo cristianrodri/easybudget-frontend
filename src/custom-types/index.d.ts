@@ -18,13 +18,13 @@ export interface User {
 export type UpdateUser = Omit<User, 'categories'>
 
 export interface Formats {
-  thumbnail: Avatar
-  large: Avatar
-  medium: Avatar
-  small: Avatar
+  thumbnail: AvatarUser
+  large: AvatarUser
+  medium: AvatarUser
+  small: AvatarUser
 }
 
-export interface Avatar {
+export interface AvatarUser {
   id?: number
   name: string
   width: number

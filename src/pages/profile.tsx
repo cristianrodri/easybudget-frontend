@@ -1,11 +1,13 @@
 import { Layout } from '@components/Layout'
+import { Title } from '@components/pages/profile/Title'
+import { UserAvatar } from '@components/pages/profile/UserAvatar'
 import { clientPutApi } from '@config/api_client'
 import { serverGetApi } from '@config/api_server'
 import { openSnackbar } from '@context/actions'
 import { Context } from '@context/GlobalContext'
 import { UpdateUser, User } from '@custom-types'
 import { useFocus } from '@hooks/useFocus'
-import { Box, Button, TextField, Typography } from '@mui/material'
+import { Box, Button, TextField } from '@mui/material'
 import { SnackbarType } from '@utils/enums'
 import { withAuthentication } from '@utils/middleware'
 import { useFormik } from 'formik'
@@ -76,9 +78,7 @@ const Profile = ({ data }: Props) => {
 
   return (
     <Layout title="Profile">
-      <Typography component="h1" variant="h5" align="center" gutterBottom>
-        Profile
-      </Typography>
+      <Title name="Profile" />
       <Box display="flex" flexDirection="column" alignItems="center">
         <Box
           component="form"
@@ -133,6 +133,7 @@ const Profile = ({ data }: Props) => {
           </Button>
         ) : null}
       </Box>
+      <UserAvatar avatar={data.avatar} />
     </Layout>
   )
 }
