@@ -10,7 +10,7 @@ interface Props {
 export const EditAvatar = ({ avatar }: Props) => {
   return (
     <Stack direction="row" justifyContent="center">
-      <Stack>
+      <Stack direction="column" alignItems="center">
         <Image
           src={`${SERVER_URL}${avatar.url}`}
           layout="fixed"
