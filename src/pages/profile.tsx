@@ -7,6 +7,7 @@ import { openSnackbar } from '@context/actions'
 import { Context } from '@context/GlobalContext'
 import { UpdateUser, User } from '@custom-types'
 import { useFocus } from '@hooks/useFocus'
+import { useUserData } from '@hooks/useSWRUser'
 import { Box, Button, TextField } from '@mui/material'
 import { SnackbarType } from '@utils/enums'
 import { withAuthentication } from '@utils/middleware'
@@ -15,7 +16,7 @@ import { useContext, useState } from 'react'
 import { object, SchemaOf, string } from 'yup'
 
 interface Props {
-  data: User
+  userData: User
 }
 
 interface FormTypes {
@@ -23,8 +24,9 @@ interface FormTypes {
   email: string
 }
 
-const Profile = ({ data }: Props) => {
+const Profile = ({ userData }: Props) => {
   const { dispatch } = useContext(Context)
+  const { data } = useUserData(userData)
   const ref = useFocus()
   const [readOnly, setReadOnly] = useState(true)
 
@@ -155,7 +157,7 @@ export const getServerSideProps = withAuthentication<Props>(async ({ req }) => {
 
   return {
     props: {
-      data: res.data
+      userData: res.data
     }
   }
 })

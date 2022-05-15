@@ -18,7 +18,7 @@ const fetcher = (url: string) =>
   clientGetApi<User>(url).then(res => (res.success === true ? res.data : null))
 
 // Custom hook which get user data by useSWR hook
-export const useUserData = () => {
+export const useUserData = (fallbackData?: User) => {
   const {
     values: { walletDate, categoryDialog, categoryDialogOpen, budgetToUpdate },
     dispatch
@@ -32,7 +32,7 @@ export const useUserData = () => {
       ? `api/user/get?budgets_date_start=${customDate.start}&budgets_date_end=${customDate.end}`
       : 'api/user/get'
 
-  const { data, mutate } = useSWR(API, fetcher)
+  const { data, mutate } = useSWR(API, fetcher, { fallbackData })
 
   // Check if the budget which will be updated, its date belongs to the wallet date
   const budgetExistInCategories = () => {
