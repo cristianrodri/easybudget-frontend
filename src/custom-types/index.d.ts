@@ -1,4 +1,5 @@
 import { BudgetType } from '@utils/enums'
+import { AxiosRequestConfig } from 'axios'
 import { ChangeEvent } from 'react'
 
 export interface User {
@@ -11,7 +12,7 @@ export interface User {
   role: number
   created_at: string
   updated_at: string
-  avatar: Avatar | null
+  avatar: AvatarUser | null
   categories: CategoryTypes[]
 }
 

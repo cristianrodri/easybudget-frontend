@@ -10,8 +10,11 @@ export const serverGetApi = <T>(
 ) => api.get<T>(`/${URL}`, apiHeaders(token, config))
 
 // Utility function for server POST api
-export const serverPostApi = <T>(url: Url, body: BodyRequest, token?: Token) =>
-  api.post<T>(`/${url}`, body, token ? apiHeaders(token) : undefined)
+export const serverPostApi = <T, R = unknown>(
+  url: Url,
+  body: R,
+  token?: Token
+) => api.post<T>(`/${url}`, body, token ? apiHeaders(token) : undefined)
 
 // Utility function for server PUT api
 export const serverPutApi = <T>(
