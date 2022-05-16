@@ -51,7 +51,7 @@ export const AddAvatar = () => {
       .then(response => {
         setIsLoading(false)
 
-        // Mutate the user avatar data after succeded uploaded
+        // Mutate the user avatar data after succeded upload
         const updatedUser = { ...user }
         updatedUser.avatar = response.data[0]
 

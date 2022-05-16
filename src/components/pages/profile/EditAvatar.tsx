@@ -14,8 +14,9 @@ export const EditAvatar = ({ avatar }: Props) => {
         <Image
           src={`${SERVER_URL}${avatar.url}`}
           layout="fixed"
-          width={avatar.width}
-          height={avatar.height}
+          width={300}
+          height={200}
+          objectFit="contain"
           alt="User Avatar"
         />
         <Stack
