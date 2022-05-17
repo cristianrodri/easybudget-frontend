@@ -13,7 +13,11 @@ import { Context } from '@context/GlobalContext'
 
 type Props =
   | { type: 'add' }
-  | { type: 'update'; setIsUpdate: Dispatch<SetStateAction<boolean>> }
+  | {
+      type: 'update'
+      setIsUpdate: Dispatch<SetStateAction<boolean>>
+      file: File
+    }
 
 const useStyles = makeStyles(() => ({
   centered: {
@@ -26,11 +30,18 @@ export const Upload = (props: Props) => {
   const classes = useStyles()
   const { dispatch } = useContext(Context)
   const { data: user, mutate } = useUserData()
-  const [file, setFile] = useState<File>(null)
+  const [file, setFile] = useState<File>(
+    props.type === 'update' ? props.file : null
+  )
   const [isLoading, setIsLoading] = useState(false)
 
   const handleCloseUpload = () => {
     setFile(null)
+
+    // Back to original avatar component if the close uploading comes from EditAvatar
+    if (props.type === 'update') {
+      props.setIsUpdate(false)
+    }
   }
 
   const handleSubmit = async () => {

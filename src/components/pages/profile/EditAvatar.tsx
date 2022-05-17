@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react'
+import { ChangeEvent, useContext, useState } from 'react'
 import Image from 'next/image'
 import { Button, Stack } from '@mui/material'
 import { SERVER_URL } from '@config/url'
@@ -20,6 +20,7 @@ export const EditAvatar = ({ avatar }: Props) => {
   const [dialogOpen, setDialogOpen] = useState(false)
   const { data, mutate } = useUserData()
   const [isUpdate, setIsUpdate] = useState(false)
+  const [file, setFile] = useState<File>(null)
   const [isDeleting, setIsDeleting] = useState(false)
 
   const openDialog = () => {
@@ -30,7 +31,8 @@ export const EditAvatar = ({ avatar }: Props) => {
     setDialogOpen(false)
   }
 
-  const handleUpdate = () => {
+  const handleUpdate = (e: ChangeEvent<HTMLInputElement>) => {
+    setFile(e.target.files[0])
     setIsUpdate(true)
   }
 
@@ -56,7 +58,8 @@ export const EditAvatar = ({ avatar }: Props) => {
     }
   }
 
-  if (isUpdate) return <Upload type="update" setIsUpdate={setIsUpdate} />
+  if (isUpdate)
+    return <Upload type="update" setIsUpdate={setIsUpdate} file={file} />
 
   return (
     <>
@@ -81,12 +84,13 @@ export const EditAvatar = ({ avatar }: Props) => {
             }}
           >
             <Button
+              component="label"
               variant="outlined"
               color="info"
-              onClick={handleUpdate}
               disabled={isDeleting}
             >
               update
+              <input type="file" hidden onChange={handleUpdate} />
             </Button>
             <Button
               variant="outlined"
