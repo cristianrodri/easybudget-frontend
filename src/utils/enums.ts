@@ -18,6 +18,7 @@ export enum ApiMethod {
 export enum Status {
   SUCCESS = 200,
   CREATED = 201,
+  BAD_REQUEST = 400,
   METHOD_NOT_ALLOWED = 405
 }
 

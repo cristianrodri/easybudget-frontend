@@ -9,6 +9,7 @@ import { useUserData } from '@hooks/useSWRUser'
 import { Context } from '@context/GlobalContext'
 import { openSnackbar } from '@context/actions'
 import { SnackbarType } from '@utils/enums'
+import { Upload } from './Upload'
 
 interface Props {
   avatar: AvatarUser
@@ -18,6 +19,7 @@ export const EditAvatar = ({ avatar }: Props) => {
   const { dispatch } = useContext(Context)
   const [dialogOpen, setDialogOpen] = useState(false)
   const { data, mutate } = useUserData()
+  const [isUpdate, setIsUpdate] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
 
   const openDialog = () => {
@@ -26,6 +28,10 @@ export const EditAvatar = ({ avatar }: Props) => {
 
   const closeDialog = () => {
     setDialogOpen(false)
+  }
+
+  const handleUpdate = () => {
+    setIsUpdate(true)
   }
 
   const handleDelete = async () => {
@@ -50,6 +56,8 @@ export const EditAvatar = ({ avatar }: Props) => {
     }
   }
 
+  if (isUpdate) return <Upload type="update" setIsUpdate={setIsUpdate} />
+
   return (
     <>
       <Stack direction="row" justifyContent="center">
@@ -73,12 +81,11 @@ export const EditAvatar = ({ avatar }: Props) => {
             }}
           >
             <Button
-              component="label"
               variant="outlined"
               color="info"
+              onClick={handleUpdate}
               disabled={isDeleting}
             >
-              <input type="file" hidden />
               update
             </Button>
             <Button

@@ -81,6 +81,15 @@ type ApiResponseError = {
 
 type ApiResponse<T> = ApiResponseSuccess<T> | ApiResponseError
 
+export type StrapiErrorResponse = {
+  data: {
+    errors: {
+      id: string
+      message: string
+    }[]
+  }
+}
+
 /* FORMIK CUSTOM TYPES */
 type FormikHandleChange = {
   (e: ChangeEvent): void

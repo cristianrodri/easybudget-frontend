@@ -13,8 +13,9 @@ export const serverGetApi = <T>(
 export const serverPostApi = <T, R = unknown>(
   url: Url,
   body: R,
-  token?: Token
-) => api.post<T>(`/${url}`, body, token ? apiHeaders(token) : undefined)
+  token?: Token,
+  config?: RequestConfig
+) => api.post<T>(`/${url}`, body, token ? apiHeaders(token, config) : undefined)
 
 // Utility function for server PUT api
 export const serverPutApi = <T>(
