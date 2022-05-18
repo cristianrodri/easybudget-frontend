@@ -61,7 +61,7 @@ export const Upload = (props: Props) => {
     const params = type === 'update' ? `?id=${user.avatar.id}` : ''
 
     // Upload the image to the strapi server
-    serverPostApi<AvatarUser[] | StrapiErrorResponse>(
+    serverPostApi<AvatarUser | AvatarUser[] | StrapiErrorResponse>(
       `upload${params}`,
       formData,
       tokenRes.success ? tokenRes.data.token : '',
@@ -82,7 +82,10 @@ export const Upload = (props: Props) => {
 
       // Mutate the user avatar data after succeded upload
       const updatedUser = { ...user }
-      updatedUser.avatar = (res.data as AvatarUser[])[0]
+      // If the response is an array, it means that the file was created on the strapi server. Otherwise, the file was updated and just received the avatar data
+      updatedUser.avatar = Array.isArray(res.data)
+        ? (res.data as AvatarUser[])[0]
+        : (res.data as AvatarUser)
 
       // Unmount the Upload component after a image is successfully uploaded by changing parent state to false
       if (props.type === 'update') {
