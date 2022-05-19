@@ -27,7 +27,7 @@ export const Header = ({ backgroundPage }: Props) => {
       <Link href="/">
         <a data-testid="homepage">
           <Image
-            src="/logo.png"
+            src="/logo.svg"
             layout="fixed"
             width={120}
             height={50}
