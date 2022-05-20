@@ -1,5 +1,4 @@
 import { Box, Typography, useTheme } from '@mui/material'
-import { Layout } from '@components/Layout'
 import { withAuthentication } from '@utils/middleware'
 import { GetCategory } from '@custom-types'
 import { BudgetType } from '@utils/enums'
@@ -7,6 +6,7 @@ import { Category } from '@components/pages/categories/Category'
 import { Form } from '@components/pages/categories/Form'
 import { useSWRCategories } from '@hooks/useSWRCategories'
 import { serverGetApi } from '@config/api_server'
+import { LayoutAuth } from '@components/LayoutAuth'
 
 interface Props {
   categories: GetCategory[]
@@ -17,7 +17,7 @@ const Categories = ({ categories }: Props) => {
   const theme = useTheme()
 
   return (
-    <Layout title="Categories">
+    <LayoutAuth title="Categories">
       <Typography component="h1" variant="h5" align="center" gutterBottom>
         Categories
       </Typography>
@@ -55,7 +55,7 @@ const Categories = ({ categories }: Props) => {
           </Box>
         </Box>
       </Box>
-    </Layout>
+    </LayoutAuth>
   )
 }
 

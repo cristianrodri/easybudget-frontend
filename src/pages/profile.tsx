@@ -1,4 +1,8 @@
-import { Layout } from '@components/Layout'
+import { useContext, useState } from 'react'
+import { Box, Button, TextField } from '@mui/material'
+import { LayoutAuth } from '@components/LayoutAuth'
+import { useFormik } from 'formik'
+import { object, SchemaOf, string } from 'yup'
 import { Title } from '@components/pages/profile/Title'
 import { UserAvatar } from '@components/pages/profile/UserAvatar'
 import { clientPutApi } from '@config/api_client'
@@ -8,12 +12,8 @@ import { Context } from '@context/GlobalContext'
 import { UpdateUser, User } from '@custom-types'
 import { useFocus } from '@hooks/useFocus'
 import { useUserData } from '@hooks/useSWRUser'
-import { Box, Button, TextField } from '@mui/material'
 import { SnackbarType } from '@utils/enums'
 import { withAuthentication } from '@utils/middleware'
-import { useFormik } from 'formik'
-import { useContext, useState } from 'react'
-import { object, SchemaOf, string } from 'yup'
 
 interface Props {
   userData: User
@@ -79,7 +79,7 @@ const Profile = ({ userData }: Props) => {
   }
 
   return (
-    <Layout title="Profile">
+    <LayoutAuth title="Profile">
       <Title name="Profile" />
       <Box display="flex" flexDirection="column" alignItems="center">
         <Box
@@ -136,7 +136,7 @@ const Profile = ({ userData }: Props) => {
         ) : null}
       </Box>
       <UserAvatar avatar={data.avatar} />
-    </Layout>
+    </LayoutAuth>
   )
 }
 

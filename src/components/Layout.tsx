@@ -1,14 +1,15 @@
 import { FC } from 'react'
 import Head from 'next/head'
 import { Container, Box, Theme } from '@mui/material'
-import { Header } from './Header'
 import { makeStyles } from '@mui/styles'
+import { Header } from './Header'
 
 export type BackgroundType = 'homepage' | 'signup' | 'login' | 'default'
 
-interface Props {
+export interface LayoutProps {
   title: string
   backgroundPage?: BackgroundType
+  isAuth?: boolean
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -54,10 +55,11 @@ const useStyles = makeStyles((theme: Theme) => ({
   }
 }))
 
-export const Layout: FC<Props> = ({
+export const Layout: FC<LayoutProps> = ({
   children,
   title,
-  backgroundPage = 'default'
+  backgroundPage = 'default',
+  isAuth = false
 }) => {
   const classes = useStyles()
   return (
@@ -75,7 +77,7 @@ export const Layout: FC<Props> = ({
         position="relative"
         paddingTop="1rem"
       >
-        <Header backgroundPage={backgroundPage} />
+        <Header backgroundPage={backgroundPage} isAuth={isAuth} />
         {children}
       </Box>
     </Container>

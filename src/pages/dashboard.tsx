@@ -1,6 +1,5 @@
 import { SWRConfig } from 'swr'
 import { Stack } from '@mui/material'
-import { Layout } from '@components/Layout'
 import { withAuthentication } from '@utils/middleware'
 import { Header } from '@components/pages/dashboard/Header'
 import LatestBudgets from '@components/pages/dashboard/budgets/LatestBudgets'
@@ -13,6 +12,7 @@ import { serverGetApi } from '@config/api_server'
 import { AlertCategory } from '@components/pages/dashboard/AlertCategory'
 import { AddBudgetIcon } from '@components/pages/dashboard/AddBudgetIcon'
 import { Budget } from '@custom-types'
+import { LayoutAuth } from '@components/LayoutAuth'
 
 interface Props {
   categoriesCount: number
@@ -22,7 +22,7 @@ interface Props {
 const Dashboard = ({ categoriesCount, oldestBudgetDate }: Props) => {
   return (
     <SWRConfig value={{ provider: () => new Map() }}>
-      <Layout title="Dashboard">
+      <LayoutAuth title="Dashboard">
         <Stack
           my={2}
           direction="row"
@@ -44,7 +44,7 @@ const Dashboard = ({ categoriesCount, oldestBudgetDate }: Props) => {
         <DialogCategory />
         <DialogDeletion />
         <DialogEdition />
-      </Layout>
+      </LayoutAuth>
     </SWRConfig>
   )
 }

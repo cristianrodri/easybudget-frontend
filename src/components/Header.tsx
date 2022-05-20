@@ -7,6 +7,7 @@ import { makeStyles } from '@mui/styles'
 
 interface Props {
   backgroundPage: BackgroundType
+  isAuth: boolean
 }
 
 const useStyles = makeStyles<Theme, { backgroundPage: BackgroundType }>(() => ({
@@ -19,7 +20,7 @@ const useStyles = makeStyles<Theme, { backgroundPage: BackgroundType }>(() => ({
   }
 }))
 
-export const Header = ({ backgroundPage }: Props) => {
+export const Header = ({ backgroundPage, isAuth }: Props) => {
   const { header } = useStyles({ backgroundPage })
 
   return (
@@ -35,7 +36,8 @@ export const Header = ({ backgroundPage }: Props) => {
           />
         </a>
       </Link>
-      <AuthMenu />
+      {/* AuthMenu is only showed in authenticated pages */}
+      {isAuth ? <AuthMenu /> : null}
     </header>
   )
 }
