@@ -14,6 +14,7 @@ export interface LayoutProps {
 
 const useStyles = makeStyles((theme: Theme) => ({
   homepage: {
+    overflow: 'hidden',
     '&::before': {
       content: "''",
       background: `linear-gradient(${theme.palette.primary.main}, ${theme.palette.secondary.light})`,
@@ -24,7 +25,7 @@ const useStyles = makeStyles((theme: Theme) => ({
       height: '100vh',
       zIndex: 'var(--zindex-bg)',
       [theme.breakpoints.up('md')]: {
-        clipPath: 'polygon(100% 0, 100% 20%, 29% 100%, 0 70%, 0 0)'
+        clipPath: 'polygon(100% 0, 100% 20%, 29% 110%, 0 70%, 0 0)'
       }
     }
   },
