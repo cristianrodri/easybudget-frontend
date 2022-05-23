@@ -45,9 +45,7 @@ export const DialogDeletion = ({
     // Close this dialog inmediately after a user clicked delete button
     handleClose()
 
-    const updatedCategories = categoriesData.filter(
-      category => category.id !== category.id
-    )
+    const updatedCategories = categoriesData.filter(c => c.id !== category.id)
 
     mutate(updatedCategories, false)
 
