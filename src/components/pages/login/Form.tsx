@@ -130,17 +130,17 @@ export const Form = () => {
         </Button>
       </Box>
       <FormLink href="/signup">
-        <Box
-          component={Typography}
-          display="flex"
-          alignItems="center"
-          mt={theme.spacing(2)}
-          // style={{ marginTop: theme.spacing(2) }}
+        <Typography
+          variant="caption"
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 1,
+            mt: theme.spacing(2)
+          }}
         >
-          <Typography variant="caption">
-            Create your account {<ArrowForwardIcon fontSize="small" />}
-          </Typography>
-        </Box>
+          Create your account {<ArrowForwardIcon fontSize="small" />}
+        </Typography>
       </FormLink>
     </Box>
   )
