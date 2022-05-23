@@ -10,15 +10,18 @@ interface Props {
   isAuth: boolean
 }
 
-const useStyles = makeStyles<Theme, { backgroundPage: BackgroundType }>(() => ({
-  header: {
-    position: props =>
-      props.backgroundPage === 'default' ? 'static' : 'absolute',
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center'
-  }
-}))
+const useStyles = makeStyles<Theme, { backgroundPage: BackgroundType }>(
+  theme => ({
+    header: {
+      position: props =>
+        props.backgroundPage === 'default' ? 'static' : 'absolute',
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginTop: theme.spacing(2)
+    }
+  })
+)
 
 export const Header = ({ backgroundPage, isAuth }: Props) => {
   const { header } = useStyles({ backgroundPage })

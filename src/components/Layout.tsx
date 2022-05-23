@@ -21,11 +21,10 @@ const useStyles = makeStyles((theme: Theme) => ({
       top: '0',
       left: 0,
       width: '100%',
-      minHeight: '100vh',
+      height: '100vh',
       zIndex: 'var(--zindex-bg)',
       [theme.breakpoints.up('md')]: {
-        clipPath: 'polygon(100% 0, 100% 20%, 29% 100%, 0 70%, 0 0)',
-        height: '140%'
+        clipPath: 'polygon(100% 0, 100% 20%, 29% 100%, 0 70%, 0 0)'
       }
     }
   },
@@ -75,7 +74,6 @@ export const Layout: FC<LayoutProps> = ({
         display="flex"
         flexDirection="column"
         position="relative"
-        paddingTop="1rem"
       >
         <Header backgroundPage={backgroundPage} isAuth={isAuth} />
         {children}
