@@ -10,7 +10,7 @@ import { textCapitalize } from '@utils/string'
 import { BudgetDescription } from './BudgetDescription'
 import { formatMoney } from '@utils/money'
 import { Box } from '@mui/material'
-import { dateTitle } from '@utils/dates'
+import { dateTitle, sortBudgetsByDescDate } from '@utils/dates'
 import { colorWallet } from '@utils/color'
 
 export const DialogCategory = () => {
@@ -50,7 +50,7 @@ export const DialogCategory = () => {
           gap: theme => theme.spacing(2)
         }}
       >
-        {categoryDialog.budgets.map(budget => (
+        {categoryDialog.budgets.sort(sortBudgetsByDescDate).map(budget => (
           <BudgetDescription key={budget.id} budget={budget} isDialog />
         ))}
       </DialogContent>
