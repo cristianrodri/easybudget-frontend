@@ -5,7 +5,6 @@ import clsx from 'clsx'
 import { Layout } from '@components/Layout'
 import { Signup } from '@components/pages/home/Signup'
 import { Login } from '@components/pages/home/Login'
-import { CardContainer } from '@components/pages/home/CardContainer'
 import { withPublic } from '@utils/middleware'
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -93,7 +92,7 @@ const IndexPage = () => {
           )}
         </Box>
       </Box>
-      <CardContainer />
+      {/* <CardContainer /> */}
     </Layout>
   )
 }
