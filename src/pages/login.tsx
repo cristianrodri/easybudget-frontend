@@ -6,7 +6,7 @@ import { withPublic } from '@utils/middleware'
 
 const Login = () => {
   const theme = useTheme()
-  const matches = useMediaQuery(theme.breakpoints.down('xs'))
+  const matches = useMediaQuery(theme.breakpoints.down('md'))
 
   return (
     <Layout title="Login" backgroundPage="login">
