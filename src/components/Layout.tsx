@@ -4,7 +4,7 @@ import { Container, Box, Theme } from '@mui/material'
 import { makeStyles } from '@mui/styles'
 import { Header } from './Header'
 
-export type BackgroundType = 'homepage' | 'signup' | 'login' | 'default'
+export type BackgroundType = 'homepage' | 'login' | 'default'
 
 export interface LayoutProps {
   title: string
@@ -26,18 +26,6 @@ const useStyles = makeStyles((theme: Theme) => ({
       [theme.breakpoints.up('md')]: {
         clipPath: 'polygon(100% 0, 100% 20%, 29% 100%, 0 70%, 0 0)'
       }
-    }
-  },
-  signup: {
-    '&::before': {
-      content: "''",
-      background: theme.palette.grey[50],
-      position: 'absolute',
-      top: '0',
-      left: 0,
-      width: '100%',
-      height: '100%',
-      zIndex: 'var(--zindex-bg)'
     }
   },
   login: {

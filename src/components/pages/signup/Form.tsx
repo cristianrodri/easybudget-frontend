@@ -17,6 +17,8 @@ interface FormTypes {
   confirmPassword: string
 }
 
+const VARIANT = 'medium'
+
 export const Form = () => {
   const theme = useTheme()
   const ref = useFocus()
@@ -65,27 +67,28 @@ export const Form = () => {
 
   return (
     <Box
-      width="55%"
-      p={theme.spacing(6, 8)}
-      borderRadius={16}
+      width={400}
+      maxWidth={500}
+      p={theme.spacing(4, 5)}
+      borderRadius={8}
       bgcolor={theme.palette.grey[200]}
       boxShadow={theme.shadows[15]}
       display="grid"
     >
-      <Box
-        component={Typography}
-        alignSelf="center"
-        style={{ marginBottom: theme.spacing(2) }}
+      <Typography
+        component="h3"
+        variant="h5"
+        color="primary"
+        align="center"
+        gutterBottom
       >
-        <Typography component="h3" variant="h5" color="primary">
-          Sign up
-        </Typography>
-      </Box>
+        Sign up
+      </Typography>
       <Box
         component="form"
         onSubmit={formik.handleSubmit}
         display="grid"
-        gap={theme.spacing(1)}
+        gap={theme.spacing(1.5)}
       >
         <TextField
           id="username"
@@ -96,6 +99,7 @@ export const Form = () => {
           onChange={formik.handleChange}
           error={formik.touched.username && Boolean(formik.errors.username)}
           helperText={formik.touched.username && formik.errors.username}
+          size={VARIANT}
         />
         <TextField
           id="email"
@@ -105,6 +109,7 @@ export const Form = () => {
           onChange={formik.handleChange}
           error={formik.touched.email && Boolean(formik.errors.email)}
           helperText={formik.touched.email && formik.errors.email}
+          size={VARIANT}
         />
         <TextField
           id="password"
@@ -115,6 +120,7 @@ export const Form = () => {
           onChange={formik.handleChange}
           error={formik.touched.password && Boolean(formik.errors.password)}
           helperText={formik.touched.password && formik.errors.password}
+          size={VARIANT}
         />
         <TextField
           id="confirmPassword"
@@ -130,28 +136,27 @@ export const Form = () => {
           helperText={
             formik.touched.confirmPassword && formik.errors.confirmPassword
           }
+          size={VARIANT}
         />
-        <Box
-          component={Button}
-          justifySelf="start"
-          alignSelf="center"
-          style={{
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          disabled={formik.isSubmitting}
+          sx={{
             borderRadius: 24,
             padding: theme.spacing(1.5, 5),
             marginTop: theme.spacing(2)
           }}
         >
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            disabled={formik.isSubmitting}
-          >
-            {formik.isSubmitting ? 'Loading...' : 'sign up'}
-          </Button>
-        </Box>
+          {formik.isSubmitting ? 'Loading...' : 'sign up'}
+        </Button>
       </Box>
-      <Typography style={{ marginTop: theme.spacing(2) }} variant="body1">
+      <Typography
+        style={{ marginTop: theme.spacing(2) }}
+        variant="body1"
+        align="center"
+      >
         Already registered? <FormLink href="/login">Login</FormLink>
       </Typography>
     </Box>
