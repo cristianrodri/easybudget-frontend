@@ -24,7 +24,9 @@ export const AuthMenu = () => {
   }
 
   const logout = async () => {
-    const res = await clientGetApi('api/logout')
+    const res = await clientGetApi('api/logout', {
+      withCredentials: true
+    })
 
     if (res.success) {
       dispatch(clearGlobalState())
