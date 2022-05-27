@@ -13,7 +13,7 @@ export const deleteCookie = () =>
   cookie.serialize('token', '', {
     httpOnly: true,
     secure: process.env.NODE_ENV !== 'development',
-    maxAge: 0.1,
+    expires: new Date(0),
     sameSite: 'strict',
     path: '/'
   })

@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import { SERVER_URL } from '@config/url'
 import { getAvatarThumbnail } from '@utils/avatar'
 import { useUserData } from '@hooks/useSWRUser'
-import { clientGetApi } from '@config/api_client'
+import { clientPostApi } from '@config/api_client'
 import { Context } from '@context/GlobalContext'
 import { clearGlobalState } from '@context/actions'
 
@@ -24,9 +24,7 @@ export const AuthMenu = () => {
   }
 
   const logout = async () => {
-    const res = await clientGetApi('api/logout', {
-      withCredentials: true
-    })
+    const res = await clientPostApi('api/logout')
 
     if (res.success) {
       dispatch(clearGlobalState())
