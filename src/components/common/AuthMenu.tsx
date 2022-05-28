@@ -1,7 +1,6 @@
 import { MouseEvent, useContext, useState } from 'react'
 import { Avatar, Menu, MenuItem, Button } from '@mui/material'
 import { useRouter } from 'next/router'
-import { SERVER_URL } from '@config/url'
 import { getAvatarThumbnail } from '@utils/avatar'
 import { useUserData } from '@hooks/useSWRUser'
 import { clientGetApi } from '@config/api_client'
@@ -47,7 +46,7 @@ export const AuthMenu = () => {
       >
         <Avatar
           style={{ cursor: 'pointer' }}
-          src={`${SERVER_URL}${avatarUrl}`}
+          src={avatarUrl}
           title={data?.username}
         />
       </Button>

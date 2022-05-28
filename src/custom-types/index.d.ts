@@ -18,11 +18,16 @@ export interface User {
 
 export type UpdateUser = Omit<User, 'categories'>
 
+type ProviderMetaData = {
+  public_id: string
+  resource_type: string
+}
+
 export interface Formats {
-  thumbnail: AvatarUser
-  large: AvatarUser
-  medium: AvatarUser
-  small: AvatarUser
+  thumbnail: AvatarUser & { provider_metadata: ProviderMetaData }
+  large: AvatarUser & { provider_metadata: ProviderMetaData }
+  medium: AvatarUser & { provider_metadata: ProviderMetaData }
+  small: AvatarUser & { provider_metadata: ProviderMetaData }
 }
 
 export interface AvatarUser {

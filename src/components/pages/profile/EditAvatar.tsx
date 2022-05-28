@@ -1,7 +1,6 @@
 import { ChangeEvent, useContext, useState } from 'react'
 import Image from 'next/image'
 import { Button, Stack } from '@mui/material'
-import { SERVER_URL } from '@config/url'
 import { AvatarUser } from '@custom-types'
 import { DialogAvatarDeletion } from './DialogAvatarDeletion'
 import { clientDeleteApi } from '@config/api_client'
@@ -66,7 +65,7 @@ export const EditAvatar = ({ avatar }: Props) => {
       <Stack direction="row" justifyContent="center">
         <Stack direction="column" alignItems="center">
           <Image
-            src={`${SERVER_URL}${avatar.url}`}
+            src={avatar.url}
             layout="fixed"
             width={300}
             height={200}
