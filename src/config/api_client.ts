@@ -16,7 +16,7 @@ export const clientGetApi = <T>(url: Url, config?: RequestConfig) =>
     .catch(error)
 
 // Utility function for client POST api
-export const clientPostApi = <T, R>(url: Url, bodyRequest: R) =>
+export const clientPostApi = <T, R>(url: Url, bodyRequest?: R) =>
   api
     .post<ApiResponseSuccess<T>>(`/${url}`, bodyRequest)
     .then(response => response.data)

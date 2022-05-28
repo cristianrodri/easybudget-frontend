@@ -3,7 +3,7 @@ import { Avatar, Menu, MenuItem, Button } from '@mui/material'
 import { useRouter } from 'next/router'
 import { getAvatarThumbnail } from '@utils/avatar'
 import { useUserData } from '@hooks/useSWRUser'
-import { clientGetApi } from '@config/api_client'
+import { clientPostApi } from '@config/api_client'
 import { Context } from '@context/GlobalContext'
 import { clearGlobalState } from '@context/actions'
 
@@ -23,7 +23,7 @@ export const AuthMenu = () => {
   }
 
   const logout = async () => {
-    const res = await clientGetApi('api/logout')
+    const res = await clientPostApi('api/logout')
 
     if (res.success) {
       dispatch(clearGlobalState())
