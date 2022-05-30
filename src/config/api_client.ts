@@ -1,4 +1,6 @@
+import { AxiosResponse } from 'axios'
 import {
+  ApiResponse,
   ApiResponseError,
   ApiResponseSuccess,
   RequestConfig,
@@ -7,42 +9,35 @@ import {
 import { clientInstance as api } from './axios'
 import { Status } from '@utils/enums'
 
-type ApiError = {
-  error: {
-    code: number
-    message: string
-  }
+const errorGatewayResponse: ApiResponseError = {
+  success: false,
+  message: 'Server was slepping. Please try again'
 }
 
-const handleError = (err: ApiError): ApiResponseError => {
-  // If the api received a gateway timeout error, add a custom error message
-  const message =
-    err.error.code === Status.GATEWAY_TIMEOUT
-      ? 'Server was slepping. Please try again'
-      : err.error.message
+const handleError = (err: ApiResponseError) => err
 
-  return {
-    success: false,
-    message
+const handleSuccessResponse = <T>(
+  response: AxiosResponse<ApiResponseSuccess<T>>
+) => {
+  if (response.status === Status.GATEWAY_TIMEOUT) {
+    return errorGatewayResponse
   }
+
+  return response.data
 }
 
 // Utility function for client GET api
 export const clientGetApi = <T>(url: Url, config?: RequestConfig) =>
   api
     .get<ApiResponseSuccess<T>>(`/${url}`, config)
-    .then(response => response.data)
+    .then(handleSuccessResponse)
     .catch(handleError)
 
 // Utility function for client POST api
 export const clientPostApi = <T, R>(url: Url, bodyRequest?: R) =>
   api
-    .post<ApiResponseSuccess<T>>(`/${url}`, bodyRequest)
-    .then(response => {
-      // eslint-disable-next-line
-      console.log(response)
-      return response.data
-    })
+    .post<ApiResponse<T>>(`/${url}`, bodyRequest)
+    .then(handleSuccessResponse)
     .catch(handleError)
 
 // Utility function for client PUT api
@@ -53,12 +48,12 @@ export const clientPutApi = <T, R = unknown>(
 ) =>
   api
     .put<ApiResponseSuccess<T>>(`/${url}`, bodyRequest, config)
-    .then(response => response.data)
+    .then(handleSuccessResponse)
     .catch(handleError)
 
 // Utility function for client DELETE api
 export const clientDeleteApi = <T>(url: Url) =>
   api
     .delete<ApiResponseSuccess<T>>(`/${url}`)
-    .then(response => response.data)
+    .then(handleSuccessResponse)
     .catch(handleError)
