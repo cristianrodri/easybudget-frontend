@@ -6,10 +6,7 @@ import {
 } from '@custom-types'
 import { clientInstance as api } from './axios'
 
-const error = (err: ApiResponseError) => {
-  console.log(err) // eslint-disable-line no-console
-  return err
-}
+const error = (err: ApiResponseError) => err
 
 // Utility function for client GET api
 export const clientGetApi = <T>(url: Url, config?: RequestConfig) =>

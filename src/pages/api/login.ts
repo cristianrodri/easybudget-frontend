@@ -29,11 +29,6 @@ export default async (
     } catch (error) {
       const err = error as AxiosError
 
-      console.log(err) // eslint-disable-line no-console
-      console.log(err.response) // eslint-disable-line no-console
-      console.log(err.response.data) // eslint-disable-line no-console
-      console.log(err.response.data.message) // eslint-disable-line no-console
-
       const { status } = errorResponse(
         err,
         err.response?.data.message[0].messages[0].message
