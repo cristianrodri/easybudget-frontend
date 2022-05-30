@@ -66,9 +66,18 @@ export const Form = () => {
 
       const res = await clientPostApi('api/login', values)
 
+      // eslint-disable-next-line
+      console.log(res)
+      // eslint-disable-next-line
+      console.log(typeof res)
+      // eslint-disable-next-line
+      console.log('response', res)
+
       if (res.success === true) {
         router.push('dashboard')
       } else {
+        // eslint-disable-next-line
+        console.log(res, 'here')
         dispatch(openSnackbar(res.message, SnackbarType.ERROR))
       }
       setSubmitting(false)
