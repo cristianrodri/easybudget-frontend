@@ -66,6 +66,8 @@ export const Form = () => {
 
       const res = await clientPostApi('api/login', values)
 
+      console.log(res) // eslint-disable-line no-console
+
       if (res.success === true) {
         router.push('dashboard')
       } else {

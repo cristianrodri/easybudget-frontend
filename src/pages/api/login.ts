@@ -34,12 +34,12 @@ export default async (
       console.log(err.response.data) // eslint-disable-line no-console
       console.log(err.response.data.message) // eslint-disable-line no-console
 
-      const { status, message } = errorResponse(
+      const { status } = errorResponse(
         err,
         err.response?.data.message[0].messages[0].message
       )
 
-      res.status(status).json(jsonResponseError(message))
+      res.status(status).json(jsonResponseError(JSON.stringify(err.response)))
     }
   } else {
     res.setHeader('Allow', [ApiMethod.POST])
