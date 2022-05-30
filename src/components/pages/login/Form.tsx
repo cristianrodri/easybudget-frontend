@@ -69,11 +69,7 @@ export const Form = () => {
       if (res.success === true) {
         router.push('dashboard')
       } else {
-        // If the api received an error but the message was not provided, add a custom error message
-        const errorMessage =
-          res?.message ?? 'Server was slepping. Please try again'
-
-        dispatch(openSnackbar(errorMessage, SnackbarType.ERROR))
+        dispatch(openSnackbar(res.message, SnackbarType.ERROR))
       }
       setSubmitting(false)
     }
