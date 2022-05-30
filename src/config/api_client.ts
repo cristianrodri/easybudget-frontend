@@ -38,7 +38,11 @@ export const clientGetApi = <T>(url: Url, config?: RequestConfig) =>
 export const clientPostApi = <T, R>(url: Url, bodyRequest?: R) =>
   api
     .post<ApiResponseSuccess<T>>(`/${url}`, bodyRequest)
-    .then(response => response.data)
+    .then(response => {
+      // eslint-disable-next-line
+      console.log(response)
+      return response.data
+    })
     .catch(handleError)
 
 // Utility function for client PUT api
