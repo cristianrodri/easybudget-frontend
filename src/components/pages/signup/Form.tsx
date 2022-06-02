@@ -48,9 +48,7 @@ export const Form = () => {
       confirmPassword: ''
     },
     validationSchema,
-    onSubmit: async (values, { setSubmitting }) => {
-      setSubmitting(true)
-
+    onSubmit: async values => {
       const submittedValues = { ...values }
       delete submittedValues.confirmPassword
 
@@ -61,7 +59,6 @@ export const Form = () => {
       } else {
         dispatch(openSnackbar(res.message, SnackbarType.ERROR))
       }
-      setSubmitting(false)
     }
   })
 

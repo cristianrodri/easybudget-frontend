@@ -61,9 +61,7 @@ export const Form = () => {
       password: ''
     },
     validationSchema,
-    onSubmit: async (values, { setSubmitting }) => {
-      setSubmitting(true)
-
+    onSubmit: async values => {
       const res = await clientPostApi('api/login', values)
 
       if (res.success === true) {
@@ -71,7 +69,6 @@ export const Form = () => {
       } else {
         dispatch(openSnackbar(res.message, SnackbarType.ERROR))
       }
-      setSubmitting(false)
     }
   })
 
