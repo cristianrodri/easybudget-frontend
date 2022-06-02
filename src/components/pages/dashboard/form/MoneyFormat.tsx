@@ -21,6 +21,7 @@ export const MoneyFormat = ({
       id="money"
       label="Amount"
       name="money"
+      type="tel"
       value={money}
       onValueChange={values => setFieldValue('money', values.floatValue)}
       customInput={TextField}
