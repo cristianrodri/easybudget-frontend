@@ -14,6 +14,7 @@ import { useFocus } from '@hooks/useFocus'
 import { useUserData } from '@hooks/useSWRUser'
 import { SnackbarType } from '@utils/enums'
 import { withAuthentication } from '@utils/middleware'
+import { useUserAvatar } from '@hooks/useSWRAvatar'
 
 interface Props {
   userData: User
@@ -27,6 +28,7 @@ interface FormTypes {
 const Profile = ({ userData }: Props) => {
   const { dispatch } = useContext(Context)
   const { data } = useUserData(userData)
+  const { data: avatar } = useUserAvatar(userData.avatar)
   const ref = useFocus()
   const [readOnly, setReadOnly] = useState(true)
 
@@ -135,7 +137,7 @@ const Profile = ({ userData }: Props) => {
           </Button>
         ) : null}
       </Box>
-      <UserAvatar avatar={data.avatar} />
+      <UserAvatar avatar={avatar} />
     </LayoutAuth>
   )
 }

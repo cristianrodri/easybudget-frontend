@@ -6,11 +6,11 @@ import { useUserData } from '@hooks/useSWRUser'
 import { clientPostApi } from '@config/api_client'
 import { Context } from '@context/GlobalContext'
 import { clearGlobalState } from '@context/actions'
-import { useSWRAvatar } from '@hooks/useSWRAvatar'
+import { useUserAvatar } from '@hooks/useSWRAvatar'
 
 export const AuthMenu = () => {
   const { data } = useUserData()
-  const { data: avatar } = useSWRAvatar()
+  const { data: avatar } = useUserAvatar()
   const { dispatch } = useContext(Context)
   const avatarUrl = getAvatarThumbnail(avatar)
   const router = useRouter()

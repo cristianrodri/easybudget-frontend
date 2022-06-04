@@ -10,6 +10,7 @@ import { serverPostApi } from '@config/api_server'
 import { openSnackbar } from '@context/actions'
 import { SnackbarType, Status } from '@utils/enums'
 import { Context } from '@context/GlobalContext'
+import { useUserAvatar } from '@hooks/useSWRAvatar'
 
 type Props =
   | { type: 'add' }
@@ -29,7 +30,8 @@ export const Upload = (props: Props) => {
   const { type } = props
   const classes = useStyles()
   const { dispatch } = useContext(Context)
-  const { data: user, mutate } = useUserData()
+  const { data: user } = useUserData()
+  const { data: avatar, mutate } = useUserAvatar()
   const [file, setFile] = useState<File>(
     props.type === 'update' ? props.file : null
   )
@@ -58,7 +60,7 @@ export const Upload = (props: Props) => {
     const tokenRes = await clientGetApi<{ token: string }>('api/token')
 
     // Add the params only when the component is used to update an avatar
-    const params = type === 'update' ? `?id=${user.avatar.id}` : ''
+    const params = type === 'update' ? `?id=${avatar.id}` : ''
 
     // Upload the image to the strapi server
     serverPostApi<AvatarUser | AvatarUser[] | StrapiErrorResponse>(
@@ -80,10 +82,8 @@ export const Upload = (props: Props) => {
         return
       }
 
-      // Mutate the user avatar data after succeded upload
-      const updatedUser = { ...user }
       // If the response is an array, it means that the file was created on the strapi server. Otherwise, the file was updated and just received the avatar data
-      updatedUser.avatar = Array.isArray(res.data)
+      const updatedAvatar = Array.isArray(res.data)
         ? (res.data as AvatarUser[])[0]
         : (res.data as AvatarUser)
 
@@ -98,7 +98,7 @@ export const Upload = (props: Props) => {
           SnackbarType.SUCCESS
         )
       )
-      mutate(updatedUser, false)
+      mutate(updatedAvatar, false)
     })
   }
 

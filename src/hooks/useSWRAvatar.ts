@@ -8,7 +8,7 @@ const fetcher = (url: string) =>
     res.success === true ? res.data : null
   )
 
-export const useSWRAvatar = (avatar?: AvatarUser) => {
+export const useUserAvatar = (avatar?: AvatarUser) => {
   const { data, mutate } = useSWR(`api/avatar/get`, fetcher, {
     fallbackData: avatar
   })

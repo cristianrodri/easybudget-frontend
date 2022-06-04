@@ -4,11 +4,11 @@ import { Button, Stack } from '@mui/material'
 import { AvatarUser } from '@custom-types'
 import { DialogAvatarDeletion } from './DialogAvatarDeletion'
 import { clientDeleteApi } from '@config/api_client'
-import { useUserData } from '@hooks/useSWRUser'
 import { Context } from '@context/GlobalContext'
 import { openSnackbar } from '@context/actions'
 import { SnackbarType } from '@utils/enums'
 import { Upload } from './Upload'
+import { useUserAvatar } from '@hooks/useSWRAvatar'
 
 interface Props {
   avatar: AvatarUser
@@ -17,7 +17,7 @@ interface Props {
 export const EditAvatar = ({ avatar }: Props) => {
   const { dispatch } = useContext(Context)
   const [dialogOpen, setDialogOpen] = useState(false)
-  const { data, mutate } = useUserData()
+  const { data, mutate } = useUserAvatar(avatar)
   const [isUpdate, setIsUpdate] = useState(false)
   const [file, setFile] = useState<File>(null)
   const [isDeleting, setIsDeleting] = useState(false)
@@ -48,10 +48,7 @@ export const EditAvatar = ({ avatar }: Props) => {
       setIsDeleting(false)
 
       // Remove the avatar
-      const mutatedData = { ...data }
-      mutatedData.avatar = null
-
-      mutate(mutatedData, false)
+      mutate(null, false)
     } else {
       dispatch(openSnackbar(res.message, SnackbarType.ERROR))
     }
@@ -65,7 +62,7 @@ export const EditAvatar = ({ avatar }: Props) => {
       <Stack direction="row" justifyContent="center">
         <Stack direction="column" alignItems="center">
           <Image
-            src={avatar.url}
+            src={data.url}
             layout="fixed"
             width={300}
             height={200}
