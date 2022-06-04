@@ -1,6 +1,4 @@
-import { User } from '@custom-types'
+import { AvatarUser } from '@custom-types'
 
-export const getAvatarThumbnail = (user: User) =>
-  user?.avatar
-    ? user.avatar?.formats?.thumbnail?.url ?? user.avatar.url
-    : user?.username.charAt(0).toUpperCase()
+export const getAvatarThumbnail = (avatar: AvatarUser) =>
+  avatar?.formats?.thumbnail?.url ?? avatar?.url

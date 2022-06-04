@@ -6,11 +6,13 @@ import { useUserData } from '@hooks/useSWRUser'
 import { clientPostApi } from '@config/api_client'
 import { Context } from '@context/GlobalContext'
 import { clearGlobalState } from '@context/actions'
+import { useSWRAvatar } from '@hooks/useSWRAvatar'
 
 export const AuthMenu = () => {
   const { data } = useUserData()
+  const { data: avatar } = useSWRAvatar()
   const { dispatch } = useContext(Context)
-  const avatarUrl = getAvatarThumbnail(data)
+  const avatarUrl = getAvatarThumbnail(avatar)
   const router = useRouter()
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
@@ -32,7 +34,7 @@ export const AuthMenu = () => {
     }
   }
 
-  if (!data) return null
+  if (!avatar) return null
 
   return (
     <>
