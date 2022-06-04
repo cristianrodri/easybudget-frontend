@@ -34,8 +34,6 @@ export const AuthMenu = () => {
     }
   }
 
-  if (!avatar) return null
-
   return (
     <>
       <Button

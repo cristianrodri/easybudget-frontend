@@ -17,7 +17,7 @@ interface Props {
 export const EditAvatar = ({ avatar }: Props) => {
   const { dispatch } = useContext(Context)
   const [dialogOpen, setDialogOpen] = useState(false)
-  const { data, mutate } = useUserAvatar(avatar)
+  const { mutate } = useUserAvatar(avatar)
   const [isUpdate, setIsUpdate] = useState(false)
   const [file, setFile] = useState<File>(null)
   const [isDeleting, setIsDeleting] = useState(false)
@@ -62,7 +62,7 @@ export const EditAvatar = ({ avatar }: Props) => {
       <Stack direction="row" justifyContent="center">
         <Stack direction="column" alignItems="center">
           <Image
-            src={data.url}
+            src={avatar.url}
             layout="fixed"
             width={300}
             height={200}
