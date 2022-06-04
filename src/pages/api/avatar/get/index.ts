@@ -19,7 +19,7 @@ export default async (
   if (req.method === ApiMethod.GET) {
     try {
       const { data, status } = await serverGetApi<DataResponse>(
-        `upload/files`,
+        `upload/files/user`,
         req.cookies.token
       )
 
