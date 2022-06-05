@@ -23,7 +23,8 @@ export const CategoryCard = (props: Props) => {
       sx={{
         width: 200,
         backgroundColor: bgColorWallet[type],
-        cursor: 'pointer'
+        cursor: 'pointer',
+        opacity: money > 0 ? '1' : '0.5'
       }}
       onClick={handleClick}
     >
