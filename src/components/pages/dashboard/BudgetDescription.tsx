@@ -1,7 +1,7 @@
 import { useContext } from 'react'
 import { Budget } from '@custom-types'
 import { Box, Stack, Typography } from '@mui/material'
-import { getDayAndMonth } from '@utils/dates'
+import { getDayAndMonth, getFullDate, isAllTime } from '@utils/dates'
 import { BudgetType } from '@utils/enums'
 import { formatMoney } from '@utils/money'
 import { textCapitalize } from '@utils/string'
@@ -16,7 +16,10 @@ type Props = {
 }
 
 export const BudgetDescription = ({ budget, isDialog }: Props) => {
-  const { dispatch } = useContext(Context)
+  const {
+    values: { walletDate },
+    dispatch
+  } = useContext(Context)
   const { description, money, date, category } = budget
   const type =
     // If the component is not showed in the dialog category and the category data is not a number, then show the type of the category
@@ -78,7 +81,7 @@ export const BudgetDescription = ({ budget, isDialog }: Props) => {
           variant="caption"
           color={colorDescription?.[type]?.light}
         >
-          {getDayAndMonth(date)}
+          {isAllTime(walletDate) ? getFullDate(date) : getDayAndMonth(date)}
         </Typography>
       </Stack>
     </Stack>

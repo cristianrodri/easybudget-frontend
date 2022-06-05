@@ -19,7 +19,8 @@ export const MONTH = [
 ]
 
 export const isAllTime = (walletDate: WalletDate) => walletDate.year === 'all'
-const isCompleteYear = (walletDate: WalletDate) => walletDate.month === 'all'
+const isCompleteYear = (walletDate: WalletDate) =>
+  walletDate.month === 'all' && walletDate.year !== 'all'
 
 export const getYear = (date: CustomDate) => new Date(date).getFullYear()
 
@@ -80,6 +81,11 @@ export const getMonthName = (date: CustomDate) =>
 
 export const getDayAndMonth = (date: CustomDate) =>
   `${getDateWithZero(date)} ${getMonthName(date)}`
+
+export const getFullDate = (date: CustomDate) =>
+  `${getDateWithZero(date)} ${getMonthName(date)} ${new Date(
+    date
+  ).getFullYear()}`
 
 // This function add a custom title to dashboard date title and dialog date title.
 export const dateTitle = (walletDate: WalletDate) => {
