@@ -18,7 +18,11 @@ type Props = {
 export const BudgetDescription = ({ budget, isDialog }: Props) => {
   const { dispatch } = useContext(Context)
   const { description, money, date, category } = budget
-  const type = typeof category !== 'number' ? category.type : ('' as BudgetType)
+  const type =
+    // If the component is not showed in the dialog category and the category data is not a number, then show the type of the category
+    !isDialog && typeof category !== 'number'
+      ? category.type
+      : ('' as BudgetType)
 
   const handleEdit = () => {
     // The budget parameter is pass by spread object because it needs to be unmutable
