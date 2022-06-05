@@ -21,7 +21,7 @@ const LatestBudgets = () => {
         Latest Budgets
       </Typography>
       {/* Budgets Container */}
-      <Stack px={4} py={2} spacing={2}>
+      <Stack px={2} py={2} spacing={2}>
         {!isReloadingBudget &&
           data?.map(budget => (
             <BudgetDescription key={budget.id} budget={budget} />

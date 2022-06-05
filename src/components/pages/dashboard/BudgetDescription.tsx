@@ -37,7 +37,11 @@ export const BudgetDescription = ({ budget, isDialog }: Props) => {
   }
 
   return (
-    <Stack direction="row" spacing={2}>
+    <Stack
+      direction="row"
+      spacing={2}
+      sx={{ borderBottom: theme => `1px solid ${theme.palette.grey[300]}` }}
+    >
       {!isDialog && (
         <Stack color={colorDescription?.[type]?.main}>
           {type === BudgetType.INCOME ? '+' : '-'}
@@ -51,11 +55,26 @@ export const BudgetDescription = ({ budget, isDialog }: Props) => {
           fontWeight={theme => theme.typography.fontWeightRegular}
           color={colorDescription?.[type]?.main}
         >
-          <Box component="span">{textCapitalize(description)}</Box>
+          <Typography component="span">
+            {textCapitalize(description)}
+          </Typography>
+          <Typography component="span" sx={{ width: '40%', textAlign: 'end' }}>
+            {formatMoney(money)}
+          </Typography>
+        </Stack>
+        <Stack
+          component="span"
+          color={colorDescription?.[type]?.light}
+          direction="row"
+          justifyContent="space-between"
+          alignItems="center"
+        >
+          <Typography component="span" variant="caption">
+            {isAllTime(walletDate) ? getFullDate(date) : getDayAndMonth(date)}
+          </Typography>
           <Box
             component="span"
             sx={{
-              width: '50%',
               display: 'flex',
               justifyContent: 'flex-end',
               alignItems: 'center',
@@ -63,7 +82,6 @@ export const BudgetDescription = ({ budget, isDialog }: Props) => {
               textAlign: 'right'
             }}
           >
-            {formatMoney(money)}
             <ActionData
               actionType="edit"
               handleClick={handleEdit}
@@ -76,13 +94,6 @@ export const BudgetDescription = ({ budget, isDialog }: Props) => {
             />
           </Box>
         </Stack>
-        <Typography
-          component="span"
-          variant="caption"
-          color={colorDescription?.[type]?.light}
-        >
-          {isAllTime(walletDate) ? getFullDate(date) : getDayAndMonth(date)}
-        </Typography>
       </Stack>
     </Stack>
   )
