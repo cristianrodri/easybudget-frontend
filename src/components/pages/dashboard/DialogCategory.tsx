@@ -9,7 +9,7 @@ import { closeCategoryDialog } from '@context/actions'
 import { textCapitalize } from '@utils/string'
 import { BudgetDescription } from './BudgetDescription'
 import { formatMoney } from '@utils/money'
-import { Box } from '@mui/material'
+import { Box, Stack } from '@mui/material'
 import { dateTitle, sortBudgetsByDescDate } from '@utils/dates'
 import { colorWallet } from '@utils/color'
 
@@ -33,12 +33,26 @@ export const DialogCategory = () => {
     >
       <DialogTitle
         id="scroll-dialog-title"
-        sx={{ display: 'flex', justifyContent: 'space-between' }}
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center'
+        }}
       >
-        <Box component="span">
-          {textCapitalize(categoryDialog.name)} - {dateTitle(walletDate)}
-        </Box>
-        <Box component="span" sx={{ color: colorWallet[categoryDialog.type] }}>
+        <Stack component="span" direction="row" flexWrap="wrap">
+          <Box component="span">
+            {textCapitalize(categoryDialog.name)}&nbsp;-&nbsp;
+          </Box>
+          <Box component="span">{dateTitle(walletDate)}</Box>
+        </Stack>
+        <Box
+          component="span"
+          sx={{
+            color: colorWallet[categoryDialog.type],
+            width: '60%',
+            textAlign: 'end'
+          }}
+        >
           {formatMoney(categoryDialog.money)}
         </Box>
       </DialogTitle>
