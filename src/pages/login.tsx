@@ -1,13 +1,10 @@
 import Image from 'next/image'
-import { Box, useMediaQuery, useTheme } from '@mui/material'
+import { Box } from '@mui/material'
 import { Layout } from '@components/Layout'
 import { Form } from '@components/pages/login/Form'
 import { withPublic } from '@utils/middleware'
 
 const Login = () => {
-  const theme = useTheme()
-  const matches = useMediaQuery(theme.breakpoints.down('md'))
-
   return (
     <Layout title="Login" backgroundPage="login">
       <Box
@@ -24,21 +21,24 @@ const Login = () => {
           bgcolor="white"
           borderRadius="1rem"
         >
-          {!matches && (
-            <Box
-              width="50%"
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-            >
-              <Image
-                src="/banner-login.svg"
-                width={200}
-                height={200}
-                alt="Login banner"
-              />
-            </Box>
-          )}
+          <Box
+            sx={{
+              display: {
+                xs: 'none',
+                md: 'flex'
+              },
+              justifyContent: 'center',
+              alignItems: 'center',
+              width: '50%'
+            }}
+          >
+            <Image
+              src="/banner-login.svg"
+              width={200}
+              height={200}
+              alt="Login banner"
+            />
+          </Box>
           <Form />
         </Box>
       </Box>
