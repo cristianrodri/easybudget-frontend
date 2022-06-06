@@ -12,6 +12,7 @@ import { DialogDeletion } from './DialogDeletion'
 import { useSWRCategories } from '@hooks/useSWRCategories'
 import { ActionData } from '@components/common/ActionData'
 import { DialogEdition } from './DialogEdition'
+import { textCapitalize } from '@utils/string'
 
 interface Props {
   budgetType: BudgetType
@@ -62,7 +63,7 @@ export const Category = ({ budgetType, categories }: Props) => {
                 }
               }}
             >
-              <ListItemText primary={category.name} />
+              <ListItemText primary={textCapitalize(category.name)} />
               <ListItemSecondaryAction
                 sx={{ right: theme => theme.spacing(1) }}
               >

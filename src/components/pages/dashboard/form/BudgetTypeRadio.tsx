@@ -28,9 +28,9 @@ export const BudgetTypeRadio = ({
     setBudgetType(e.target.value as BudgetType)
 
     // When budget type is changed in radio button, display the first "budget type" into the select
-    const firstBudgetType = categories.find(
-      category => category.type === e.target.value
-    )
+    const firstBudgetType = categories
+      .filter(c => c.type === e.target.value)
+      .sort((a, b) => (a.name < b.name ? -1 : 1))[0]
 
     // If the type checked has no related categories, set the field value with empty string
     setFieldValue('category', firstBudgetType?.id ?? '')

@@ -8,6 +8,7 @@ import {
 import { FormikHandleChange } from '@custom-types'
 import { BudgetType } from '@utils/enums'
 import { useUserData } from '@hooks/useSWRUser'
+import { textCapitalize } from '@utils/string'
 
 interface Props {
   categoryId: string | number
@@ -26,11 +27,14 @@ export const CategorySelect = ({
 }: Props) => {
   const { data } = useUserData()
 
-  const categories = data?.categories.map(({ id, type, name }) => ({
-    id,
-    name,
-    type
-  }))
+  const categories = data?.categories
+    .filter(c => c.type === budgetType)
+    .map(({ id, type, name }) => ({
+      id,
+      name,
+      type
+    }))
+    .sort((a, b) => (a.name < b.name ? -1 : 1))
 
   return (
     <FormControl
@@ -52,12 +56,8 @@ export const CategorySelect = ({
         error={touched && Boolean(error)}
       >
         {categories?.map(category => (
-          <MenuItem
-            key={category.id}
-            value={category.id}
-            style={{ display: budgetType !== category.type ? 'none' : '' }}
-          >
-            {category.name}
+          <MenuItem key={category.id} value={category.id}>
+            {textCapitalize(category.name)}
           </MenuItem>
         ))}
       </Select>
