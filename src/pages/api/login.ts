@@ -29,12 +29,12 @@ export default async (
     } catch (error) {
       const err = error as AxiosError
 
-      const { status } = errorResponse(
+      const { status, message } = errorResponse(
         err,
         err.response?.data.message[0].messages[0].message
       )
 
-      res.status(status).json(jsonResponseError(JSON.stringify(err.response)))
+      res.status(status).json(jsonResponseError(message))
     }
   } else {
     res.setHeader('Allow', [ApiMethod.POST])
