@@ -9,6 +9,7 @@ import { openSnackbar } from '@context/actions'
 import { SnackbarType } from '@utils/enums'
 import { Upload } from './Upload'
 import { useUserAvatar } from '@hooks/useSWRAvatar'
+import { getLighestAvatar } from '@utils/avatar'
 
 interface Props {
   avatar: AvatarUser
@@ -21,6 +22,7 @@ export const EditAvatar = ({ avatar }: Props) => {
   const [isUpdate, setIsUpdate] = useState(false)
   const [file, setFile] = useState<File>(null)
   const [isDeleting, setIsDeleting] = useState(false)
+  const avatarUrl = getLighestAvatar(avatar)
 
   const openDialog = () => {
     setDialogOpen(true)
@@ -62,7 +64,7 @@ export const EditAvatar = ({ avatar }: Props) => {
       <Stack direction="row" justifyContent="center">
         <Stack direction="column" alignItems="center">
           <Image
-            src={avatar.url}
+            src={avatarUrl}
             layout="fixed"
             width={300}
             height={200}
