@@ -82,6 +82,7 @@ export type ApiResponseSuccess<T> = {
 type ApiResponseError = {
   success: false
   message: string
+  status?: number
 }
 
 type ApiResponse<T> = ApiResponseSuccess<T> | ApiResponseError

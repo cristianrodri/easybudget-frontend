@@ -9,9 +9,16 @@ import {
 import { clientInstance as api } from './axios'
 import { Status } from '@utils/enums'
 
-const errorGatewayResponse: ApiResponseError = {
+const gatewayErrorResponse: ApiResponseError = {
   success: false,
   message: 'Server was slepping. Please try again'
+}
+
+const unauthorizedErrorResponse = (
+  message: string,
+  status: number
+): ApiResponseError => {
+  return { success: false, message, status }
 }
 
 const handleError = (err: ApiResponseError) => err
@@ -20,7 +27,9 @@ const handleSuccessResponse = <T>(
   response: AxiosResponse<ApiResponseSuccess<T>>
 ) => {
   if (response.status === Status.GATEWAY_TIMEOUT) {
-    return errorGatewayResponse
+    return gatewayErrorResponse
+  } else if (response.status === Status.UNAUTHORIZED) {
+    return unauthorizedErrorResponse('Unauthorized', response.status)
   }
 
   return response.data

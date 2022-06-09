@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import { Budget, Url } from '@custom-types'
+import { Budget } from '@custom-types'
 import useSWR from 'swr'
 import { clientGetApi } from '@config/api_client'
 import { Context } from '@context/GlobalContext'
@@ -8,12 +8,11 @@ import { isBeforeDate, sortBudgetsByDescDate } from '@utils/dates'
 import { getCategoryDataFromBudget } from '@utils/budget'
 import { useUserData } from './useSWRUser'
 import { budgetHasBeenReloaded, isReloadingBudget } from '@context/actions'
-
-const fetcher = (url: Url) =>
-  clientGetApi<Budget[]>(url).then(res => res.success === true && res.data)
+import { useFetcher } from './useFetcher'
 
 export const useSWRLatestBudgets = () => {
   const LIMIT_BUDGETS = 5
+  const { fetcher } = useFetcher<Budget[]>()
   const API_URL = `api/budget/get?_sort=date:DESC&_limit=${LIMIT_BUDGETS}&_categorydata=true`
   const { values, dispatch } = useContext(Context)
   const { budgetToUpdate } = values

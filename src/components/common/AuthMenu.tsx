@@ -1,19 +1,17 @@
-import { MouseEvent, useContext, useState } from 'react'
+import { MouseEvent, useState } from 'react'
 import { Avatar, Menu, MenuItem, Button } from '@mui/material'
 import { useRouter } from 'next/router'
 import { getAvatarThumbnail } from '@utils/avatar'
 import { useUserData } from '@hooks/useSWRUser'
-import { clientPostApi } from '@config/api_client'
-import { Context } from '@context/GlobalContext'
-import { clearGlobalState } from '@context/actions'
 import { useUserAvatar } from '@hooks/useSWRAvatar'
+import { useLogout } from '@hooks/useLogout'
 
 export const AuthMenu = () => {
   const { data } = useUserData()
   const { data: avatar } = useUserAvatar()
-  const { dispatch } = useContext(Context)
   const avatarUrl = getAvatarThumbnail(avatar)
   const router = useRouter()
+  const { logout } = useLogout()
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
@@ -24,14 +22,8 @@ export const AuthMenu = () => {
     setAnchorEl(null)
   }
 
-  const logout = async () => {
-    const res = await clientPostApi('api/logout')
-
-    if (res.success) {
-      dispatch(clearGlobalState())
-
-      router.push('/')
-    }
+  const handleLogout = () => {
+    logout()
   }
 
   return (
@@ -63,7 +55,7 @@ export const AuthMenu = () => {
         <MenuItem onClick={() => router.push('/categories')}>
           Categories
         </MenuItem>
-        <MenuItem onClick={logout}>Logout</MenuItem>
+        <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </Menu>
     </>
   )

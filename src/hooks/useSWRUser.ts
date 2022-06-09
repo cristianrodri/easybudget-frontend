@@ -1,7 +1,6 @@
 import { useContext } from 'react'
 import useSWR from 'swr'
 import { Budget, CategoryTypes, User } from '@custom-types'
-import { clientGetApi } from '@config/api_client'
 import { Context } from '@context/GlobalContext'
 import { dateIsBetween, getCustomDate, isAllTime } from '@utils/dates'
 import { showCategoryDialog } from '@context/actions'
@@ -12,10 +11,7 @@ import {
   getCategoryDataFromBudget,
   updateBudgetFromCategory
 } from '@utils/budget'
-
-// Fetcher function when useSWR hook api is called
-const fetcher = (url: string) =>
-  clientGetApi<User>(url).then(res => (res.success === true ? res.data : null))
+import { useFetcher } from './useFetcher'
 
 // Custom hook which get user data by useSWR hook
 export const useUserData = (fallbackData?: User) => {
@@ -23,6 +19,7 @@ export const useUserData = (fallbackData?: User) => {
     values: { walletDate, categoryDialog, categoryDialogOpen, budgetToUpdate },
     dispatch
   } = useContext(Context)
+  const { fetcher } = useFetcher<User>()
 
   const customDate = getCustomDate(walletDate)
 
