@@ -8,13 +8,13 @@ export const useLogout = () => {
   const { dispatch } = useContext(Context)
   const router = useRouter()
 
-  const logout = async () => {
+  const logout = async (url?: 'login') => {
     const res = await clientPostApi('api/logout')
 
     if (res.success) {
       dispatch(clearGlobalState())
 
-      router.push('/')
+      router.push(`/${url ?? ''}`)
     }
   }
 
