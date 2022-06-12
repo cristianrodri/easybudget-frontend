@@ -115,7 +115,13 @@ export const reducer = (
       }
 
     case Action.CLEAR_GLOBAL_STATE:
-      return initialState
+      return {
+        ...initialState,
+        walletDate: {
+          year: state.walletDate.year,
+          month: state.walletDate.month
+        }
+      }
 
     default:
       return state
