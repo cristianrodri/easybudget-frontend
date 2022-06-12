@@ -50,7 +50,7 @@ export const reducer = (
         ...state,
         walletDate: {
           ...state.walletDate,
-          // If the payload dateType belongs to year and the payload value (year) is different from the current year, the wallet month value is 'all', otherwise if the payload year is the current year, the month value is the current month
+          // If the payload.dateType belongs to "year" and the payload.value (year) is different from the current year, the wallet month value is 'all', otherwise if the payload.value (year) is the current year, the month value is the current month
           month:
             action.payload.dateType === DateType.YEAR &&
             action.payload.value !== new Date().getFullYear()
