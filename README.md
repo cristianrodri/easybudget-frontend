@@ -6,7 +6,7 @@ Webiste project that manage your budget easily. The project was built with Next.
 
 ### Setup backend
 
-The backend of the project was built with Strapi.js and you can check it out [here](https://github.com/cristianrodri/easybudget-backend)
+The backend of the project was built with Strapi.js and you can check it out [here](https://github.com/cristianrodri/easybudget-backend). You can also visit the production website [here](https://easybudget.vercel.app)
 
 ### Local files
 
