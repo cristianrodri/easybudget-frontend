@@ -1,7 +1,7 @@
 import Document, { Html, Head, Main, NextScript } from 'next/document'
 import { ServerStyleSheets } from '@mui/styles'
 import { Children } from 'react'
-import { theme } from './_app'
+import { theme } from '@context/mui/ThemeMuiProvider'
 
 export default class MyDocument extends Document {
   render() {

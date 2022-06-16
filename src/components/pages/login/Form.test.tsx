@@ -4,6 +4,7 @@ import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Form } from './Form'
 import { GlobalContext } from '@context/GlobalContext'
+import { ThemeMuiProvider } from '@context/mui/ThemeMuiProvider'
 
 const server = setupServer(
   rest.post<DefaultRequestBody, { success: boolean }>(
@@ -19,12 +20,22 @@ afterAll(() => server.close())
 afterEach(() => server.resetHandlers())
 
 describe('Login Form', () => {
-  it('should render Loading... after submit the form', async () => {
+  beforeEach(async () => {
     render(
       <GlobalContext>
-        <Form />
+        <ThemeMuiProvider>
+          <Form />
+        </ThemeMuiProvider>
       </GlobalContext>
     )
+  })
+
+  it('should render Loading... after submit the form', async () => {
+    // render(
+    //   <GlobalContext>
+    //     <Form />
+    //   </GlobalContext>
+    // )
 
     userEvent.type(
       screen.getByLabelText(/email or username/i),
@@ -43,13 +54,13 @@ describe('Login Form', () => {
   })
 
   describe('Show validation errors after submitting an empty form', () => {
-    beforeEach(() => {
-      render(
-        <GlobalContext>
-          <Form />
-        </GlobalContext>
-      )
-    })
+    // beforeEach(() => {
+    //   render(
+    //     <GlobalContext>
+    //       <Form />
+    //     </GlobalContext>
+    //   )
+    // })
 
     it('should render "Email or username is required"', async () => {
       submittingForm()
@@ -69,13 +80,15 @@ describe('Login Form', () => {
   })
 
   describe('Remove error messages after user types any words', () => {
-    beforeEach(async () => {
-      render(
-        <GlobalContext>
-          <Form />
-        </GlobalContext>
-      )
-    })
+    // beforeEach(async () => {
+    //   render(
+    //     <GlobalContext>
+    //       <ThemeMuiProvider>
+    //         <Form />
+    //       </ThemeMuiProvider>
+    //     </GlobalContext>
+    //   )
+    // })
 
     it('should remove "Email or username is required"', async () => {
       submittingForm()
