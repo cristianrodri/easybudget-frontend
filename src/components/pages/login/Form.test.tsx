@@ -31,12 +31,6 @@ describe('Login Form', () => {
   })
 
   it('should render Loading... after submit the form', async () => {
-    // render(
-    //   <GlobalContext>
-    //     <Form />
-    //   </GlobalContext>
-    // )
-
     userEvent.type(
       screen.getByLabelText(/email or username/i),
       'john.dee@someemail.com'
@@ -54,14 +48,6 @@ describe('Login Form', () => {
   })
 
   describe('Show validation errors after submitting an empty form', () => {
-    // beforeEach(() => {
-    //   render(
-    //     <GlobalContext>
-    //       <Form />
-    //     </GlobalContext>
-    //   )
-    // })
-
     it('should render "Email or username is required"', async () => {
       submittingForm()
       await waitFor(() => {
@@ -80,16 +66,6 @@ describe('Login Form', () => {
   })
 
   describe('Remove error messages after user types any words', () => {
-    // beforeEach(async () => {
-    //   render(
-    //     <GlobalContext>
-    //       <ThemeMuiProvider>
-    //         <Form />
-    //       </ThemeMuiProvider>
-    //     </GlobalContext>
-    //   )
-    // })
-
     it('should remove "Email or username is required"', async () => {
       submittingForm()
       await waitFor(() => {
