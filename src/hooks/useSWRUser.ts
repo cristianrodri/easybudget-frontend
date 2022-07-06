@@ -53,6 +53,15 @@ export const useUserData = (fallbackData?: User) => {
   // This function will be called before a budget is created in post API
   const mutateByAddingBudgetToCategory = (newBudget: Budget) => {
     const mutatedData = { ...data }
+    const currentDate = new Date()
+
+    // If the wallet date is not the current month and year, return the function and avoid mutating the dashboard data
+    if (
+      walletDate.month !== currentDate.getMonth() ||
+      walletDate.year !== currentDate.getFullYear()
+    ) {
+      return
+    }
 
     mutatedData.categories.map(c => {
       // If the category is related with the new budget, add it to budgets array and update the money
