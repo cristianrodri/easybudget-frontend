@@ -1,7 +1,8 @@
 import { ThemeMuiProvider } from '@context/mui/ThemeMuiProvider'
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import { AddBudgetIcon } from './AddBudgetIcon'
 import { GlobalContext } from '@context/GlobalContext'
+import userEvent from '@testing-library/user-event'
 
 describe('AddBudgetIcon component', () => {
   beforeEach(() => {
@@ -14,7 +15,11 @@ describe('AddBudgetIcon component', () => {
     )
   })
 
-  it('should have a button in the document', () => {
-    expect(screen.getByRole('button', { name: 'add' })).toBeInTheDocument()
+  it('should show AddBudgetDialog form when icon is clicked', async () => {
+    userEvent.click(screen.getByRole('button', { name: 'add' }))
+
+    await waitFor(() => {
+      expect(screen.getByText(/add new budget/i)).toBeInTheDocument()
+    })
   })
 })
