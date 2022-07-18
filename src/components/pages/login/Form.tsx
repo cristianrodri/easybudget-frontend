@@ -14,9 +14,9 @@ import { useRouter } from 'next/router'
 import { useFocus } from '@hooks/useFocus'
 import { FormLink } from '@components/common/FormLink'
 import { Context } from '@context/GlobalContext'
-import { DateType, SnackbarType } from '@utils/enums'
+import { SnackbarType } from '@utils/enums'
 import { makeStyles } from '@mui/styles'
-import { changeWalletDate, openSnackbar } from '@context/actions'
+import { openSnackbar } from '@context/actions'
 import { clientPostApi } from '@config/api_client'
 
 interface FormTypes {
@@ -65,8 +65,6 @@ export const Form = () => {
       const res = await clientPostApi('api/login', values)
 
       if (res.success === true) {
-        // Set the wallet date year with the current year and this action set the month with the current month
-        dispatch(changeWalletDate(DateType.YEAR, new Date().getFullYear()))
         router.push('dashboard')
       } else {
         dispatch(openSnackbar(res.message, SnackbarType.ERROR))

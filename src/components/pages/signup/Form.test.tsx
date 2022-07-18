@@ -4,6 +4,7 @@ import { Form } from './Form'
 import { setupServer } from 'msw/node'
 import { DefaultRequestBody, rest } from 'msw'
 import { GlobalContext } from '@context/GlobalContext'
+import { ThemeMuiProvider } from '@context/mui/ThemeMuiProvider'
 
 const server = setupServer(
   rest.post<DefaultRequestBody, { success: boolean }>(
@@ -19,13 +20,17 @@ afterAll(() => server.close())
 afterEach(() => server.resetHandlers())
 
 describe('Signup form', () => {
-  it('should render Loading... after submit the form', async () => {
+  beforeEach(async () => {
     render(
       <GlobalContext>
-        <Form />
+        <ThemeMuiProvider>
+          <Form />
+        </ThemeMuiProvider>
       </GlobalContext>
     )
+  })
 
+  it('should render Loading... after submit the form', async () => {
     userEvent.type(screen.getByLabelText(/username/i), 'John')
     userEvent.type(screen.getByLabelText(/email/i), 'john.dee@someemail.com')
     userEvent.type(screen.getByLabelText(/^password$/i), 'Dee123456')
@@ -42,14 +47,6 @@ describe('Signup form', () => {
   })
 
   describe('Show validation errors after submitting an empty form', () => {
-    beforeEach(() => {
-      render(
-        <GlobalContext>
-          <Form />
-        </GlobalContext>
-      )
-    })
-
     it('should render "Name is required"', async () => {
       submittingForm()
       await waitFor(() => {

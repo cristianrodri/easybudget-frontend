@@ -1,9 +1,14 @@
+import { ThemeMuiProvider } from '@context/mui/ThemeMuiProvider'
 import { render, screen } from '@testing-library/react'
 import IndexPage from '../pages/index'
 
 describe('IndexPage', () => {
   beforeEach(() => {
-    render(<IndexPage />)
+    render(
+      <ThemeMuiProvider>
+        <IndexPage />
+      </ThemeMuiProvider>
+    )
   })
 
   it('should render IndexPage', () => {

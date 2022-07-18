@@ -1,25 +1,10 @@
 import { useEffect } from 'react'
 import { AppProps } from 'next/app'
 import NextNProgress from 'nextjs-progressbar'
-import { responsiveFontSizes } from '@mui/material'
-import { purple } from '@mui/material/colors'
 import { GlobalContext } from '@context/GlobalContext'
 import { Snackbar } from '@components/common/Snackbar'
 import '../styles/styles.css'
-import { createTheme, ThemeProvider } from '@mui/material/styles'
-
-export const theme = createTheme({
-  palette: {
-    primary: {
-      main: purple[400]
-    }
-  },
-  typography: {
-    fontFamily: '"Nunito", sans-serif'
-  }
-})
-
-const responsiveTheme = responsiveFontSizes(theme)
+import { theme, ThemeMuiProvider } from '@context/mui/ThemeMuiProvider'
 
 const App = ({ Component, pageProps }: AppProps) => {
   useEffect(() => {
@@ -30,7 +15,7 @@ const App = ({ Component, pageProps }: AppProps) => {
 
   return (
     <GlobalContext>
-      <ThemeProvider theme={responsiveTheme}>
+      <ThemeMuiProvider>
         <NextNProgress
           color={theme.palette.primary.light}
           startPosition={0.3}
@@ -39,7 +24,7 @@ const App = ({ Component, pageProps }: AppProps) => {
         />
         <Component {...pageProps} />
         <Snackbar />
-      </ThemeProvider>
+      </ThemeMuiProvider>
     </GlobalContext>
   )
 }

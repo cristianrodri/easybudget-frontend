@@ -13,6 +13,10 @@ import { AlertCategory } from '@components/pages/dashboard/AlertCategory'
 import { AddBudgetIcon } from '@components/pages/dashboard/AddBudgetIcon'
 import { Budget } from '@custom-types'
 import { LayoutAuth } from '@components/LayoutAuth'
+import { useContext, useEffect } from 'react'
+import { Context } from '@context/GlobalContext'
+import { changeWalletDate } from '@context/actions'
+import { DateType } from '@utils/enums'
 
 interface Props {
   categoriesCount: number
@@ -20,6 +24,13 @@ interface Props {
 }
 
 const Dashboard = ({ categoriesCount, oldestBudgetDate }: Props) => {
+  const { dispatch } = useContext(Context)
+
+  useEffect(() => {
+    // Set the wallet date year with the current year and this action set the month with the current month
+    dispatch(changeWalletDate(DateType.YEAR, new Date().getFullYear()))
+  }, [dispatch])
+
   return (
     <SWRConfig value={{ provider: () => new Map() }}>
       <LayoutAuth title="Dashboard">

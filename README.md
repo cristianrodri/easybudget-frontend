@@ -26,5 +26,13 @@ You need to create a .env.local file and add the following code
 ### Run the server
 
 ```
-  yarn run dev
+  yarn dev
+```
+
+### Test
+
+Some tests was made. If you want to check it out, just run the following command
+
+```
+  yarn test
 ```

@@ -1,9 +1,14 @@
+import { ThemeMuiProvider } from '@context/mui/ThemeMuiProvider'
 import { render, screen } from '@testing-library/react'
 import { Signup } from './Signup'
 
 describe('Signup button into Homepage', () => {
   beforeEach(() => {
-    render(<Signup />)
+    render(
+      <ThemeMuiProvider>
+        <Signup />
+      </ThemeMuiProvider>
+    )
   })
 
   it('should have href="/signup"', () => {
