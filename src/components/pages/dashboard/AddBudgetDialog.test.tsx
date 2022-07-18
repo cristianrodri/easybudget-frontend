@@ -1,16 +1,59 @@
 import { ThemeMuiProvider } from '@context/mui/ThemeMuiProvider'
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import { GlobalContext } from '@context/GlobalContext'
 import { AddBudgetDialog } from './AddBudgetDialog'
+import userEvent from '@testing-library/user-event'
+import { BudgetType } from '@utils/enums'
+import { clientPostApi } from '@config/api_client'
 
-const close = jest.fn()
+const mockHandleCloseFn = jest.fn()
+
+jest.mock('../../../config/api_client', () => ({
+  clientPostApi: jest.fn()
+}))
+
+jest.mock('../../../hooks/useSWRUser', () => ({
+  useUserData: () => ({
+    data: {
+      categories: [
+        {
+          id: 1,
+          name: 'fruits',
+          type: BudgetType.EXPENSE,
+          money: 12000
+        },
+        {
+          id: 2,
+          name: 'salary',
+          type: BudgetType.INCOME,
+          money: 1200000
+        },
+        {
+          id: 3,
+          name: 'clothes',
+          type: BudgetType.EXPENSE,
+          money: 120000
+        }
+      ]
+    },
+    // Mock mutateByAddingNewBudget to prevent warning (TODO - split up api logic from the component)
+    mutateByAddingBudgetToCategory: jest.fn()
+  })
+}))
+
+// Mock mutateByAddingNewBudget to prevent warning (TODO - split up api logic from the component)
+jest.mock('../../../hooks/useSWRLatestBudgets', () => ({
+  useSWRLatestBudgets: () => ({
+    mutateByAddingNewBudget: jest.fn()
+  })
+}))
 
 describe('AddBudgetDialog form component', () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     render(
       <GlobalContext>
         <ThemeMuiProvider>
-          <AddBudgetDialog openDialog={true} handleClose={close} />
+          <AddBudgetDialog openDialog={true} handleClose={mockHandleCloseFn} />
         </ThemeMuiProvider>
       </GlobalContext>
     )
@@ -46,5 +89,71 @@ describe('AddBudgetDialog form component', () => {
         name: /expense/i
       })
     ).toBeInTheDocument()
+  })
+
+  it('should submit the add budget form', async () => {
+    // Mock return value for clientPostApi
+    ;(
+      clientPostApi as jest.MockedFunction<typeof clientPostApi>
+    ).mockResolvedValueOnce({
+      success: true,
+      data: {
+        description: 'apples'
+      }
+    })
+
+    // Type the description
+    userEvent.type(
+      screen.getByRole('textbox', {
+        name: /description/i
+      }),
+      'apples'
+    )
+
+    // Type the amount
+    userEvent.type(
+      screen.getByRole('textbox', {
+        name: /amount/i
+      }),
+      '3000'
+    )
+
+    // Click the budget type radio
+    userEvent.click(
+      screen.getByRole('radio', {
+        name: /expense/i
+      })
+    )
+
+    // Open category options by clicking the first option
+    userEvent.click(
+      screen.getByRole('button', {
+        name: /clothes/i
+      })
+    )
+
+    // Select the fruits option
+    userEvent.click(
+      screen.getByRole('option', {
+        name: /fruits/i
+      })
+    )
+
+    // Submit the form
+    userEvent.click(
+      screen.getByRole('button', {
+        name: /save/i
+      })
+    )
+
+    await waitFor(() => {
+      // screen.debug(undefined, 13000)
+      expect(clientPostApi).toHaveBeenCalled()
+      expect(clientPostApi).toHaveBeenCalledWith('api/budget/add', {
+        description: 'apples',
+        money: 3000,
+        category: 1
+      })
+    })
   })
 })
