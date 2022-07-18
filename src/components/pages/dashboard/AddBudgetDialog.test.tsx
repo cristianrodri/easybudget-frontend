@@ -147,7 +147,6 @@ describe('AddBudgetDialog form component', () => {
     )
 
     await waitFor(() => {
-      // screen.debug(undefined, 13000)
       expect(clientPostApi).toHaveBeenCalled()
       expect(clientPostApi).toHaveBeenCalledWith('api/budget/add', {
         description: 'apples',
