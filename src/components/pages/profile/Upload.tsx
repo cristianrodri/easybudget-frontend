@@ -121,7 +121,6 @@ export const Upload = (props: Props) => {
             src={URL.createObjectURL(file)}
             unoptimized
             layout="intrinsic"
-            width={'100%'}
             objectFit="contain"
             height={200}
             alt="User Avatar"

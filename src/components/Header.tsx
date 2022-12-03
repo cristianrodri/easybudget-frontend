@@ -29,15 +29,13 @@ export const Header = ({ backgroundPage, isAuth }: Props) => {
   return (
     <header className={header}>
       <Link href="/">
-        <a data-testid="homepage">
-          <Image
-            src="/logo.svg"
-            layout="fixed"
-            width={120}
-            height={50}
-            alt="Header logo"
-          />
-        </a>
+        <Image
+          src="/logo.svg"
+          layout="fixed"
+          width={120}
+          height={50}
+          alt="Header logo"
+        />
       </Link>
       {/* AuthMenu is only showed in authenticated pages */}
       {isAuth ? <AuthMenu /> : null}
