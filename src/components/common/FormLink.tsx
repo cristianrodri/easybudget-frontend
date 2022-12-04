@@ -20,8 +20,8 @@ export const FormLink: FC<Props> = ({ href, children }) => {
   const { link } = useStyles()
 
   return (
-    <Link href={href}>
-      <a className={link}>{children}</a>
+    <Link href={href} className={link}>
+      {children}
     </Link>
   )
 }
