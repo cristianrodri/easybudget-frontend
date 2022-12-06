@@ -1,5 +1,4 @@
 import { Box, Typography, useTheme } from '@mui/material'
-import { withAuthentication } from '@utils/middleware'
 import { GetCategory } from '@custom-types'
 import { BudgetType } from '@utils/enums'
 import { Category } from '@components/pages/categories/Category'
@@ -59,7 +58,7 @@ const Categories = ({ categories }: Props) => {
   )
 }
 
-export const getServerSideProps = withAuthentication<Props>(async ({ req }) => {
+export const getServerSideProps = async ({ req }) => {
   const res = await serverGetApi<GetCategory[]>('categories', req.cookies.token)
 
   return {
@@ -67,6 +66,6 @@ export const getServerSideProps = withAuthentication<Props>(async ({ req }) => {
       categories: res.data
     }
   }
-})
+}
 
 export default Categories

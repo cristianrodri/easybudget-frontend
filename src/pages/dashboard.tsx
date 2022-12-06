@@ -1,6 +1,5 @@
 import { SWRConfig } from 'swr'
 import { Stack } from '@mui/material'
-import { withAuthentication } from '@utils/middleware'
 import { Header } from '@components/pages/dashboard/Header'
 import LatestBudgets from '@components/pages/dashboard/budgets/LatestBudgets'
 import { Summary } from '@components/pages/dashboard/summary/Container'
@@ -60,7 +59,7 @@ const Dashboard = ({ categoriesCount, oldestBudgetDate }: Props) => {
   )
 }
 
-export const getServerSideProps = withAuthentication<Props>(async ({ req }) => {
+export const getServerSideProps = async ({ req }) => {
   // Get the categories count
   const { data: categoriesCount } = await serverGetApi<number>(
     'categories/count',
@@ -79,6 +78,6 @@ export const getServerSideProps = withAuthentication<Props>(async ({ req }) => {
       oldestBudgetDate: oldestBudget[0]?.date ?? new Date().toISOString()
     }
   }
-})
+}
 
 export default Dashboard

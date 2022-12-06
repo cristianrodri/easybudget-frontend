@@ -13,7 +13,6 @@ import { UpdateUser, User } from '@custom-types'
 import { useFocus } from '@hooks/useFocus'
 import { useUserData } from '@hooks/useSWRUser'
 import { SnackbarType } from '@utils/enums'
-import { withAuthentication } from '@utils/middleware'
 import { useUserAvatar } from '@hooks/useSWRAvatar'
 
 interface Props {
@@ -144,7 +143,7 @@ const Profile = ({ userData }: Props) => {
 
 export default Profile
 
-export const getServerSideProps = withAuthentication<Props>(async ({ req }) => {
+export const getServerSideProps = async ({ req }) => {
   const res = await serverGetApi<User>(
     'users/me',
     req.cookies.token,
@@ -162,4 +161,4 @@ export const getServerSideProps = withAuthentication<Props>(async ({ req }) => {
       userData: res.data
     }
   }
-})
+}

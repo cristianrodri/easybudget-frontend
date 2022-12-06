@@ -1,20 +1,20 @@
 // middleware.ts
-import { NextResponse } from 'next/server'
+import { AUTH_PATHNAMES, isAuthPath, PUBLIC_PATHNAMES } from '@utils/middleware'
+import { NextRequest, NextResponse } from 'next/server'
 
-export function middleware() {
+export function middleware(request: NextRequest) {
   const response = NextResponse.next()
+
+  if (isAuthPath(request.nextUrl.pathname) && !request.cookies.has('token')) {
+    const url = request.nextUrl.clone()
+    url.pathname = '/login'
+
+    return NextResponse.redirect(url)
+  }
 
   return response
 }
 
 export const config = {
-  matcher: [
-    '/api/:path*',
-    '/',
-    '/signup',
-    '/login',
-    '/dashboard',
-    '/profile',
-    '/categories'
-  ]
+  matcher: ['/api/:path*', ...PUBLIC_PATHNAMES, ...AUTH_PATHNAMES]
 }
