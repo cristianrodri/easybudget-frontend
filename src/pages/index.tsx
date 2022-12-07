@@ -5,7 +5,6 @@ import clsx from 'clsx'
 import { Layout } from '@components/Layout'
 import { Signup } from '@components/pages/home/Signup'
 import { Login } from '@components/pages/home/Login'
-import { withPublic } from '@utils/middleware'
 
 const useStyles = makeStyles((theme: Theme) => ({
   presentation: {
@@ -96,7 +95,5 @@ const IndexPage = () => {
     </Layout>
   )
 }
-
-export const getServerSideProps = withPublic()
 
 export default IndexPage

@@ -2,7 +2,6 @@ import Image from 'next/image'
 import { Box } from '@mui/material'
 import { Layout } from '@components/Layout'
 import { Form } from '@components/pages/login/Form'
-import { withPublic } from '@utils/middleware'
 
 const Login = () => {
   return (
@@ -45,7 +44,5 @@ const Login = () => {
     </Layout>
   )
 }
-
-export const getServerSideProps = withPublic()
 
 export default Login
