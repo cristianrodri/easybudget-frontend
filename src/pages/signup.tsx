@@ -1,7 +1,6 @@
 import { Box } from '@mui/material'
 import { Layout } from '@components/Layout'
 import { Form } from '@components/pages/signup/Form'
-import { withPublic } from '@utils/middleware'
 
 const Signup = () => {
   return (
@@ -14,7 +13,5 @@ const Signup = () => {
     </Layout>
   )
 }
-
-export const getServerSideProps = withPublic()
 
 export default Signup
