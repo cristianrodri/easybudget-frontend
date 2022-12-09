@@ -2,21 +2,16 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { AxiosError } from 'axios'
 import { errorResponse } from '@utils/error'
 import { ApiResponse, GetCategory } from '@custom-types'
-import { ApiMethod, Status } from '@utils/enums'
-import {
-  jsonResponseError,
-  jsonResponseSuccess,
-  methodNotAllowedMessage
-} from '@utils/api'
+import { api, jsonResponseError, jsonResponseSuccess } from '@utils/api'
 import { serverGetApi } from '@config/api_server'
 
 type DataResponse = GetCategory[]
 
-export default async (
+export default (
   req: NextApiRequest,
   res: NextApiResponse<ApiResponse<DataResponse>>
-) => {
-  if (req.method === ApiMethod.GET) {
+) =>
+  api.get(req, res, async () => {
     try {
       const { data, status } = await serverGetApi<DataResponse>(
         'categories',
@@ -31,10 +26,4 @@ export default async (
 
       res.status(status).json(jsonResponseError(message))
     }
-  } else {
-    res.setHeader('Allow', [ApiMethod.GET])
-    res.statusCode = Status.METHOD_NOT_ALLOWED
-
-    res.json(jsonResponseError(methodNotAllowedMessage(req.method)))
-  }
-}
+  })

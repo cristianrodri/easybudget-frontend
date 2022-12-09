@@ -2,21 +2,17 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { AxiosError } from 'axios'
 import { errorResponse } from '@utils/error'
 import { ApiResponse, CategoryTypes } from '@custom-types'
-import { ApiMethod, Status } from '@utils/enums'
-import {
-  jsonResponseError,
-  jsonResponseSuccess,
-  methodNotAllowedMessage
-} from '@utils/api'
+import { Status } from '@utils/enums'
+import { api, jsonResponseError, jsonResponseSuccess } from '@utils/api'
 import { serverPostApi } from '@config/api_server'
 
 type DataResponse = CategoryTypes[]
 
-export default async (
+export default (
   req: NextApiRequest,
   res: NextApiResponse<ApiResponse<DataResponse>>
-) => {
-  if (req.method === ApiMethod.POST) {
+) =>
+  api.post(req, res, async () => {
     try {
       const { data } = await serverPostApi<DataResponse>(
         `categories`,
@@ -32,10 +28,4 @@ export default async (
 
       res.status(status).json(jsonResponseError(message))
     }
-  } else {
-    res.setHeader('Allow', [ApiMethod.POST])
-    res.statusCode = Status.METHOD_NOT_ALLOWED
-
-    res.json(jsonResponseError(methodNotAllowedMessage(req.method)))
-  }
-}
+  })

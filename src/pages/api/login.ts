@@ -3,19 +3,11 @@ import { AxiosError } from 'axios'
 import { createCookie } from '@utils/cookie'
 import { errorResponse } from '@utils/error'
 import { ApiResponse, AuthResponse, User } from '@custom-types'
-import { ApiMethod, Status } from '@utils/enums'
-import {
-  jsonResponseError,
-  jsonResponseSuccess,
-  methodNotAllowedMessage
-} from '@utils/api'
+import { api, jsonResponseError, jsonResponseSuccess } from '@utils/api'
 import { serverPostApi } from '@config/api_server'
 
-export default async (
-  req: NextApiRequest,
-  res: NextApiResponse<ApiResponse<User>>
-) => {
-  if (req.method === ApiMethod.POST) {
+export default (req: NextApiRequest, res: NextApiResponse<ApiResponse<User>>) =>
+  api.post(req, res, async () => {
     try {
       const { data, status } = await serverPostApi<AuthResponse>(
         'auth/local',
@@ -36,10 +28,4 @@ export default async (
 
       res.status(status).json(jsonResponseError(message))
     }
-  } else {
-    res.setHeader('Allow', [ApiMethod.POST])
-    res.statusCode = Status.METHOD_NOT_ALLOWED
-
-    res.json(jsonResponseError(methodNotAllowedMessage(req.method)))
-  }
-}
+  })
