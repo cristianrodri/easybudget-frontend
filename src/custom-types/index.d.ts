@@ -1,6 +1,7 @@
 import { BudgetType } from '@utils/enums'
 import { AxiosRequestConfig } from 'axios'
 import { ChangeEvent } from 'react'
+import { Schema } from 'mongoose'
 
 export interface IUser {
   username: string
@@ -9,6 +10,12 @@ export interface IUser {
   provider: string
   confirmed: boolean
   blocked: boolean
+}
+
+export interface IBudget extends Pick<Budget, 'description' | 'money'> {
+  date: Date
+  owner: Schema.Types.ObjectId
+  category: Schema.Types.ObjectId
 }
 
 export interface User {
