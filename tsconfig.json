@@ -20,7 +20,8 @@
       "@hooks/*": ["hooks/*"],
       "@utils/*": ["utils/*"],
       "@custom-types": ["custom-types"],
-      "@context/*": ["context/*"]
+      "@context/*": ["context/*"],
+      "@db/*": ["db/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

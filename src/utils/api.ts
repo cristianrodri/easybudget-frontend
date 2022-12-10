@@ -1,11 +1,12 @@
 import { ApiResponseError, ApiResponseSuccess } from '@custom-types'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { ApiMethod, Status } from '@utils/enums'
+import { connectDB } from '@db/mongoose'
 
 type MethodParams = (
   req: NextApiRequest,
   res: NextApiResponse,
-  cb: () => void
+  cb: () => Promise<void> | void
 ) => void
 
 type ApiMethodObj = {
@@ -16,34 +17,38 @@ type ApiMethodObj = {
 }
 
 const apiMethods: ApiMethodObj = {
-  get(req, res, cb) {
+  async get(req, res, cb) {
     // If the method belongs to GET, the callback is called
     if (req.method === ApiMethod.GET) {
-      cb()
+      await connectDB()
+      await cb()
     } else {
       methodNotAllowedResponse(req, res, ApiMethod.GET)
     }
   },
-  post(req, res, cb) {
+  async post(req, res, cb) {
     // If the method belongs to POST, the callback is called
     if (req.method === ApiMethod.POST) {
-      cb()
+      await connectDB()
+      await cb()
     } else {
       methodNotAllowedResponse(req, res, ApiMethod.POST)
     }
   },
-  put(req, res, cb) {
+  async put(req, res, cb) {
     // If the method belongs to PUT, the callback is called
     if (req.method === ApiMethod.PUT) {
-      cb()
+      await connectDB()
+      await cb()
     } else {
       methodNotAllowedResponse(req, res, ApiMethod.PUT)
     }
   },
-  delete(req, res, cb) {
+  async delete(req, res, cb) {
     // If the method belongs to DELETE, the callback is called
     if (req.method === ApiMethod.DELETE) {
-      cb()
+      await connectDB()
+      await cb()
     } else {
       methodNotAllowedResponse(req, res, ApiMethod.DELETE)
     }
