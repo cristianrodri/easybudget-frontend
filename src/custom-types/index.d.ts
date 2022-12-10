@@ -2,6 +2,15 @@ import { BudgetType } from '@utils/enums'
 import { AxiosRequestConfig } from 'axios'
 import { ChangeEvent } from 'react'
 
+export interface IUser {
+  username: string
+  email: string
+  password: string
+  provider: string
+  confirmed: boolean
+  blocked: boolean
+}
+
 export interface User {
   id: number
   username: string
