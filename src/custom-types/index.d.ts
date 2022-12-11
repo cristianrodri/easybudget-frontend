@@ -18,6 +18,12 @@ export interface IBudget extends Pick<Budget, 'description' | 'money'> {
   category: Schema.Types.ObjectId
 }
 
+export interface ICategory {
+  name: string
+  type: BudgetType.INCOME | BudgetType.EXPENSE
+  owner: Schema.Types.ObjectId
+}
+
 export interface User {
   id: number
   username: string
