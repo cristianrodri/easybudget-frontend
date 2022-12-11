@@ -1,32 +1,28 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { AxiosError } from 'axios'
-import { createCookie } from 'utils/cookie'
 import { Status } from '@utils/enums'
-import { ApiResponse, AuthResponse, User } from '@custom-types'
-import { api, jsonResponseError, jsonResponseSuccess } from '@utils/api'
-import { errorResponse } from '@utils/error'
-import { serverPostApi } from '@config/api_server'
+import { ApiResponse, IUserDocument } from '@custom-types'
+import { api, jsonResponseSuccess } from '@utils/api'
+import { signupLocal } from '@db/user/signup'
+import { createCookie } from '@utils/cookie'
 
-export default (req: NextApiRequest, res: NextApiResponse<ApiResponse<User>>) =>
+export default (
+  req: NextApiRequest,
+  res: NextApiResponse<ApiResponse<IUserDocument>>
+) =>
   api.post(req, res, async () => {
     try {
-      const { data } = await serverPostApi<AuthResponse>(
-        'auth/local/register',
-        req.body
-      )
+      const user = await signupLocal(req.body)
+      const token = user.generateAuthToken()
+      res.setHeader('Set-Cookie', createCookie(token))
 
-      // Set Cookie
-      res.setHeader('Set-Cookie', createCookie(data.jwt))
-
-      res.status(Status.CREATED).json(jsonResponseSuccess())
+      res.status(Status.CREATED).json(jsonResponseSuccess(user))
     } catch (error) {
-      const err = error as AxiosError
+      if (error.message.includes('E11000 duplicate key')) {
+        res
+          .status(400)
+          .json({ success: false, message: 'Email is already in use' })
+      }
 
-      const { status, message } = errorResponse(
-        err,
-        err.response?.data.message[0].messages[0].message
-      )
-
-      res.status(status).json(jsonResponseError(message))
+      res.status(400).json({ success: false, message: error.message })
     }
   })

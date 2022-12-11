@@ -2,6 +2,7 @@ import { ApiResponseError, ApiResponseSuccess } from '@custom-types'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { ApiMethod, Status } from '@utils/enums'
 import { connectDB } from '@db/mongoose'
+import { cleanRequestBody } from './clean'
 
 type MethodParams = (
   req: NextApiRequest,
@@ -29,6 +30,7 @@ const apiMethods: ApiMethodObj = {
   async post(req, res, cb) {
     // If the method belongs to POST, the callback is called
     if (req.method === ApiMethod.POST) {
+      cleanRequestBody(req)
       await connectDB()
       await cb()
     } else {
@@ -38,6 +40,7 @@ const apiMethods: ApiMethodObj = {
   async put(req, res, cb) {
     // If the method belongs to PUT, the callback is called
     if (req.method === ApiMethod.PUT) {
+      cleanRequestBody(req)
       await connectDB()
       await cb()
     } else {

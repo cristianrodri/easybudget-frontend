@@ -1,15 +1,19 @@
 import { BudgetType } from '@utils/enums'
 import { AxiosRequestConfig } from 'axios'
 import { ChangeEvent } from 'react'
-import { Schema } from 'mongoose'
+import { Document, Schema } from 'mongoose'
 
-export interface IUser {
+export interface IUserDocument extends Document {
   username: string
   email: string
   password: string
   provider: string
   confirmed: boolean
   blocked: boolean
+}
+
+export interface IUser extends IUserDocument {
+  generateAuthToken(): string
 }
 
 export interface IBudget extends Pick<Budget, 'description' | 'money'> {

@@ -1,10 +1,14 @@
-import { model, Schema } from 'mongoose'
+import { Model, model, Require_id, Schema } from 'mongoose'
 import validator from 'validator'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
-import { IUser } from '@custom-types'
+import { IUser, IUserDocument } from '@custom-types'
 
-const userSchema = new Schema<IUser>(
+interface UserModel extends Model<IUser, Record<string, never>> {
+  findByCredentials(email: string, password: string): Promise<Require_id<IUser>>
+}
+
+const userSchema = new Schema<IUserDocument, UserModel>(
   {
     username: {
       type: String,
@@ -72,7 +76,7 @@ userSchema.virtual('categories', {
 
 // Remove password from json object when the data is sent
 userSchema.methods.toJSON = function () {
-  const user = this
+  const user = this as IUser
   const userObject = user.toObject()
 
   delete userObject.password
@@ -80,7 +84,10 @@ userSchema.methods.toJSON = function () {
   return userObject
 }
 
-userSchema.statics.findByCredentials = async (email, password) => {
+userSchema.statics.findByCredentials = async (
+  email: string,
+  password: string
+) => {
   const user = await User.findOne({ email })
 
   if (!user) throw new Error('User not found')
@@ -114,6 +121,7 @@ userSchema.pre('save', async function (next) {
   next()
 })
 
-const User = model('User', userSchema)
+const User =
+  model<IUser, UserModel>('User') || model<IUser, UserModel>('User', userSchema)
 
 export default User
