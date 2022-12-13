@@ -28,3 +28,7 @@ export enum DateType {
   MONTH = 'month',
   YEAR = 'year'
 }
+
+export enum SET {
+  COOKIE = 'Set-Cookie'
+}

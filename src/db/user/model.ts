@@ -122,6 +122,6 @@ userSchema.pre('save', async function (next) {
 })
 
 const User =
-  model<IUser, UserModel>('User') || model<IUser, UserModel>('User', userSchema)
+  model<IUser, UserModel>('User') ?? model<IUser, UserModel>('User', userSchema)
 
 export default User

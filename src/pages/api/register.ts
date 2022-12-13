@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { Status } from '@utils/enums'
+import { SET, Status } from '@utils/enums'
 import { ApiResponse, IUserDocument } from '@custom-types'
-import { api, jsonResponseSuccess } from '@utils/api'
+import { api, jsonResponseError, jsonResponseSuccess } from '@utils/api'
 import { signupLocal } from '@db/user/signup'
 import { createCookie } from '@utils/cookie'
 
@@ -13,16 +13,17 @@ export default (
     try {
       const user = await signupLocal(req.body)
       const token = user.generateAuthToken()
-      res.setHeader('Set-Cookie', createCookie(token))
+
+      res.setHeader(SET.COOKIE, createCookie(token))
 
       res.status(Status.CREATED).json(jsonResponseSuccess(user))
     } catch (error) {
       if (error.message.includes('E11000 duplicate key')) {
-        res
+        return res
           .status(400)
-          .json({ success: false, message: 'Email is already in use' })
+          .json(jsonResponseError('Email is already in use'))
       }
 
-      res.status(400).json({ success: false, message: error.message })
+      res.status(400).json(jsonResponseError(error.message))
     }
   })
