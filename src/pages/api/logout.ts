@@ -8,7 +8,7 @@ export default (
   req: NextApiRequest,
   res: NextApiResponse<ApiResponse<never>>
 ) =>
-  api.post(req, res, () => {
+  api.get(req, res, () => {
     // Destroy cookie
     res.setHeader(SET.COOKIE, deleteCookie())
 
