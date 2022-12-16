@@ -1,18 +1,16 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { AxiosError } from 'axios'
-import { errorResponse } from '@utils/error'
 import { api } from '@utils/api/private'
 import { jsonResponseError, jsonResponseSuccess } from '@utils/api/responses'
+import { getAuthUser } from '@db/user/getOne'
 
 export default (req: NextApiRequest, res: NextApiResponse) =>
-  api.get(req, res, async () => {
+  api.get(req, res, async userId => {
     try {
-      res.status(200).json(jsonResponseSuccess({ cookies: req.cookies }))
+      // should return the user data with categories. Inside the categories should be given the related budgets of the current month. The current month date should be provided by query params
+      const user = await getAuthUser(userId)
+
+      res.json(jsonResponseSuccess(user))
     } catch (error) {
-      const err = error as AxiosError
-
-      const { status, message } = errorResponse(err, err.response?.data.error)
-
-      res.status(status).json(jsonResponseError(message))
+      res.status(400).json(jsonResponseError(error.message))
     }
   })
