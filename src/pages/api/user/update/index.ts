@@ -2,8 +2,9 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { AxiosError } from 'axios'
 import { errorResponse } from '@utils/error'
 import { ApiResponse, UpdateUser } from '@custom-types'
-import { api, jsonResponseError, jsonResponseSuccess } from '@utils/api'
 import { serverPutApi } from '@config/api_server'
+import { api } from '@utils/api/private'
+import { jsonResponseError, jsonResponseSuccess } from '@utils/api/responses'
 
 type DataResponse = UpdateUser
 

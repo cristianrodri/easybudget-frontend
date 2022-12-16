@@ -3,7 +3,8 @@ import { AxiosError } from 'axios'
 import { errorResponse } from '@utils/error'
 import { serverPutApi } from '@config/api_server'
 import { ApiResponse, Budget } from '@custom-types'
-import { api, jsonResponseError, jsonResponseSuccess } from '@utils/api'
+import { api } from '@utils/api/private'
+import { jsonResponseError, jsonResponseSuccess } from '@utils/api/responses'
 
 type DataResponse = Budget
 

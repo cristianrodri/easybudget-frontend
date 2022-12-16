@@ -3,8 +3,9 @@ import { AxiosError } from 'axios'
 import { errorResponse } from '@utils/error'
 import { ApiResponse, CategoryTypes } from '@custom-types'
 import { Status } from '@utils/enums'
-import { api, jsonResponseError, jsonResponseSuccess } from '@utils/api'
 import { serverPostApi } from '@config/api_server'
+import { api } from '@utils/api/private'
+import { jsonResponseError, jsonResponseSuccess } from '@utils/api/responses'
 
 type DataResponse = CategoryTypes[]
 

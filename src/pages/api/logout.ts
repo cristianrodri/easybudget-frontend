@@ -2,7 +2,8 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { deleteCookie } from '@utils/cookie'
 import { SET, Status } from '@utils/enums'
 import { ApiResponse } from '@custom-types'
-import { api, jsonResponseSuccess } from '@utils/api'
+import { api } from '@utils/api/private'
+import { jsonResponseSuccess } from '@utils/api/responses'
 
 export default (
   req: NextApiRequest,

@@ -1,4 +1,4 @@
-import { Model, model, Require_id, Schema } from 'mongoose'
+import { model, Model, models, Require_id, Schema } from 'mongoose'
 import validator from 'validator'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
@@ -122,6 +122,6 @@ userSchema.pre('save', async function (next) {
 })
 
 const User =
-  model<IUser, UserModel>('User') ?? model<IUser, UserModel>('User', userSchema)
+  (models['User'] as UserModel) || model<IUser, UserModel>('User', userSchema)
 
 export default User

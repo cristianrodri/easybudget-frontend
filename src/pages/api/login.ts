@@ -1,9 +1,10 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { createCookie } from '@utils/cookie'
 import { ApiResponse, IUserDocument } from '@custom-types'
-import { api, jsonResponseError, jsonResponseSuccess } from '@utils/api'
 import { SET } from '@utils/enums'
 import { loginUser } from '@db/user/login'
+import { api } from '@utils/api/public'
+import { jsonResponseError, jsonResponseSuccess } from '@utils/api/responses'
 
 export default (
   req: NextApiRequest,
