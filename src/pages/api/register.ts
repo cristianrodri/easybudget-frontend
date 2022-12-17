@@ -21,10 +21,10 @@ export default (
     } catch (error) {
       if (error.message.includes('E11000 duplicate key')) {
         return res
-          .status(400)
+          .status(Status.BAD_REQUEST)
           .json(jsonResponseError('Email is already in use'))
       }
 
-      res.status(400).json(jsonResponseError(error.message))
+      res.status(Status.BAD_REQUEST).json(jsonResponseError(error.message))
     }
   })

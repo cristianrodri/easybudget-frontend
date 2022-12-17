@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { createCookie } from '@utils/cookie'
 import { ApiResponse, IUserDocument } from '@custom-types'
-import { SET } from '@utils/enums'
+import { SET, Status } from '@utils/enums'
 import { loginUser } from '@db/user/login'
 import { api } from '@utils/api/public'
 import { jsonResponseError, jsonResponseSuccess } from '@utils/api/responses'
@@ -21,6 +21,6 @@ export default (
 
       res.json(jsonResponseSuccess(user))
     } catch (error) {
-      res.status(400).json(jsonResponseError(error.message))
+      res.status(Status.BAD_REQUEST).json(jsonResponseError(error.message))
     }
   })

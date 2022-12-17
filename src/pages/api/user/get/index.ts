@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { api } from '@utils/api/private'
 import { jsonResponseError, jsonResponseSuccess } from '@utils/api/responses'
 import { getAuthUser } from '@db/user/getOne'
+import { Status } from '@utils/enums'
 
 export default (req: NextApiRequest, res: NextApiResponse) =>
   api.get(req, res, async userId => {
@@ -11,6 +12,6 @@ export default (req: NextApiRequest, res: NextApiResponse) =>
 
       res.json(jsonResponseSuccess(user))
     } catch (error) {
-      res.status(400).json(jsonResponseError(error.message))
+      res.status(Status.BAD_REQUEST).json(jsonResponseError(error.message))
     }
   })
