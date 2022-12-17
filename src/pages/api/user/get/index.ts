@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { api } from '@utils/api/private'
 import { jsonResponseError, jsonResponseSuccess } from '@utils/api/responses'
-import { getAuthUser } from '@db/user/getOne'
+import { getAuthUser } from '@db/user/get_one'
 import { Status } from '@utils/enums'
 
 export default (req: NextApiRequest, res: NextApiResponse) =>
