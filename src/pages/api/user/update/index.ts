@@ -1,39 +1,26 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { AxiosError } from 'axios'
-import { errorResponse } from '@utils/error'
-import { ApiResponse, UpdateUser } from '@custom-types'
-import { serverPutApi } from '@config/api_server'
+import { ApiResponse, IUserDocument } from '@custom-types'
 import { api } from '@utils/api/private'
 import { jsonResponseError, jsonResponseSuccess } from '@utils/api/responses'
+import { Status } from '@utils/enums'
+import User from '@db/user/model'
+import { updateAllowedProperties } from '@utils/api/clean'
 
-type DataResponse = UpdateUser
+type DataResponse = IUserDocument
 
 export default (
   req: NextApiRequest,
   res: NextApiResponse<ApiResponse<DataResponse>>
 ) =>
-  api.put(req, res, async () => {
+  api.put(req, res, async userId => {
     try {
-      const { data, status } = await serverPutApi<DataResponse>(
-        'users/me',
-        req.body,
-        req.cookies.token,
-        {
-          params: {
-            id: req.query.id
-          }
-        }
-      )
+      const user = await User.findOne({ _id: userId })
+      updateAllowedProperties(['username', 'email'], req, user)
 
-      res.status(status).json(jsonResponseSuccess(data))
+      await user.save()
+
+      res.json(jsonResponseSuccess(user))
     } catch (error) {
-      const err = error as AxiosError
-
-      const { status, message } = errorResponse(
-        err,
-        err.response?.data.message[0].messages[0].message
-      )
-
-      res.status(status).json(jsonResponseError(message))
+      res.status(Status.BAD_REQUEST).json(jsonResponseError(error.message))
     }
   })

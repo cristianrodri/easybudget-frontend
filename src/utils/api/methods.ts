@@ -1,5 +1,5 @@
 import { connectDB } from '@db/mongoose'
-import { cleanRequestBody } from '@utils/clean'
+import { cleanRequestBody } from '@utils/api/clean'
 import { ApiMethod } from '@utils/enums'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { methodNotAllowedResponse } from './responses'

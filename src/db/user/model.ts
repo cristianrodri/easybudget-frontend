@@ -12,7 +12,7 @@ const userSchema = new Schema<IUserDocument, UserModel>(
   {
     username: {
       type: String,
-      required: true,
+      required: [true, 'Username is required'],
       trim: true,
       maxLength: 50,
       minlength: 2
@@ -23,7 +23,7 @@ const userSchema = new Schema<IUserDocument, UserModel>(
       trim: true,
       unique: true,
       lowercase: true,
-      maxLength: 100,
+      maxLength: 70,
       minlength: 2,
       validate(value: string) {
         if (!validator.isEmail(value)) throw new Error('Email is invalid')
@@ -34,7 +34,7 @@ const userSchema = new Schema<IUserDocument, UserModel>(
       required: true,
       trim: true,
       minlength: 7,
-      maxLength: 30,
+      maxLength: 100,
       validate(value: string) {
         if (value.toLowerCase().includes('password'))
           throw new Error('Password cannot contain "password"')
