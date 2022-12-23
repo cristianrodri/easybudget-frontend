@@ -2,6 +2,7 @@ import { BudgetType } from '@utils/enums'
 import { AxiosRequestConfig } from 'axios'
 import { ChangeEvent } from 'react'
 import { Document, Schema } from 'mongoose'
+import { UploadApiResponse } from 'cloudinary'
 
 export interface IUserDocument extends Document {
   username: string
@@ -10,6 +11,7 @@ export interface IUserDocument extends Document {
   provider: string
   confirmed: boolean
   blocked: boolean
+  avatar: UploadApiResponse
 }
 
 export interface IUser extends IUserDocument {

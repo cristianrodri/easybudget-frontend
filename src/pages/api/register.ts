@@ -20,9 +20,13 @@ export default (
       res.status(Status.CREATED).json(jsonResponseSuccess(user))
     } catch (error) {
       if (error.message.includes('E11000 duplicate key')) {
+        const errorMessage = error.message.includes('email')
+          ? 'Email'
+          : 'Username'
+
         return res
           .status(Status.BAD_REQUEST)
-          .json(jsonResponseError('Email is already in use'))
+          .json(jsonResponseError(`${errorMessage} is already in use`))
       }
 
       res.status(Status.BAD_REQUEST).json(jsonResponseError(error.message))
