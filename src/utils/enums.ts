@@ -32,3 +32,7 @@ export enum DateType {
 export enum SET {
   COOKIE = 'Set-Cookie'
 }
+
+export enum CLOUDINARY {
+  FOLDER = 'easy-budget'
+}

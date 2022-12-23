@@ -1,7 +1,8 @@
 import { File, IncomingForm } from 'formidable'
 import { NextApiRequest } from 'next'
-import cloudinary from 'cloudinary'
 import { IUserDocument } from '@custom-types'
+import cloudinary from './config'
+import { CLOUDINARY } from '@utils/enums'
 
 type AvatarFile = { files: { avatar: File } }
 
@@ -28,14 +29,8 @@ export const uploadAvatar = async (
 ) => {
   const file = await getRequestFile(req)
 
-  cloudinary.v2.config({
-    cloud_name: process.env.CLOUDINARY_NAME,
-    api_key: process.env.CLOUDINARY_KEY,
-    api_secret: process.env.CLOUDINARY_SECRET
-  })
-
-  const data = await cloudinary.v2.uploader.upload(file.files.avatar.filepath, {
-    folder: 'easy-budget',
+  const data = await cloudinary.uploader.upload(file.files.avatar.filepath, {
+    folder: CLOUDINARY.FOLDER,
     transformation: [{ fetch_format: 'auto', width: 250 }],
     unique_filename: true,
     public_id: user.username
