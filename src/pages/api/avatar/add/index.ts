@@ -22,11 +22,7 @@ export default (
 
       res.status(Status.CREATED).json(jsonResponseSuccess(avatar))
     } catch (error) {
-      res
-        .status(Status.BAD_REQUEST)
-        .json(
-          jsonResponseError(typeof error === 'string' ? error : error.message)
-        )
+      res.status(Status.BAD_REQUEST).json(jsonResponseError(error))
     }
   })
 

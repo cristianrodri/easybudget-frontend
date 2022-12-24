@@ -29,6 +29,6 @@ export default (
           .json(jsonResponseError(`${errorMessage} is already in use`))
       }
 
-      res.status(Status.BAD_REQUEST).json(jsonResponseError(error.message))
+      res.status(Status.BAD_REQUEST).json(jsonResponseError(error))
     }
   })

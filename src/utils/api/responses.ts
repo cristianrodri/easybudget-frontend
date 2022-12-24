@@ -24,9 +24,12 @@ export const jsonResponseSuccess = <T>(data?: T): ApiResponseSuccess<T> => {
   }
 }
 
-export const jsonResponseError = (message: string): ApiResponseError => {
+export const jsonResponseError = (
+  errorMessage: string | { message: string }
+): ApiResponseError => {
   return {
     success: false,
-    message
+    message:
+      typeof errorMessage === 'string' ? errorMessage : errorMessage.message
   }
 }

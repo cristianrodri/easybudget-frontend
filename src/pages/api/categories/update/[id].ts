@@ -15,6 +15,6 @@ export default (
 
       res.json(jsonResponseSuccess(category))
     } catch (error) {
-      res.status(Status.BAD_REQUEST).json(jsonResponseError(error.message))
+      res.status(Status.BAD_REQUEST).json(jsonResponseError(error))
     }
   })
