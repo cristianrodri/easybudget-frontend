@@ -1,30 +1,20 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { AxiosError } from 'axios'
-import { errorResponse } from '@utils/error'
-import { serverDeleteApi } from '@config/api_server'
-import { ApiResponse, CategoryApi } from '@custom-types'
+import { ApiResponse, ICategory } from '@custom-types'
 import { api } from '@utils/api/private'
 import { jsonResponseError, jsonResponseSuccess } from '@utils/api/responses'
-
-type DataResponse = CategoryApi
+import { Status } from '@utils/enums'
+import { deleteCategory } from '@db/category/delete'
 
 export default (
   req: NextApiRequest,
-  res: NextApiResponse<ApiResponse<DataResponse>>
+  res: NextApiResponse<ApiResponse<ICategory>>
 ) =>
-  api.delete(req, res, async () => {
+  api.delete(req, res, async userId => {
     try {
-      const { data, status } = await serverDeleteApi<DataResponse>(
-        `categories/${req.query.id}`,
-        req.cookies.token
-      )
+      const category = await deleteCategory(userId, req)
 
-      res.status(status).json(jsonResponseSuccess(data))
+      res.json(jsonResponseSuccess(category))
     } catch (error) {
-      const err = error as AxiosError
-
-      const { status, message } = errorResponse(err, err.response?.data.message)
-
-      res.status(status).json(jsonResponseError(message))
+      res.status(Status.BAD_REQUEST).json(jsonResponseError(error))
     }
   })
