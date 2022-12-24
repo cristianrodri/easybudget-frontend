@@ -20,7 +20,7 @@ export interface IUser extends IUserDocument {
 
 export interface IBudget extends Pick<Budget, 'description' | 'money'> {
   date: Date
-  owner: Schema.Types.ObjectId
+  user: Schema.Types.ObjectId
   category: Schema.Types.ObjectId
 }
 

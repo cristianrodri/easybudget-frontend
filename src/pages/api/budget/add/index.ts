@@ -1,32 +1,20 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { AxiosError } from 'axios'
-import { errorResponse } from '@utils/error'
-import { ApiResponse, Budget } from '@custom-types'
+import { ApiResponse, IBudget } from '@custom-types'
 import { Status } from '@utils/enums'
-import { serverPostApi } from '@config/api_server'
 import { api } from '@utils/api/private'
 import { jsonResponseError, jsonResponseSuccess } from '@utils/api/responses'
-
-type DataResponse = Budget
+import { createBudget } from '@db/budget/add'
 
 export default (
   req: NextApiRequest,
-  res: NextApiResponse<ApiResponse<DataResponse>>
+  res: NextApiResponse<ApiResponse<IBudget>>
 ) =>
-  api.post(req, res, async () => {
+  api.post(req, res, async userId => {
     try {
-      const { data } = await serverPostApi<DataResponse>(
-        'budgets',
-        req.body,
-        req.cookies.token
-      )
+      const budget = await createBudget(userId, req)
 
-      res.status(Status.CREATED).json(jsonResponseSuccess(data))
+      res.status(Status.CREATED).json(jsonResponseSuccess(budget))
     } catch (error) {
-      const err = error as AxiosError
-
-      const { status, message } = errorResponse(err, err.response?.data.error)
-
-      res.status(status).json(jsonResponseError(message))
+      res.status(Status.BAD_REQUEST).json(jsonResponseError(error))
     }
   })

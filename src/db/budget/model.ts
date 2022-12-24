@@ -1,5 +1,5 @@
 import { IBudget } from '@custom-types'
-import { model, Schema } from 'mongoose'
+import { Model, model, models, Schema } from 'mongoose'
 import { toJSON } from '@utils/db/response'
 
 const budgetSchema = new Schema<IBudget>(
@@ -16,7 +16,7 @@ const budgetSchema = new Schema<IBudget>(
       min: 1
     },
     date: { type: Date, required: true, default: Date.now() },
-    owner: {
+    user: {
       type: Schema.Types.ObjectId,
       required: true,
       ref: 'User'
@@ -30,6 +30,7 @@ const budgetSchema = new Schema<IBudget>(
   { toJSON }
 )
 
-const Budget = model('Budget', budgetSchema)
+const Budget =
+  (models['Budget'] as Model<IBudget>) || model<IBudget>('Budget', budgetSchema)
 
 export default Budget

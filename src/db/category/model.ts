@@ -32,7 +32,6 @@ categorySchema.virtual('budgets', {
   foreignField: 'category'
 })
 
-// const Category = model('Category', categorySchema)
 const Category =
   (models['Category'] as Model<ICategory>) ||
   model<ICategory>('Category', categorySchema)
