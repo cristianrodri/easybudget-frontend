@@ -4,6 +4,7 @@ import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import { IUser, IUserDocument } from '@custom-types'
 import { UploadApiResponse } from 'cloudinary'
+import { toJSON } from '@utils/db/response'
 
 interface UserModel extends Model<IUser, Record<string, never>> {
   findByCredentials(email: string, password: string): Promise<Require_id<IUser>>
@@ -123,7 +124,8 @@ const userSchema = new Schema<IUserDocument, UserModel>(
     })
   },
   {
-    timestamps: true
+    timestamps: true,
+    toJSON
   }
 )
 
@@ -138,16 +140,6 @@ userSchema.virtual('categories', {
   localField: '_id',
   foreignField: 'owner'
 })
-
-// Remove password from json object when the data is sent
-userSchema.methods.toJSON = function () {
-  const user = this as IUser
-  const userObject = user.toObject()
-
-  delete userObject.password
-
-  return userObject
-}
 
 userSchema.statics.findByCredentials = async (
   email: string,

@@ -1,4 +1,5 @@
 import { ICategory } from '@custom-types'
+import { toJSON } from '@utils/db/response'
 import { Model, model, models, Schema } from 'mongoose'
 
 const categorySchema = new Schema<ICategory>(
@@ -21,13 +22,7 @@ const categorySchema = new Schema<ICategory>(
     }
   },
   {
-    toJSON: {
-      transform(doc, ret) {
-        ret.id = ret._id
-        delete ret._id
-      },
-      versionKey: false
-    }
+    toJSON
   }
 )
 
