@@ -24,9 +24,9 @@ export interface IBudget extends Pick<Budget, 'description' | 'money'> {
   category: Schema.Types.ObjectId
 }
 
-export interface ICategory {
+export interface ICategory extends Document {
   name: string
-  type: BudgetType.INCOME | BudgetType.EXPENSE
+  type: BudgetType
   owner: Schema.Types.ObjectId
 }
 

@@ -1,32 +1,22 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { AxiosError } from 'axios'
-import { errorResponse } from '@utils/error'
-import { ApiResponse, CategoryTypes } from '@custom-types'
+import { ApiResponse, ICategory } from '@custom-types'
 import { Status } from '@utils/enums'
-import { serverPostApi } from '@config/api_server'
 import { api } from '@utils/api/private'
 import { jsonResponseError, jsonResponseSuccess } from '@utils/api/responses'
-
-type DataResponse = CategoryTypes[]
+import { addCategory } from '@db/category/add'
 
 export default (
   req: NextApiRequest,
-  res: NextApiResponse<ApiResponse<DataResponse>>
+  res: NextApiResponse<ApiResponse<ICategory>>
 ) =>
-  api.post(req, res, async () => {
+  api.post(req, res, async userId => {
     try {
-      const { data } = await serverPostApi<DataResponse>(
-        `categories`,
-        req.body,
-        req.cookies.token
-      )
+      const { name, type } = req.body
 
-      res.status(Status.CREATED).json(jsonResponseSuccess(data))
+      const category = await addCategory(userId, name, type)
+
+      res.status(Status.CREATED).json(jsonResponseSuccess(category))
     } catch (error) {
-      const err = error as AxiosError
-
-      const { status, message } = errorResponse(err, err.response?.data.message)
-
-      res.status(status).json(jsonResponseError(message))
+      res.status(Status.BAD_REQUEST).json(jsonResponseError(error.message))
     }
   })
