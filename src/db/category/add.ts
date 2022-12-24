@@ -1,6 +1,7 @@
 import Category from './model'
 import { BudgetType } from '@utils/enums'
 import { textCapitalize } from '@utils/string'
+import { ObjectId } from 'mongoose'
 
 export const addCategory = async (
   userId: string,
@@ -11,7 +12,7 @@ export const addCategory = async (
   if (!type) throw new Error('Type must be provided')
 
   const category = await Category.findOne({
-    owner: userId,
+    user: userId,
     name,
     type
   })
@@ -22,7 +23,8 @@ export const addCategory = async (
     )
 
   // Add the new category if the both name and type doesn't exist together
-  const newCategory = new Category({ owner: userId, name, type })
+  const newCategory = new Category({ name, type })
+  newCategory.user = userId as unknown as ObjectId
 
   await newCategory.save()
 
