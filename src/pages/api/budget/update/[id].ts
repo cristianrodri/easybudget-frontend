@@ -1,31 +1,28 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { AxiosError } from 'axios'
-import { errorResponse } from '@utils/error'
-import { serverPutApi } from '@config/api_server'
-import { ApiResponse, Budget } from '@custom-types'
+import { ApiResponse, IBudget } from '@custom-types'
 import { api } from '@utils/api/private'
 import { jsonResponseError, jsonResponseSuccess } from '@utils/api/responses'
-
-type DataResponse = Budget
+import { Status } from '@utils/enums'
+import Budget from '@db/budget/model'
+import { updateAllowedProperties } from '@utils/api/clean'
 
 export default (
   req: NextApiRequest,
-  res: NextApiResponse<ApiResponse<DataResponse>>
+  res: NextApiResponse<ApiResponse<IBudget>>
 ) =>
-  api.put(req, res, async () => {
+  api.put(req, res, async userId => {
     try {
-      const { data, status } = await serverPutApi<DataResponse>(
-        `budgets/${req.query.id}`,
-        req.body,
-        req.cookies.token
+      const budget = await Budget.findOne({ _id: req.query.id, user: userId })
+      updateAllowedProperties(
+        ['money', 'description', 'date', 'category'],
+        req,
+        budget
       )
 
-      res.status(status).json(jsonResponseSuccess(data))
+      await budget.save()
+
+      res.json(jsonResponseSuccess(budget))
     } catch (error) {
-      const err = error as AxiosError
-
-      const { status, message } = errorResponse(err, err.response?.data.message)
-
-      res.status(status).json(jsonResponseError(message))
+      res.status(Status.BAD_REQUEST).json(jsonResponseError(error))
     }
   })
