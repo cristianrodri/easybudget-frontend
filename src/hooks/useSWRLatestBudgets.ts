@@ -13,7 +13,7 @@ import { useFetcher } from './useFetcher'
 export const useSWRLatestBudgets = () => {
   const LIMIT_BUDGETS = 5
   const { fetcher } = useFetcher<Budget[]>()
-  const API_URL = `api/budget/get?_sort=date:DESC&_limit=${LIMIT_BUDGETS}&_categorydata=true`
+  const API_URL = `api/budget/get?limit=${LIMIT_BUDGETS}`
   const { values, dispatch } = useContext(Context)
   const { budgetToUpdate } = values
   const { data: userData } = useUserData()
