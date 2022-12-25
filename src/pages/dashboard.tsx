@@ -17,6 +17,7 @@ import { DateType } from '@utils/enums'
 import Category from '@db/category/model'
 import { getUserId } from '@utils/api/token'
 import Budget from '@db/budget/model'
+import { connectDB } from '@db/mongoose'
 
 interface Props {
   categoriesCount: number
@@ -62,6 +63,7 @@ const Dashboard = ({ categoriesCount, oldestBudgetDate }: Props) => {
 
 export const getServerSideProps = async ({ req }) => {
   const userId = getUserId(req)
+  await connectDB()
 
   // Get the categories count
   const categories = await Category.find({ user: userId })
