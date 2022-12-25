@@ -1,10 +1,5 @@
 // middleware.ts
-import {
-  AUTH_PATHNAMES,
-  isAuthPath,
-  isPublicPath,
-  PUBLIC_PATHNAMES
-} from '@utils/middleware'
+import { isAuthPath, isPublicPath } from '@utils/middleware'
 import { NextRequest, NextResponse } from 'next/server'
 
 export function middleware(request: NextRequest) {
@@ -31,5 +26,13 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/api/:path*', ...PUBLIC_PATHNAMES, ...AUTH_PATHNAMES]
+  matcher: [
+    '/api/:path*',
+    '/',
+    '/signup',
+    '/login',
+    '/dashboard',
+    '/profile',
+    '/categories'
+  ]
 }
