@@ -1,30 +1,20 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { AxiosError } from 'axios'
-import { errorResponse } from '@utils/error'
-import { serverDeleteApi } from '@config/api_server'
-import { ApiResponse, Budget } from '@custom-types'
+import { ApiResponse, IBudget } from '@custom-types'
 import { api } from '@utils/api/private'
 import { jsonResponseError, jsonResponseSuccess } from '@utils/api/responses'
-
-type DataResponse = Budget
+import { Status } from '@utils/enums'
+import { deleteBudget } from '@db/budget/delete'
 
 export default (
   req: NextApiRequest,
-  res: NextApiResponse<ApiResponse<DataResponse>>
+  res: NextApiResponse<ApiResponse<IBudget>>
 ) =>
-  api.delete(req, res, async () => {
+  api.delete(req, res, async userId => {
     try {
-      const { data, status } = await serverDeleteApi<DataResponse>(
-        `budgets/${req.query.id}`,
-        req.cookies.token
-      )
+      const budget = await deleteBudget(userId, req)
 
-      res.status(status).json(jsonResponseSuccess(data))
+      res.json(jsonResponseSuccess(budget))
     } catch (error) {
-      const err = error as AxiosError
-
-      const { status, message } = errorResponse(err, err.response?.data.message)
-
-      res.status(status).json(jsonResponseError(message))
+      res.status(Status.BAD_REQUEST).json(jsonResponseError(error))
     }
   })
