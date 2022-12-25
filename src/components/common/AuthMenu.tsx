@@ -1,6 +1,6 @@
 import { MouseEvent, useState } from 'react'
 import { Avatar, Menu, MenuItem, Button } from '@mui/material'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import { useUserData } from '@hooks/useSWRUser'
 import { useUserAvatar } from '@hooks/useSWRAvatar'
 import { useLogout } from '@hooks/useLogout'
