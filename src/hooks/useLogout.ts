@@ -1,7 +1,7 @@
 import { clientGetApi } from '@config/api_client'
 import { clearGlobalState } from '@context/actions'
 import { Context } from '@context/GlobalContext'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import { useContext } from 'react'
 
 export const useLogout = () => {
