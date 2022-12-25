@@ -1,7 +1,6 @@
 import { ChangeEvent, useContext, useState } from 'react'
 import Image from 'next/image'
 import { Button, Stack } from '@mui/material'
-import { AvatarUser } from '@custom-types'
 import { DialogAvatarDeletion } from './DialogAvatarDeletion'
 import { clientDeleteApi } from '@config/api_client'
 import { Context } from '@context/GlobalContext'
@@ -9,10 +8,10 @@ import { openSnackbar } from '@context/actions'
 import { SnackbarType } from '@utils/enums'
 import { Upload } from './Upload'
 import { useUserAvatar } from '@hooks/useSWRAvatar'
-import { getLighestAvatar } from '@utils/avatar'
+import { UploadApiResponse } from 'cloudinary'
 
 interface Props {
-  avatar: AvatarUser
+  avatar: UploadApiResponse
 }
 
 export const EditAvatar = ({ avatar }: Props) => {
@@ -22,7 +21,7 @@ export const EditAvatar = ({ avatar }: Props) => {
   const [isUpdate, setIsUpdate] = useState(false)
   const [file, setFile] = useState<File>(null)
   const [isDeleting, setIsDeleting] = useState(false)
-  const avatarUrl = getLighestAvatar(avatar)
+  const avatarUrl = avatar?.secure_url
 
   const openDialog = () => {
     setDialogOpen(true)
@@ -41,7 +40,7 @@ export const EditAvatar = ({ avatar }: Props) => {
     closeDialog()
     setIsDeleting(true)
 
-    const res = await clientDeleteApi(`api/avatar/delete/${avatar.id}`)
+    const res = await clientDeleteApi(`api/avatar/delete`)
 
     if (res.success === true) {
       dispatch(

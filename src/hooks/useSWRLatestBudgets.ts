@@ -89,7 +89,7 @@ export const useSWRLatestBudgets = () => {
         .map(budget => {
           if (budget.id === budgetToUpdate.id) {
             budget.category = getCategoryDataFromBudget(
-              budgetEditionForm.category as number,
+              budgetEditionForm.category as string,
               userData.categories
             )
             budget.date = new Date(budgetEditionForm.date).toISOString()

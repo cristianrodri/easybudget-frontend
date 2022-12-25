@@ -120,7 +120,7 @@ export const DialogEdition = () => {
           setFieldValue={formik.setFieldValue}
         />
         <CategorySelect
-          categoryId={formik.values.category}
+          categoryId={formik.values.category as string}
           handleChange={formik.handleChange}
           touched={formik.touched.category}
           error={formik.errors.category}

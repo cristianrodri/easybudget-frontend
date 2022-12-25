@@ -2,9 +2,7 @@ import { Budget } from '@custom-types'
 import { FormikHelpers, useFormik } from 'formik'
 import { date, number, object, SchemaOf, string } from 'yup'
 
-export type AddBudgetTypes = Omit<Budget, 'id' | 'date' | 'category'> & {
-  category: number | string
-}
+export type AddBudgetTypes = Omit<Budget, 'id' | 'date'>
 
 export type EditBudgetTypes = AddBudgetTypes & Pick<Budget, 'date'>
 
@@ -31,7 +29,7 @@ export const useBudgetFormik = (
       .transform(value => (isNaN(value) ? undefined : value))
       .required('Amount is required')
       .min(1, 'Amount must be greater than 0'),
-    category: number().required('Category is required'),
+    category: string().required('Category is required'),
     ...schemaDate
   })
 

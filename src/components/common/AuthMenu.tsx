@@ -1,7 +1,6 @@
 import { MouseEvent, useState } from 'react'
 import { Avatar, Menu, MenuItem, Button } from '@mui/material'
 import { useRouter } from 'next/router'
-import { getAvatarThumbnail } from '@utils/avatar'
 import { useUserData } from '@hooks/useSWRUser'
 import { useUserAvatar } from '@hooks/useSWRAvatar'
 import { useLogout } from '@hooks/useLogout'
@@ -9,7 +8,7 @@ import { useLogout } from '@hooks/useLogout'
 export const AuthMenu = () => {
   const { data } = useUserData()
   const { data: avatar } = useUserAvatar()
-  const avatarUrl = getAvatarThumbnail(avatar)
+  const avatarUrl = avatar?.secure_url
   const router = useRouter()
   const { logout } = useLogout()
 

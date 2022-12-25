@@ -11,7 +11,7 @@ import { useUserData } from '@hooks/useSWRUser'
 import { textCapitalize } from '@utils/string'
 
 interface Props {
-  categoryId: string | number
+  categoryId: string
   handleChange: FormikHandleChange
   touched: boolean
   error: string

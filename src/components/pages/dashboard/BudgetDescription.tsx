@@ -23,7 +23,7 @@ export const BudgetDescription = ({ budget, isDialog }: Props) => {
   const { description, money, date, category } = budget
   const type =
     // If the component is not showed in the dialog category and the category data is not a number, then show the type of the category
-    !isDialog && typeof category !== 'number'
+    !isDialog && typeof category !== 'string'
       ? category.type
       : ('' as BudgetType)
 

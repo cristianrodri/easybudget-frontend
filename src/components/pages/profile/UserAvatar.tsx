@@ -1,11 +1,11 @@
 import { Stack } from '@mui/material'
 import { Title } from './Title'
-import { AvatarUser } from '@custom-types'
 import { AddAvatar } from './AddAvatar'
 import { EditAvatar } from './EditAvatar'
+import { UploadApiResponse } from 'cloudinary'
 
 interface Props {
-  avatar: AvatarUser
+  avatar: UploadApiResponse
 }
 
 export const UserAvatar = ({ avatar }: Props) => {

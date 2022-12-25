@@ -1,20 +1,20 @@
 import { clientGetApi } from '@config/api_client'
-import { AvatarUser } from '@custom-types'
+import { UploadApiResponse } from 'cloudinary'
 import useSWR from 'swr'
 
 // Fetcher function when useSWR hook api is called
 const fetcher = (url: string) =>
-  clientGetApi<AvatarUser>(url).then(res =>
+  clientGetApi<UploadApiResponse>(url).then(res =>
     res.success === true ? res.data : null
   )
 
-export const useUserAvatar = (avatar?: AvatarUser) => {
+export const useUserAvatar = (avatar?: UploadApiResponse) => {
   const { data, mutate } = useSWR(`api/avatar/get`, fetcher, {
     fallbackData: avatar
   })
 
   // Add or edit avatar by mutating
-  const mutateAvatarByAdding = (newAvatar: AvatarUser) => {
+  const mutateAvatarByAdding = (newAvatar: UploadApiResponse) => {
     mutate(newAvatar, false)
   }
 

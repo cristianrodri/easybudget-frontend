@@ -4,6 +4,10 @@ import { ChangeEvent } from 'react'
 import { Document, Schema } from 'mongoose'
 import { UploadApiResponse } from 'cloudinary'
 
+interface Id {
+  id: string
+}
+
 export interface IUserDocument extends Document {
   username: string
   email: string
@@ -32,61 +36,32 @@ export interface ICategory extends Document {
   budgets: Omit<IBudget, 'id' | 'user'>[]
 }
 
-export interface User {
-  id: number
+export interface User extends Id {
   username: string
   email: string
   provider: string
   confirmed: boolean
   blocked: null
   role: number
-  created_at: string
-  updated_at: string
-  avatar: AvatarUser | null
+  createdAt: string
+  updatedAt: string
+  avatar: UploadApiResponse
   categories: CategoryTypes[]
 }
 
 export type UpdateUser = Omit<User, 'categories'>
 
-type ProviderMetaData = {
-  public_id: string
-  resource_type: string
-}
-
-export interface Formats {
-  thumbnail: AvatarUser & { provider_metadata: ProviderMetaData }
-  large: AvatarUser & { provider_metadata: ProviderMetaData }
-  medium: AvatarUser & { provider_metadata: ProviderMetaData }
-  small: AvatarUser & { provider_metadata: ProviderMetaData }
-}
-
-export interface AvatarUser {
-  id?: number
-  name: string
-  width: number
-  height: number
-  formats?: Formats
-  hash: string
-  ext: string
-  mime: string
-  size: number
-  url: string
-  path?: null
-}
-
-export interface CategoryTypes {
-  id: number
+export interface CategoryTypes extends Id {
   name: string
   type: BudgetType.INCOME | BudgetType.EXPENSE
   budgets: Budget[]
   money: number
 }
 
-export interface Budget {
-  id: number
+export interface Budget extends Id {
   description: string
   money: number
-  category: AddCategory | number
+  category: string | AddCategory
   date: string
 }
 
@@ -116,15 +91,6 @@ type ApiResponseError = {
 }
 
 type ApiResponse<T> = ApiResponseSuccess<T> | ApiResponseError
-
-export type StrapiErrorResponse = {
-  data: {
-    errors: {
-      id: string
-      message: string
-    }[]
-  }
-}
 
 /* FORMIK CUSTOM TYPES */
 type FormikHandleChange = {
