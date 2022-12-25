@@ -2,9 +2,11 @@ import { model, Model, models, Require_id, Schema } from 'mongoose'
 import validator from 'validator'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
-import { IUser, IUserDocument } from '@custom-types'
+import { CategoryTypes, IUser, IUserDocument } from '@custom-types'
 import { toJSON } from '@utils/db/response'
 import { avatar } from '@db/avatar/model'
+import '@db/category/model'
+import '@db/budget/model'
 
 interface UserModel extends Model<IUser, Record<string, never>> {
   findByCredentials(email: string, password: string): Promise<Require_id<IUser>>
@@ -63,20 +65,38 @@ const userSchema = new Schema<IUserDocument, UserModel>(
   },
   {
     timestamps: true,
-    toJSON
+    toJSON: {
+      ...toJSON,
+      transform(doc, ret) {
+        ret.id = ret._id
+        delete ret._id
+        delete ret?.password
+
+        if (ret?.categories) {
+          ret.categories = ret.categories.map((category: CategoryTypes) => {
+            category.money = category.budgets.reduce(
+              (prev, cur) => prev + cur.money,
+              0
+            )
+
+            return category
+          })
+        }
+      }
+    }
   }
 )
 
 userSchema.virtual('budgets', {
   ref: 'Budget',
   localField: '_id',
-  foreignField: 'owner'
+  foreignField: 'user'
 })
 
 userSchema.virtual('categories', {
   ref: 'Category',
   localField: '_id',
-  foreignField: 'owner'
+  foreignField: 'user'
 })
 
 userSchema.statics.findByCredentials = async (

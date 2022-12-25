@@ -8,7 +8,7 @@ export default (req: NextApiRequest, res: NextApiResponse) =>
   api.get(req, res, async userId => {
     try {
       // should return the user data with categories. Inside the categories should be given the related budgets of the current month. The current month date should be provided by query params
-      const user = await getAuthUser(userId)
+      const user = await getAuthUser(userId, req)
 
       res.json(jsonResponseSuccess(user))
     } catch (error) {

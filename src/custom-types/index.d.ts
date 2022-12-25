@@ -12,6 +12,7 @@ export interface IUserDocument extends Document {
   confirmed: boolean
   blocked: boolean
   avatar: UploadApiResponse
+  categories: CategoryTypes[]
 }
 
 export interface IUser extends IUserDocument {
@@ -28,6 +29,7 @@ export interface ICategory extends Document {
   name: string
   type: BudgetType
   user: Schema.Types.ObjectId
+  budgets: Omit<IBudget, 'id' | 'user'>[]
 }
 
 export interface User {

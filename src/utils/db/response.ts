@@ -5,8 +5,8 @@ export const toJSON: ToObjectOptions = {
     // Change the _id to id in all api responses and remove the password if it exists (user schema)
     ret.id = ret._id
     delete ret._id
-    delete ret?.password
   },
   // Remove the __v in all api responses
-  versionKey: false
+  versionKey: false,
+  virtuals: true
 }
