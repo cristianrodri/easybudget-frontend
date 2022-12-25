@@ -48,15 +48,15 @@ export const Form = ({ categories }: Props) => {
     onSubmit: async (values, helpers) => {
       helpers.setSubmitting(true)
 
-      const res = await clientPostApi<CategoryTypes[], FormTypes[]>(
+      const res = await clientPostApi<CategoryTypes, FormTypes>(
         'api/categories/add',
-        [values]
+        values
       )
 
       if (res.success === true) {
         dispatch(
           openSnackbar(
-            `${res.data[0].name} was added into ${res.data[0].type} category`,
+            `${res.data.name} was added into ${res.data.type} category`,
             SnackbarType.SUCCESS
           )
         )
