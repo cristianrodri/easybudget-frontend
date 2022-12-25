@@ -20,7 +20,7 @@ import { openSnackbar } from '@context/actions'
 import { clientPostApi } from '@config/api_client'
 
 interface FormTypes {
-  identifier: string
+  email: string
   password: string
 }
 
@@ -51,13 +51,13 @@ export const Form = () => {
   const { title, textField, button } = useStyles()
 
   const validationSchema: SchemaOf<FormTypes> = object({
-    identifier: string().required('Email or username is required'),
+    email: string().required('Email is required'),
     password: string().required('Password is required')
   })
 
   const formik = useFormik<FormTypes>({
     initialValues: {
-      identifier: '',
+      email: '',
       password: ''
     },
     validationSchema,
@@ -95,14 +95,14 @@ export const Form = () => {
         <TextField
           size="small"
           className={textField}
-          id="identifier"
-          label="Email or username"
-          name="identifier"
+          id="email"
+          label="Email"
+          name="email"
           inputRef={ref}
-          value={formik.values.identifier}
+          value={formik.values.email}
           onChange={formik.handleChange}
-          error={formik.touched.identifier && Boolean(formik.errors.identifier)}
-          helperText={formik.touched.identifier && formik.errors.identifier}
+          error={formik.touched.email && Boolean(formik.errors.email)}
+          helperText={formik.touched.email && formik.errors.email}
         />
         <TextField
           size="small"
