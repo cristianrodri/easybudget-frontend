@@ -29,7 +29,12 @@ export const useUserData = (fallbackData?: User) => {
       ? `api/user/get?budgets_date_start=${customDate.start}&budgets_date_end=${customDate.end}`
       : 'api/user/get'
 
-  const { data, mutate } = useSWR(API, fetcher, { fallbackData })
+  const { data, mutate } = useSWR(API, fetcher, {
+    fallbackData,
+    revalidateIfStale: false,
+    revalidateOnFocus: false,
+    revalidateOnReconnect: false
+  })
 
   // Check if the budget which will be updated, its date belongs to the wallet date
   const budgetExistInCategories = () => {

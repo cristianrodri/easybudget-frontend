@@ -7,6 +7,7 @@ import { useSWRCategories } from '@hooks/useSWRCategories'
 import { LayoutAuth } from '@components/LayoutAuth'
 import { getUserId } from '@utils/api/token'
 import Category from '@db/category/model'
+import { connectDB } from '@db/mongoose'
 
 interface Props {
   categories: GetCategory[]
@@ -61,6 +62,7 @@ const Categories = ({ categories }: Props) => {
 
 export const getServerSideProps = async ({ req }) => {
   const userId = getUserId(req)
+  await connectDB()
 
   const categories = await Category.find({ user: userId })
 

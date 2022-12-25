@@ -8,7 +8,7 @@ export const useLogout = () => {
   const { dispatch } = useContext(Context)
   const router = useRouter()
 
-  const logout = async (url?: 'login') => {
+  const logout = async (url = 'login') => {
     const res = await clientGetApi('api/logout')
 
     if (res.success) {

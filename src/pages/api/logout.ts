@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { deleteCookie } from '@utils/cookie'
-import { SET, Status } from '@utils/enums'
+import { SET } from '@utils/enums'
 import { ApiResponse } from '@custom-types'
 import { api } from '@utils/api/private'
 import { jsonResponseSuccess } from '@utils/api/responses'
@@ -13,5 +13,5 @@ export default (
     // Destroy cookie
     res.setHeader(SET.COOKIE, deleteCookie())
 
-    res.status(Status.SUCCESS).json(jsonResponseSuccess())
+    res.json(jsonResponseSuccess())
   })

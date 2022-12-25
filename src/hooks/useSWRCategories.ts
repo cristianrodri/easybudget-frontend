@@ -6,13 +6,16 @@ type CategoriesDataResponse = GetCategory[]
 
 // Fetcher function when useSWR hook api is called
 const fetcher = (url: Url) =>
-  clientGetApi<CategoriesDataResponse>(url).then(
-    res => res.success === true && res.data
+  clientGetApi<CategoriesDataResponse>(url).then(res =>
+    res.success === true ? res.data : []
   )
 
 export const useSWRCategories = (fallbackData?: CategoriesDataResponse) => {
   const { data, mutate } = useSWR('api/categories/get', fetcher, {
-    fallbackData
+    fallbackData,
+    revalidateIfStale: false,
+    revalidateOnFocus: false,
+    revalidateOnReconnect: false
   })
 
   return { data, mutate }

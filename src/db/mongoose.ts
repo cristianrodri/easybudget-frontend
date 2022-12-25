@@ -3,6 +3,8 @@ import mongoose from 'mongoose'
 
 const connectDB = async () => {
   try {
+    mongoose.set('strictQuery', false)
+
     const db = await mongoose.connect(process.env.MONGODB_URI)
 
     // eslint-disable-next-line no-console
