@@ -7,6 +7,7 @@ export const findBudgets = async (userId: string, req: NextApiRequest) => {
   const budgets = await Budget.find({
     user: userId
   })
+    .populate('category')
     .sort({ date: -1 })
     .limit(+limit)
 
