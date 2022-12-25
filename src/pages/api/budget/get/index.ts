@@ -1,33 +1,20 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { AxiosError } from 'axios'
-import { errorResponse } from '@utils/error'
-import { ApiResponse, Budget } from '@custom-types'
-import { serverGetApi } from '@config/api_server'
+import { ApiResponse, IBudget } from '@custom-types'
 import { api } from '@utils/api/private'
 import { jsonResponseError, jsonResponseSuccess } from '@utils/api/responses'
-
-type DataResponse = Budget[]
+import { Status } from '@utils/enums'
+import { findBudgets } from '@db/budget/find'
 
 export default (
   req: NextApiRequest,
-  res: NextApiResponse<ApiResponse<DataResponse>>
+  res: NextApiResponse<ApiResponse<IBudget[]>>
 ) =>
-  api.get(req, res, async () => {
+  api.get(req, res, async userId => {
     try {
-      const { data, status } = await serverGetApi<DataResponse>(
-        `budgets`,
-        req.cookies.token,
-        {
-          params: req.query
-        }
-      )
+      const budgets = await findBudgets(userId, req)
 
-      res.status(status).json(jsonResponseSuccess(data))
+      res.json(jsonResponseSuccess(budgets))
     } catch (error) {
-      const err = error as AxiosError
-
-      const { status, message } = errorResponse(err, err.response?.data.error)
-
-      res.status(status).json(jsonResponseError(message))
+      res.status(Status.BAD_REQUEST).json(jsonResponseError(error))
     }
   })
