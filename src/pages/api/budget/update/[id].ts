@@ -3,8 +3,7 @@ import { ApiResponse, IBudget } from '@custom-types'
 import { api } from '@utils/api/private'
 import { jsonResponseError, jsonResponseSuccess } from '@utils/api/responses'
 import { Status } from '@utils/enums'
-import Budget from '@db/budget/model'
-import { updateAllowedProperties } from '@utils/api/clean'
+import { updateBudget } from '@db/budget/update'
 
 export default (
   req: NextApiRequest,
@@ -12,14 +11,7 @@ export default (
 ) =>
   api.put(req, res, async userId => {
     try {
-      const budget = await Budget.findOne({ _id: req.query.id, user: userId })
-      updateAllowedProperties(
-        ['money', 'description', 'date', 'category'],
-        req,
-        budget
-      )
-
-      await budget.save()
+      const budget = await updateBudget(userId, req)
 
       res.json(jsonResponseSuccess(budget))
     } catch (error) {

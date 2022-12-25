@@ -6,6 +6,7 @@ import { verifyCategoryId, verifyCategoryWithNameAndType } from './utils'
 export const updateCategory = async (userId: string, req: NextApiRequest) => {
   const { name, type } = req.body
 
+  // Verify if the given category id (req.query.id) belongs to the authenticated user
   await verifyCategoryId(req.query.id as string, userId)
 
   // Find out if the category with the given name and type exists. If one is found, throw an error
