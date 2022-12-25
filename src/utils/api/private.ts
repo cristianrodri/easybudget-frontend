@@ -1,12 +1,8 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import jwt from 'jsonwebtoken'
 import { ApiMethod, Status } from '@utils/enums'
 import { allowedMethod, ApiMethodObj, CbPrivate, MethodParams } from './methods'
 import { jsonResponseError } from '@utils/api/responses'
-
-type TokenResponse = {
-  _id: string
-}
+import { decodeToken } from './token'
 
 // Vefiries if the token exists in the cookies and return the user _id (string). Otherwise return unauthorized (void).
 const authorization = (
@@ -16,10 +12,7 @@ const authorization = (
   if (!req.cookies?.token) {
     res.status(Status.UNAUTHORIZED).json(jsonResponseError('Unauthorized'))
   } else {
-    const token = jwt.verify(
-      req.cookies.token,
-      process.env.JWT_KEY
-    ) as TokenResponse
+    const token = decodeToken(req)
 
     return token._id
   }

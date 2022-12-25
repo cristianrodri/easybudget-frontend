@@ -7,15 +7,16 @@ import { Categories } from '@components/pages/dashboard/categories/Container'
 import { DialogCategory } from '@components/pages/dashboard/DialogCategory'
 import { DialogDeletion } from '@components/pages/dashboard/DialogDeletion'
 import { DialogEdition } from '@components/pages/dashboard/DialogEdition'
-import { serverGetApi } from '@config/api_server'
 import { AlertCategory } from '@components/pages/dashboard/AlertCategory'
 import { AddBudgetIcon } from '@components/pages/dashboard/AddBudgetIcon'
-import { Budget } from '@custom-types'
 import { LayoutAuth } from '@components/LayoutAuth'
 import { useContext, useEffect } from 'react'
 import { Context } from '@context/GlobalContext'
 import { changeWalletDate } from '@context/actions'
 import { DateType } from '@utils/enums'
+import Category from '@db/category/model'
+import { decodeToken } from '@utils/api/token'
+import Budget from '@db/budget/model'
 
 interface Props {
   categoriesCount: number
@@ -61,21 +62,21 @@ const Dashboard = ({ categoriesCount, oldestBudgetDate }: Props) => {
 
 export const getServerSideProps = async ({ req }) => {
   // Get the categories count
-  const { data: categoriesCount } = await serverGetApi<number>(
-    'categories/count',
-    req.cookies.token
-  )
+  const userId = decodeToken(req)._id
+
+  const categories = await Category.find({ user: userId })
 
   // Get the oldest budget
-  const { data: oldestBudget } = await serverGetApi<Budget[]>(
-    'budgets?_sort=date:ASC&_limit=1',
-    req.cookies.token
-  )
+  const oldestBudget = await Budget.find({ user: userId })
+    .sort({ date: 1 })
+    .limit(1)
 
   return {
     props: {
-      categoriesCount,
-      oldestBudgetDate: oldestBudget[0]?.date ?? new Date().toISOString()
+      categoriesCount: categories.length,
+      oldestBudgetDate:
+        JSON.parse(JSON.stringify(oldestBudget[0]))?.date ??
+        new Date().toISOString()
     }
   }
 }
