@@ -15,6 +15,8 @@ export default (
 
       res.json(jsonResponseSuccess(budgets))
     } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log(error)
       res.status(Status.BAD_REQUEST).json(jsonResponseError(error))
     }
   })

@@ -1,7 +1,7 @@
 import { clientPostApi } from '@config/api_client'
 import { clearGlobalState } from '@context/actions'
 import { Context } from '@context/GlobalContext'
-import { useRouter } from 'next/navigation'
+import { useRouter } from 'next/router'
 import { useContext } from 'react'
 
 export const useLogout = () => {
@@ -13,9 +13,6 @@ export const useLogout = () => {
 
     if (res.success) {
       dispatch(clearGlobalState())
-
-      // eslint-disable-next-line no-console
-      console.log(res)
 
       router.push(`/login`)
     }
