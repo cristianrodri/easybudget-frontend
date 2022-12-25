@@ -1,4 +1,4 @@
-import { clientGetApi } from '@config/api_client'
+import { clientPostApi } from '@config/api_client'
 import { clearGlobalState } from '@context/actions'
 import { Context } from '@context/GlobalContext'
 import { useRouter } from 'next/navigation'
@@ -9,7 +9,7 @@ export const useLogout = () => {
   const router = useRouter()
 
   const logout = async () => {
-    const res = await clientGetApi('api/logout')
+    const res = await clientPostApi('api/logout')
 
     if (res.success) {
       dispatch(clearGlobalState())
