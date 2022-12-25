@@ -14,7 +14,7 @@ export const useFetcher = <T>() => {
 
       if (res.status === Status.UNAUTHORIZED) {
         // If the status response is unauthorized (401), remove the cookie by calling logout api
-        logout('login')
+        logout()
       }
     })
 

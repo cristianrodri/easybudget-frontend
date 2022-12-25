@@ -8,13 +8,16 @@ export const useLogout = () => {
   const { dispatch } = useContext(Context)
   const router = useRouter()
 
-  const logout = async (url = 'login') => {
+  const logout = async () => {
     const res = await clientGetApi('api/logout')
 
     if (res.success) {
       dispatch(clearGlobalState())
 
-      router.push(`/${url ?? ''}`)
+      // eslint-disable-next-line no-console
+      console.log(res)
+
+      router.push(`/login`)
     }
   }
 
