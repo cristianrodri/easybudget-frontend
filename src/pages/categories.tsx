@@ -1,11 +1,12 @@
 import { Box, Typography, useTheme } from '@mui/material'
 import { GetCategory } from '@custom-types'
 import { BudgetType } from '@utils/enums'
-import { Category } from '@components/pages/categories/Category'
+import { Category as CategoryComp } from '@components/pages/categories/Category'
 import { Form } from '@components/pages/categories/Form'
 import { useSWRCategories } from '@hooks/useSWRCategories'
-import { serverGetApi } from '@config/api_server'
 import { LayoutAuth } from '@components/LayoutAuth'
+import { getUserId } from '@utils/api/token'
+import Category from '@db/category/model'
 
 interface Props {
   categories: GetCategory[]
@@ -37,7 +38,7 @@ const Categories = ({ categories }: Props) => {
               <Typography component="h3" align="center">
                 Income
               </Typography>
-              <Category
+              <CategoryComp
                 budgetType={BudgetType.INCOME}
                 categories={categoriesData}
               />
@@ -46,7 +47,7 @@ const Categories = ({ categories }: Props) => {
               <Typography component="h3" align="center">
                 Expense
               </Typography>
-              <Category
+              <CategoryComp
                 budgetType={BudgetType.EXPENSE}
                 categories={categoriesData}
               />
@@ -59,11 +60,13 @@ const Categories = ({ categories }: Props) => {
 }
 
 export const getServerSideProps = async ({ req }) => {
-  const res = await serverGetApi<GetCategory[]>('categories', req.cookies.token)
+  const userId = getUserId(req)
+
+  const categories = await Category.find({ user: userId })
 
   return {
     props: {
-      categories: res.data
+      categories: JSON.parse(JSON.stringify(categories))
     }
   }
 }

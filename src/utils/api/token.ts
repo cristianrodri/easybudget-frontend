@@ -5,5 +5,11 @@ type TokenResponse = {
   _id: string
 }
 
-export const decodeToken = (req: NextApiRequest) =>
-  jwt.verify(req.cookies.token, process.env.JWT_KEY) as TokenResponse
+export const getUserId = (req: NextApiRequest) => {
+  const token = jwt.verify(
+    req.cookies.token,
+    process.env.JWT_KEY
+  ) as TokenResponse
+
+  return token._id
+}

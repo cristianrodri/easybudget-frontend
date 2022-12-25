@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { ApiMethod, Status } from '@utils/enums'
 import { allowedMethod, ApiMethodObj, CbPrivate, MethodParams } from './methods'
 import { jsonResponseError } from '@utils/api/responses'
-import { decodeToken } from './token'
+import { getUserId } from './token'
 
 // Vefiries if the token exists in the cookies and return the user _id (string). Otherwise return unauthorized (void).
 const authorization = (
@@ -12,9 +12,9 @@ const authorization = (
   if (!req.cookies?.token) {
     res.status(Status.UNAUTHORIZED).json(jsonResponseError('Unauthorized'))
   } else {
-    const token = decodeToken(req)
+    const userId = getUserId(req)
 
-    return token._id
+    return userId
   }
 }
 

@@ -15,7 +15,7 @@ import { Context } from '@context/GlobalContext'
 import { changeWalletDate } from '@context/actions'
 import { DateType } from '@utils/enums'
 import Category from '@db/category/model'
-import { decodeToken } from '@utils/api/token'
+import { getUserId } from '@utils/api/token'
 import Budget from '@db/budget/model'
 
 interface Props {
@@ -61,9 +61,9 @@ const Dashboard = ({ categoriesCount, oldestBudgetDate }: Props) => {
 }
 
 export const getServerSideProps = async ({ req }) => {
-  // Get the categories count
-  const userId = decodeToken(req)._id
+  const userId = getUserId(req)
 
+  // Get the categories count
   const categories = await Category.find({ user: userId })
 
   // Get the oldest budget

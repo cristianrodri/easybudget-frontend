@@ -6,17 +6,18 @@ import { object, SchemaOf, string } from 'yup'
 import { Title } from '@components/pages/profile/Title'
 import { UserAvatar } from '@components/pages/profile/UserAvatar'
 import { clientPutApi } from '@config/api_client'
-import { serverGetApi } from '@config/api_server'
 import { openSnackbar } from '@context/actions'
 import { Context } from '@context/GlobalContext'
-import { UpdateUser, User } from '@custom-types'
+import { UpdateUser, User as UserType } from '@custom-types'
 import { useFocus } from '@hooks/useFocus'
 import { useUserData } from '@hooks/useSWRUser'
 import { SnackbarType } from '@utils/enums'
 import { useUserAvatar } from '@hooks/useSWRAvatar'
+import { getUserId } from '@utils/api/token'
+import User from '@db/user/model'
 
 interface Props {
-  userData: User
+  userData: UserType
 }
 
 interface FormTypes {
@@ -144,21 +145,13 @@ const Profile = ({ userData }: Props) => {
 export default Profile
 
 export const getServerSideProps = async ({ req }) => {
-  const res = await serverGetApi<User>(
-    'users/me',
-    req.cookies.token,
-    // This api received all user data, including categories and budegts, therefore budgets data is not needed, that's why dates params is added with current date to the start and the end
-    {
-      params: {
-        budgets_date_start: new Date().toISOString(),
-        budgets_date_end: new Date().toISOString()
-      }
-    }
-  )
+  const userId = getUserId(req)
+
+  const data = await User.findOne({ _id: userId })
 
   return {
     props: {
-      userData: res.data
+      userData: JSON.parse(JSON.stringify(data))
     }
   }
 }
