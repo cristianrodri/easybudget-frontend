@@ -12,10 +12,7 @@ const fetcher = (url: Url) =>
 
 export const useSWRCategories = (fallbackData?: CategoriesDataResponse) => {
   const { data, mutate } = useSWR('api/categories/get', fetcher, {
-    fallbackData,
-    revalidateIfStale: false,
-    revalidateOnFocus: false,
-    revalidateOnReconnect: false
+    fallbackData
   })
 
   return { data, mutate }

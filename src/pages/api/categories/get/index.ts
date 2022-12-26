@@ -11,7 +11,7 @@ export default (
 ) =>
   api.get(req, res, async userId => {
     try {
-      const categories = await Category.find({ owner: userId })
+      const categories = await Category.find({ user: userId })
 
       res.json(jsonResponseSuccess(categories as unknown as GetCategory[]))
     } catch (error) {
