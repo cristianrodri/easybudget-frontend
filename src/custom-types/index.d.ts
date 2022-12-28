@@ -26,7 +26,7 @@ export interface IUser extends IUserDocument {
 export interface IBudget extends Pick<Budget, 'description' | 'money'> {
   date: Date
   user: Schema.Types.ObjectId
-  category: Schema.Types.ObjectId
+  category: Schema.Types.ObjectId | AddCategory
 }
 
 export interface ICategory extends Document {

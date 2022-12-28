@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import { Budget } from '@custom-types'
+import { AddCategory, Budget } from '@custom-types'
 import { Box, Stack, Typography } from '@mui/material'
 import { getDayAndMonth, getFullDate, isAllTime } from '@utils/dates'
 import { BudgetType } from '@utils/enums'
@@ -20,12 +20,15 @@ export const BudgetDescription = ({ budget, isDialog }: Props) => {
     values: { walletDate },
     dispatch
   } = useContext(Context)
-  const { description, money, date, category } = budget
+  const { description, money, date } = budget
+  budget.category = isDialog
+    ? typeof budget.category === 'string'
+      ? budget.category
+      : budget.category.id
+    : budget.category
   const type =
     // If the component is not showed in the dialog category and the category data is not a number, then show the type of the category
-    !isDialog && typeof category !== 'string'
-      ? category.type
-      : ('' as BudgetType)
+    !isDialog ? (budget.category as AddCategory).type : ('' as BudgetType)
 
   const handleEdit = () => {
     // The budget parameter is pass by spread object because it needs to be unmutable

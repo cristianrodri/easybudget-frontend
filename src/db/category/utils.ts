@@ -26,4 +26,6 @@ export const verifyCategoryId = async (categoryId: string, userId: string) => {
   const category = await Category.findOne({ _id: categoryId, user: userId })
 
   if (!category) throw new Error('The category id is not found')
+
+  return category
 }
