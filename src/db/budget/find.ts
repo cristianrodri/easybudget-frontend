@@ -1,4 +1,5 @@
 import { NextApiRequest } from 'next'
+import '@db/category/model'
 import Budget from './model'
 
 export const findBudgets = async (userId: string, req: NextApiRequest) => {
