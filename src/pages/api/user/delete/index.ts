@@ -1,26 +1,27 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { ApiResponse } from '@custom-types'
+import { ApiResponse, IUserDocument } from '@custom-types'
 import { api } from '@utils/api/private'
 import { jsonResponseError, jsonResponseSuccess } from '@utils/api/responses'
+import { SET, Status } from '@utils/enums'
 import User from '@db/user/model'
-import { deleteAvatar } from '@db/avatar/delete'
-import { Status } from '@utils/enums'
+import { deleteUser } from '@db/user/delete'
+import { deleteCookie } from '@utils/cookie'
+
+type DataResponse = IUserDocument
 
 export default (
   req: NextApiRequest,
-  res: NextApiResponse<ApiResponse<{ result: string }>>
+  res: NextApiResponse<ApiResponse<DataResponse>>
 ) =>
   api.delete(req, res, async userId => {
     try {
       const user = await User.findOne({ _id: userId })
+      const deletedUser = await deleteUser(user, req)
 
-      const deletion: { result: string } = await deleteAvatar(user)
+      // Destroy the cookie
+      res.setHeader(SET.COOKIE, deleteCookie())
 
-      // Make avatar property as undefined in mongodb
-      user.avatar = undefined
-      await user.save()
-
-      res.json(jsonResponseSuccess(deletion))
+      res.json(jsonResponseSuccess(deletedUser))
     } catch (error) {
       res.status(Status.BAD_REQUEST).json(jsonResponseError(error))
     }

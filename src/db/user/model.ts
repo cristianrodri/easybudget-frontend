@@ -5,8 +5,9 @@ import jwt from 'jsonwebtoken'
 import { CategoryTypes, IUser, IUserDocument } from '@custom-types'
 import { toJSON } from '@utils/db/response'
 import { avatar } from '@db/avatar/model'
-import '@db/category/model'
-import '@db/budget/model'
+import Category from '@db/category/model'
+import Budget from '@db/budget/model'
+import { deleteAvatar } from '@db/avatar/delete'
 
 interface UserModel extends Model<IUser, Record<string, never>> {
   findByCredentials(email: string, password: string): Promise<Require_id<IUser>>
@@ -72,6 +73,7 @@ const userSchema = new Schema<IUserDocument, UserModel>(
         delete ret._id
         delete ret?.password
 
+        // If the return data has categories, add a money attribute
         if (ret?.categories) {
           ret.categories = ret.categories.map((category: CategoryTypes) => {
             category.money = category.budgets.reduce(
@@ -134,6 +136,17 @@ userSchema.pre('save', async function (next) {
   }
 
   next()
+})
+
+userSchema.post('findOneAndDelete', async function (doc: IUserDocument) {
+  // Delete related categories and budgets
+  await Category.deleteMany({ user: doc._id })
+  await Budget.deleteMany({ user: doc._id })
+
+  // Delete related avatar from the provider
+  if (doc?.avatar) {
+    await deleteAvatar(doc)
+  }
 })
 
 const User =

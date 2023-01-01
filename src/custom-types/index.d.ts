@@ -15,6 +15,8 @@ export interface IUserDocument extends Document {
   provider: string
   confirmed: boolean
   blocked: boolean
+  createdAt: Date
+  updatedAt: Date
   avatar: UploadApiResponse
   categories: CategoryTypes[]
 }

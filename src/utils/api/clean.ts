@@ -11,7 +11,7 @@ export const cleanRequestBody = (req: NextApiRequest) => {
   delete req?.body?.confirmed
 
   // Trimmed request body string data
-  Object.entries(req?.body).forEach(entry => {
+  Object.entries(req?.body ?? []).forEach(entry => {
     if (typeof entry[1] === 'string' && req.body?.[entry[0]]) {
       req.body[entry[0]] = req.body[entry[0]].trim()
     }
