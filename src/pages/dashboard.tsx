@@ -76,9 +76,9 @@ export const getServerSideProps = async ({ req }) => {
   return {
     props: {
       categoriesCount: categories.length,
-      oldestBudgetDate:
-        JSON.parse(JSON.stringify(oldestBudget[0]))?.date ??
-        new Date().toISOString()
+      oldestBudgetDate: oldestBudget[0]
+        ? JSON.parse(JSON.stringify(oldestBudget[0]))?.date
+        : new Date().toISOString()
     }
   }
 }
