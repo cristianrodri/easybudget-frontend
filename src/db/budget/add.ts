@@ -10,6 +10,7 @@ export const createBudget = async (userId: string, req: NextApiRequest) => {
 
   const budget = new Budget(req.body)
   budget.user = userId as unknown as ObjectId
+  budget.date = new Date()
 
   await budget.save()
 
