@@ -1,6 +1,7 @@
 import { BudgetType } from '@utils/enums'
 import { textCapitalize } from '@utils/string'
 import Category from './model'
+import '@db/budget/model'
 
 export const verifyCategoryWithNameAndType = async (
   userId: string,
@@ -22,8 +23,15 @@ export const verifyCategoryWithNameAndType = async (
     )
 }
 
-export const verifyCategoryId = async (categoryId: string, userId: string) => {
-  const category = await Category.findOne({ _id: categoryId, user: userId })
+export const verifyCategoryId = async (
+  categoryId: string,
+  userId: string,
+  populateBudget = false
+) => {
+  const category = await Category.findOne({
+    _id: categoryId,
+    user: userId
+  }).populate(populateBudget ? 'budgets' : '')
 
   if (!category) throw new Error('The category id is not found')
 

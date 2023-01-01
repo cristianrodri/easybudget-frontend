@@ -31,31 +31,22 @@ export const DialogDeletion = ({
   const { data: categoriesData, mutate } = useSWRCategories()
 
   const handleDeletion = async () => {
-    // if money is greater than 0, this category has budget related to it, therefore it cannot be deleted.
-    if (category.money > 0) {
-      dispatch(
-        openSnackbar(
-          'You cannot delete this category because it has budget data related to it.',
-          SnackbarType.ERROR
-        )
-      )
-      return
-    }
-
     // Close this dialog inmediately after a user clicked delete button
     handleClose()
-
-    const updatedCategories = categoriesData.filter(c => c.id !== category.id)
-
-    mutate(updatedCategories, false)
 
     const res = await clientDeleteApi<CategoryApi>(
       `api/categories/delete/${category.id}`
     )
 
-    if (res.success === true)
+    if (res.success === true) {
       dispatch(openSnackbar(`${res.data.name} deleted!`, SnackbarType.SUCCESS))
-    else dispatch(openSnackbar(res.message, SnackbarType.ERROR))
+
+      const updatedCategories = categoriesData.filter(c => c.id !== category.id)
+
+      mutate(updatedCategories, false)
+    } else {
+      dispatch(openSnackbar(res.message, SnackbarType.ERROR))
+    }
 
     setCategory(null)
   }
