@@ -18,8 +18,8 @@ export const AlertCategory = () => {
         At least one category is needed for adding budgets
       </AlertTitle>
       You can add categories —{' '}
-      <Link href="categories" passHref>
-        <Box component="a" sx={{ color: 'inherit' }}>
+      <Link href="categories">
+        <Box component="span" sx={{ color: 'inherit' }}>
           <strong>Here</strong>
         </Box>
       </Link>
