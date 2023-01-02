@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { Button, IconButton, Stack, Typography } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
 import { makeStyles } from '@mui/styles'
-import { clientGetApi } from '@config/api_client'
+import { clientPostApi } from '@config/api_client'
 import { openSnackbar } from '@context/actions'
 import { SnackbarType } from '@utils/enums'
 import { Context } from '@context/GlobalContext'
@@ -53,7 +53,7 @@ export const Upload = (props: Props) => {
 
     // Upload the image to the strapi server
     try {
-      const res = await clientGetApi('api/avatar/add')
+      const res = await clientPostApi('api/avatar/add', formData)
 
       setIsLoading(false)
 
@@ -95,12 +95,11 @@ export const Upload = (props: Props) => {
         {type} avatar
       </Button>
       {file && (
-        <Stack width={300} direction="column">
+        <Stack width={300} direction="column" alignItems="center">
           <Image
             src={URL.createObjectURL(file)}
             unoptimized
-            layout="intrinsic"
-            objectFit="contain"
+            width={250}
             height={200}
             alt="User Avatar"
           />

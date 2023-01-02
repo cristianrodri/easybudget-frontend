@@ -17,11 +17,11 @@ interface Props {
 export const EditAvatar = ({ avatar }: Props) => {
   const { dispatch } = useContext(Context)
   const [dialogOpen, setDialogOpen] = useState(false)
-  const { mutate } = useUserAvatar(avatar)
+  const { mutate, data } = useUserAvatar(avatar)
   const [isUpdate, setIsUpdate] = useState(false)
   const [file, setFile] = useState<File>(null)
   const [isDeleting, setIsDeleting] = useState(false)
-  const avatarUrl = avatar?.secure_url
+  const avatarUrl = data?.secure_url
 
   const openDialog = () => {
     setDialogOpen(true)
@@ -49,7 +49,7 @@ export const EditAvatar = ({ avatar }: Props) => {
       setIsDeleting(false)
 
       // Remove the avatar
-      mutate(null, false)
+      mutate(undefined, false)
     } else {
       dispatch(openSnackbar(res.message, SnackbarType.ERROR))
     }
@@ -62,14 +62,7 @@ export const EditAvatar = ({ avatar }: Props) => {
     <>
       <Stack direction="row" justifyContent="center">
         <Stack direction="column" alignItems="center">
-          <Image
-            src={avatarUrl}
-            layout="fixed"
-            width={300}
-            height={200}
-            objectFit="contain"
-            alt="User Avatar"
-          />
+          <Image src={avatarUrl} width={250} height={200} alt="User Avatar" />
           <Stack
             direction="row"
             spacing={1}
@@ -95,7 +88,7 @@ export const EditAvatar = ({ avatar }: Props) => {
               onClick={openDialog}
               disabled={isDeleting}
             >
-              {isDeleting ? 'deleting' : 'deleted'}
+              {isDeleting ? 'deleting' : 'delete'}
             </Button>
           </Stack>
         </Stack>

@@ -10,8 +10,8 @@ const fetcher = (url: string) =>
 
 export const useUserAvatar = (avatar?: UploadApiResponse) => {
   const { data, mutate } = useSWR(`api/avatar/get`, fetcher, {
-    fallbackData: avatar,
-    revalidateOnFocus: false
+    fallbackData: avatar
+    // revalidateOnFocus: false
   })
 
   // Add or edit avatar by mutating

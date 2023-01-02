@@ -14,7 +14,7 @@ export default (
     try {
       const user = await User.findOne({ _id: userId })
 
-      res.status(Status.CREATED).json(jsonResponseSuccess(user.avatar))
+      res.json(jsonResponseSuccess(user.avatar))
     } catch (error) {
       res.status(Status.BAD_REQUEST).json(jsonResponseError(error))
     }

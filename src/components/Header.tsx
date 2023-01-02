@@ -31,7 +31,7 @@ export const Header = ({ backgroundPage, isAuth }: Props) => {
       <Link href="/">
         <Image
           src="/logo.svg"
-          layout="fixed"
+          priority
           width={120}
           height={50}
           alt="Header logo"
