@@ -83,7 +83,8 @@ const IndexPage = () => {
               <Image
                 width={400}
                 height={300}
-                layout="responsive"
+                priority
+                // layout="responsive"
                 src="/banner.svg"
                 alt="Homepage banner"
               />

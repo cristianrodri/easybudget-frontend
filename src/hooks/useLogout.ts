@@ -15,6 +15,8 @@ export const useLogout = () => {
       dispatch(clearGlobalState())
 
       router.push(`/login`)
+      // Window location is called because swr cache will be cleared
+      window.location.href = '/login'
     }
   }
 
