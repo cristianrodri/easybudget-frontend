@@ -8,15 +8,23 @@ import { comparePassword } from '@db/utils'
 
 export default (
   req: NextApiRequest,
-  res: NextApiResponse<ApiResponse<unknown>>
+  res: NextApiResponse<ApiResponse<string>>
 ) =>
-  api.post(req, res, async userId => {
+  api.put(req, res, async userId => {
     try {
       const user = await User.findOne({ _id: userId })
 
-      await comparePassword(req.body.password, user.password)
+      await comparePassword(
+        req.body.currentPassword,
+        user.password,
+        'Your current password is wrong'
+      )
 
-      res.json(jsonResponseSuccess())
+      user.password = req.body.newPassword
+
+      await user.save()
+
+      res.json(jsonResponseSuccess('Password updated successfully'))
     } catch (error) {
       res.status(Status.BAD_REQUEST).json(jsonResponseError(error))
     }
