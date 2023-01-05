@@ -1,20 +1,25 @@
 # EasyBudget - Frontend
 
-Webiste project that manage your budget easily. The project was built with Next.js and TypeScript.
+Webiste project that manage your budget easily. The project was built with Next.js and TypeScript. Mongodb is used as a database.
 
 ## Usage
 
-### Setup backend
+### Backend
 
-The backend of the project was built with Strapi.js and you can check it out [here](https://github.com/cristianrodri/easybudget-backend). You can also visit the production website [here](https://easybudget.vercel.app)
+The backend of the project was built inside of the src/pages/api folder of the current project. Also src/db is used as a codebase for the database.
 
 ### Local files
 
-You need to create a .env.local file and add the following code
+You need to create a .env.local file and add the following vars. Cloudinary is used as a provider for the user avatar
 
 ```
   NEXT_PUBLIC_CLIENT_URL = http://localhost:3000
-  NEXT_PUBLIC_SERVER_API_URL = http://localhost:1337
+  MONGODB_URI = <your mongodb uri>
+  JWT_KEY = <string>
+
+  CLOUDINARY_NAME = <your cloudinary name>
+  CLOUDINARY_KEY = <your cloudinary key>
+  CLOUDINARY_SECRET = <your cloudinary secret>
 ```
 
 ### Install dependencies
@@ -30,8 +35,6 @@ You need to create a .env.local file and add the following code
 ```
 
 ### Test
-
-Some tests was made. If you want to check it out, just run the following command
 
 ```
   yarn test
