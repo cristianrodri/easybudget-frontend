@@ -8,12 +8,17 @@ import { avatar } from '@db/avatar/model'
 import Category from '@db/category/model'
 import Budget from '@db/budget/model'
 import { deleteAvatar } from '@db/avatar/delete'
+import { comparePassword } from '@db/utils'
 
-interface UserModel extends Model<IUser, Record<string, never>> {
+interface IUserMethods {
+  generateAuthToken(): string
+}
+
+interface UserModel extends Model<IUser, Record<string, never>, IUserMethods> {
   findByCredentials(email: string, password: string): Promise<Require_id<IUser>>
 }
 
-const userSchema = new Schema<IUserDocument, UserModel>(
+const userSchema = new Schema<IUserDocument, UserModel, IUserMethods>(
   {
     username: {
       type: String,
@@ -109,11 +114,7 @@ userSchema.statics.findByCredentials = async (
 
   if (!user) throw new Error('User not found')
 
-  const matchedPassword = await bcrypt.compare(password, user.password)
-
-  if (!matchedPassword) {
-    throw new Error('Wrong password!')
-  }
+  await comparePassword(password, user.password)
 
   return user
 }
