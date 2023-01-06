@@ -33,6 +33,7 @@ const Login = () => {
           >
             <Image
               src="/banner-login.svg"
+              priority
               width={200}
               height={200}
               alt="Login banner"

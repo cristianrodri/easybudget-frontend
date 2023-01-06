@@ -84,7 +84,6 @@ const IndexPage = () => {
                 width={400}
                 height={300}
                 priority
-                // layout="responsive"
                 src="/banner.svg"
                 alt="Homepage banner"
               />
@@ -92,7 +91,6 @@ const IndexPage = () => {
           )}
         </Box>
       </Box>
-      {/* <CardContainer /> */}
     </Layout>
   )
 }

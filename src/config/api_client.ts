@@ -14,13 +14,6 @@ const gatewayErrorResponse: ApiResponseError = {
   message: 'Server was slepping. Please try again'
 }
 
-const unauthorizedErrorResponse = (
-  message: string,
-  status: number
-): ApiResponseError => {
-  return { success: false, message, status }
-}
-
 const handleError = (err: ApiResponseError) => err
 
 const handleSuccessResponse = <T>(
@@ -29,7 +22,8 @@ const handleSuccessResponse = <T>(
   if (response.status === Status.GATEWAY_TIMEOUT) {
     return gatewayErrorResponse
   } else if (response.status === Status.UNAUTHORIZED) {
-    return unauthorizedErrorResponse('Unauthorized', response.status)
+    window.location.href = '/login'
+    return
   }
 
   return response.data
