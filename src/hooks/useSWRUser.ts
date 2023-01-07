@@ -52,7 +52,7 @@ export const useUserData = (fallbackData?: User) => {
     }
   }
 
-  // This function will be called before a budget is created in post API
+  // This function will be called before a budget is created in the database (by post API)
   const mutateByAddingBudgetToCategory = (newBudget: Budget) => {
     const mutatedData = { ...data }
     const currentDate = new Date()
@@ -77,7 +77,7 @@ export const useUserData = (fallbackData?: User) => {
     mutate(mutatedData, false)
   }
 
-  // This function will be called before a budget is deleted in delete API
+  // This function will be called before a budget is deleted in the database (by delete API)
   const mutateCategoryByDeletingBudget = (budget: Budget) => {
     const mutatedData = { ...data }
 
@@ -100,7 +100,7 @@ export const useUserData = (fallbackData?: User) => {
     mutate(mutatedData, false)
   }
 
-  // This function will be called before a budget is updated in update API
+  // This function will be called before a budget is updated in the database (by update API)
   const mutateCategoryByEditingBudget = (budgetForm: EditBudgetTypes) => {
     const mutatedData = { ...data }
 

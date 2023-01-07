@@ -17,11 +17,7 @@ export const useSWRLatestBudgets = () => {
   const { values, dispatch } = useContext(Context)
   const { budgetToUpdate } = values
   const { data: userData } = useUserData()
-  const { data, mutate } = useSWR(API_URL, fetcher, {
-    revalidateIfStale: false,
-    revalidateOnFocus: false,
-    revalidateOnReconnect: false
-  })
+  const { data, mutate } = useSWR(API_URL, fetcher)
 
   const reloadLatestBudgetsAPI = async () => {
     return mutate(async prevBudgets => {
