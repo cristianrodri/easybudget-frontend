@@ -3,12 +3,11 @@ import validator from 'validator'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import { CategoryTypes, IUser, IUserDocument } from '@custom-types'
-import { toJSON } from '@utils/db/response'
 import { avatar } from '@db/avatar/model'
 import Category from '@db/category/model'
 import Budget from '@db/budget/model'
 import { deleteAvatar } from '@db/avatar/delete'
-import { comparePassword } from '@db/utils'
+import { comparePassword, toJSON } from '@db/utils'
 
 interface IUserMethods {
   generateAuthToken(): string

@@ -1,6 +1,6 @@
-import { ICategory } from '@custom-types'
-import { toJSON } from '@utils/db/response'
 import { Model, model, models, Schema } from 'mongoose'
+import { ICategory } from '@custom-types'
+import { toJSON } from '@db/utils'
 
 const categorySchema = new Schema<ICategory>(
   {

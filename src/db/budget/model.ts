@@ -1,6 +1,6 @@
 import { IBudget } from '@custom-types'
 import { Model, model, models, Schema } from 'mongoose'
-import { toJSON } from '@utils/db/response'
+import { toJSON } from '@db/utils'
 
 const budgetSchema = new Schema<IBudget>(
   {
