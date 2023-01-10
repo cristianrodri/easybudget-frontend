@@ -10,8 +10,6 @@ enum Middleware {
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
-  if (pathname.startsWith('/_next')) return NextResponse.next()
-
   // If the pathname is PRIVATE and there is no token in the cookies, redirect to login
   if (isAuthPath(pathname) && !request.cookies.has('token')) {
     request.nextUrl.pathname = '/login'
@@ -36,5 +34,13 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/', '/signup', '/login', '/dashboard', '/profile', '/categories']
+  matcher: [
+    /*
+     * Match all request paths except for the ones starting with:
+     * - api (API routes)
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     */
+    '/((?!api|_next/static|_next/image).*)'
+  ]
 }
