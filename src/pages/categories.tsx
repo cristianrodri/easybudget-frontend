@@ -8,6 +8,7 @@ import { LayoutAuth } from '@components/LayoutAuth'
 import { getUserId } from '@utils/api/token'
 import Category from '@db/category/model'
 import { connectDB } from '@db/mongoose'
+import { PageTitle } from '@components/common/PageTitle'
 
 interface Props {
   categories: GetCategory[]
@@ -19,9 +20,7 @@ const Categories = ({ categories }: Props) => {
 
   return (
     <LayoutAuth title="Categories">
-      <Typography component="h1" variant="h5" align="center" gutterBottom>
-        Categories
-      </Typography>
+      <PageTitle name="Categories" />
       <Box display="flex" flexDirection="column" justifyContent="center">
         <Form categories={categoriesData} />
         <Box mt={3}>

@@ -54,6 +54,7 @@ export const AuthMenu = () => {
         <MenuItem onClick={() => router.push('/categories')}>
           Categories
         </MenuItem>
+        <MenuItem onClick={() => router.push('/privacy')}>Privacy</MenuItem>
         <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </Menu>
     </>

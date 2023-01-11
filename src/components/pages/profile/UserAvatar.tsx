@@ -1,8 +1,8 @@
 import { Stack } from '@mui/material'
-import { Title } from './Title'
 import { AddAvatar } from './AddAvatar'
 import { EditAvatar } from './EditAvatar'
 import { UploadApiResponse } from 'cloudinary'
+import { PageTitle } from '@components/common/PageTitle'
 
 interface Props {
   avatar: UploadApiResponse
@@ -11,7 +11,7 @@ interface Props {
 export const UserAvatar = ({ avatar }: Props) => {
   return (
     <Stack sx={{ mt: theme => theme.spacing(2) }}>
-      <Title name="Avatar" />
+      <PageTitle name="Avatar" />
       {avatar ? <EditAvatar avatar={avatar} /> : <AddAvatar />}
     </Stack>
   )

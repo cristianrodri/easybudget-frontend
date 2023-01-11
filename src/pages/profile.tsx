@@ -3,7 +3,7 @@ import { Box, Button, TextField } from '@mui/material'
 import { LayoutAuth } from '@components/LayoutAuth'
 import { useFormik } from 'formik'
 import { object, SchemaOf, string } from 'yup'
-import { Title } from '@components/pages/profile/Title'
+import { PageTitle } from '@components/common/PageTitle'
 import { UserAvatar } from '@components/pages/profile/UserAvatar'
 import { clientPutApi } from '@config/api_client'
 import { openSnackbar } from '@context/actions'
@@ -82,7 +82,7 @@ const Profile = ({ userData }: Props) => {
 
   return (
     <LayoutAuth title="Profile">
-      <Title name="Profile" />
+      <PageTitle name="Profile" />
       <Box display="flex" flexDirection="column" alignItems="center">
         <Box
           component="form"
