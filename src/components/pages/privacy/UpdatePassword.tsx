@@ -36,7 +36,12 @@ export const UpdatePassword = () => {
 
   return (
     <>
-      <DialogConfirm open={openDialog} handleClose={handleClose} />
+      <DialogConfirm
+        open={openDialog}
+        handleClose={handleClose}
+        newPassword={formik.values.password}
+        resetForm={formik.resetForm}
+      />
       <Box
         sx={{
           width: 'min(100%, 400px)'
