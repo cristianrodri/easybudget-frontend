@@ -1,4 +1,3 @@
-import { useContext, useState } from 'react'
 import {
   Button,
   Dialog,
@@ -7,11 +6,8 @@ import {
   DialogTitle
 } from '@mui/material'
 import { TextField } from '@mui/material'
-import { clientPutApi } from '@config/api_client'
-import { Context } from '@context/GlobalContext'
-import { openSnackbar } from '@context/actions'
-import { SnackbarType } from '@utils/enums'
 import { useFormik } from 'formik'
+import { useUpdatePassword } from '@hooks/useUpdatePassword'
 
 type Props = {
   open: boolean
@@ -29,33 +25,12 @@ export const DialogConfirm = ({
   newPassword,
   resetForm
 }: Props) => {
-  const { dispatch } = useContext(Context)
-  const [currentPassword, setCurrentPassword] = useState('')
-  const [isLoading, setIsLoading] = useState(false)
-
-  const handleSubmit = async () => {
-    setIsLoading(true)
-
-    const res = await clientPutApi('api/user/password/update', {
-      currentPassword,
-      newPassword
-    })
-
-    setIsLoading(false)
-
-    if (res.success === true) {
-      dispatch(
-        openSnackbar(`Your password has been updated`, SnackbarType.SUCCESS)
-      )
-
-      setCurrentPassword('')
+  const { isLoading, currentPassword, handleChange, handleSubmit } =
+    useUpdatePassword(newPassword, () => {
       resetForm()
 
       handleClose()
-    } else {
-      dispatch(openSnackbar(res.message, SnackbarType.ERROR))
-    }
-  }
+    })
 
   return (
     <Dialog open={open} onClose={handleClose} sx={{ p: 2 }}>
@@ -70,7 +45,7 @@ export const DialogConfirm = ({
           type="password"
           label="Current Password"
           value={currentPassword}
-          onChange={e => setCurrentPassword(e.target.value)}
+          onChange={handleChange}
           autoFocus
           fullWidth
         />

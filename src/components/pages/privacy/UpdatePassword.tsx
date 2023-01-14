@@ -34,6 +34,10 @@ export const UpdatePassword = () => {
     setOpenDialog(false)
   }
 
+  const handleDelete = () => {
+    setOpenDialog(true)
+  }
+
   return (
     <>
       <DialogConfirm
@@ -89,6 +93,15 @@ export const UpdatePassword = () => {
           />
           <Button type="submit" variant="contained">
             Update Password
+          </Button>
+        </Box>
+        <Box
+          display="flex"
+          justifyContent="center"
+          sx={{ mt: theme => theme.spacing(2) }}
+        >
+          <Button onClick={handleDelete} variant="outlined" color="error">
+            Delete Account
           </Button>
         </Box>
       </Box>
