@@ -61,11 +61,9 @@ export const useSWRLatestBudgets = () => {
 
   // Check if the updated budget date is moved backwards from the last budget date into the "Latest Budgets"
   const isDateBudgetMovedBackwards = (updatedBudgetDate: Date | string) => {
-    const lastBudget = data[LIMIT_BUDGETS - 1]
+    const lastBudget = data[data.length - 1]
 
-    if (isBeforeDate(updatedBudgetDate, lastBudget.date)) return true
-
-    return false
+    return isBeforeDate(updatedBudgetDate, lastBudget.date)
   }
 
   // This function will be called to update a budget by mutating it if the updated budgets belongs to latest budgets data
