@@ -2,12 +2,14 @@ import { useState } from 'react'
 import { Box, Button, TextField, Typography } from '@mui/material'
 import { useFormik } from 'formik'
 import { object, SchemaOf, string, ref as yupRef } from 'yup'
-import { DialogConfirm } from './Dialog'
+import { DialogDelete } from './DialogDelete'
+import { DialogUpdate } from './DialogUpdate'
 
 type FormTypes = { password: string; confirmPassword: string }
 
-export const UpdatePassword = () => {
-  const [openDialog, setOpenDialog] = useState(false)
+export const PrivacyActions = () => {
+  const [openDialogUpdate, setOpenDialogUpdate] = useState(false)
+  const [openDialogDelete, setOpenDialogDelete] = useState(false)
 
   const validationSchema: SchemaOf<FormTypes> = object({
     password: string()
@@ -26,26 +28,28 @@ export const UpdatePassword = () => {
     },
     validationSchema,
     onSubmit: async () => {
-      setOpenDialog(true)
+      setOpenDialogUpdate(true)
     }
   })
 
   const handleClose = () => {
-    setOpenDialog(false)
+    setOpenDialogUpdate(false)
+    setOpenDialogDelete(false)
   }
 
   const handleDelete = () => {
-    setOpenDialog(true)
+    setOpenDialogDelete(true)
   }
 
   return (
     <>
-      <DialogConfirm
-        open={openDialog}
+      <DialogUpdate
+        open={openDialogUpdate}
         handleClose={handleClose}
         newPassword={formik.values.password}
         resetForm={formik.resetForm}
       />
+      <DialogDelete open={openDialogDelete} handleClose={handleClose} />
       <Box
         sx={{
           width: 'min(100%, 400px)'

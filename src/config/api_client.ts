@@ -55,8 +55,8 @@ export const clientPutApi = <T, R = unknown>(
     .catch(handleError)
 
 // Utility function for client DELETE api
-export const clientDeleteApi = <T>(url: Url) =>
+export const clientDeleteApi = <T>(url: Url, config?: RequestConfig) =>
   api
-    .delete<ApiResponseSuccess<T>>(`/${url}`)
+    .delete<ApiResponseSuccess<T>>(`/${url}`, config)
     .then(handleSuccessResponse)
     .catch(handleError)

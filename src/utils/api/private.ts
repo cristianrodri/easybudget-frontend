@@ -23,6 +23,7 @@ const privateMethods: ApiMethodObj<MethodParams<CbPrivate>> = {
   // GET
   async get(req, res, cb) {
     const userId = authorization(req, res)
+
     if (typeof userId === 'string')
       await allowedMethod(req, res, ApiMethod.GET, async () => await cb(userId))
   },

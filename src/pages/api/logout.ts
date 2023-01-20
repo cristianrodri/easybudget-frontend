@@ -9,7 +9,7 @@ export default (
   req: NextApiRequest,
   res: NextApiResponse<ApiResponse<never>>
 ) =>
-  api.post(req, res, () => {
+  api.post(req, res, async () => {
     // Destroy cookie
     res.setHeader(SET.COOKIE, deleteCookie())
 

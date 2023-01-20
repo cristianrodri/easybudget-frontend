@@ -1,12 +1,12 @@
 import { PageTitle } from '@components/common/PageTitle'
 import { LayoutAuth } from '@components/LayoutAuth'
-import { UpdatePassword } from '@components/pages/privacy/UpdatePassword'
+import { PrivacyActions } from '@components/pages/privacy/Actions'
 
 const Privacy = () => {
   return (
     <LayoutAuth title="Privacy">
       <PageTitle name="Privacy" variant="h5" />
-      <UpdatePassword />
+      <PrivacyActions />
     </LayoutAuth>
   )
 }

@@ -1,41 +1,34 @@
+import { useDeleteUser } from '@hooks/useDeleteUser'
 import {
   Button,
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle
+  DialogTitle,
+  TextField
 } from '@mui/material'
-import { TextField } from '@mui/material'
-import { useFormik } from 'formik'
-import { useUpdatePassword } from '@hooks/useUpdatePassword'
 
 type Props = {
   open: boolean
   handleClose(): void
-  newPassword: string
-  resetForm: ReturnType<typeof useFormik>['resetForm']
 }
 
 const PADDING_Y = 2
 const PADDING_X = 3
 
-export const DialogConfirm = ({
-  open,
-  handleClose,
-  newPassword,
-  resetForm
-}: Props) => {
-  const { isLoading, currentPassword, handleChange, handleSubmit } =
-    useUpdatePassword(newPassword, () => {
-      resetForm()
+export const DialogDelete = ({ open, handleClose }: Props) => {
+  const { text, isLoading, handleChange, emptyText, handleSubmit } =
+    useDeleteUser()
 
-      handleClose()
-    })
+  const closeDialog = () => {
+    emptyText()
+    handleClose()
+  }
 
   return (
-    <Dialog open={open} onClose={handleClose} sx={{ p: 2 }}>
+    <Dialog open={open} onClose={closeDialog} sx={{ p: 2 }}>
       <DialogTitle sx={{ p: theme => theme.spacing(PADDING_Y, PADDING_X) }}>
-        Type your current password
+        Are you sure you want to delete your account?
       </DialogTitle>
       <DialogContent
         sx={{ p: theme => theme.spacing(PADDING_Y, PADDING_X), pt: 2 }}
@@ -43,8 +36,8 @@ export const DialogConfirm = ({
       >
         <TextField
           type="password"
-          label="Current Password"
-          value={currentPassword}
+          label="Type your Password"
+          value={text}
           onChange={handleChange}
           autoFocus
           fullWidth
@@ -57,7 +50,7 @@ export const DialogConfirm = ({
           fullWidth
           disabled={isLoading}
         >
-          {isLoading ? 'Upading...' : 'Confirm'}
+          {isLoading ? 'Deleting...' : 'Confirm'}
         </Button>
       </DialogActions>
     </Dialog>

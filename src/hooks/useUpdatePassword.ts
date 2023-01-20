@@ -42,5 +42,11 @@ export const useUpdatePassword = (
     }
   }
 
-  return { isLoading, currentPassword, handleChange, handleSubmit }
+  return {
+    isLoading,
+    currentPassword,
+    setCurrentPassword,
+    handleChange,
+    handleSubmit
+  }
 }
