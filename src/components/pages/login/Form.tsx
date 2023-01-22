@@ -1,3 +1,4 @@
+import { useContext, useState } from 'react'
 import {
   Box,
   Button,
@@ -7,7 +8,6 @@ import {
   useTheme
 } from '@mui/material'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
-import { useContext } from 'react'
 import { useFormik } from 'formik'
 import { object, string, SchemaOf } from 'yup'
 import { useRouter } from 'next/router'
@@ -49,6 +49,7 @@ export const Form = () => {
   const { dispatch } = useContext(Context)
   const ref = useFocus()
   const { title, textField, button } = useStyles()
+  const [isLoading, setIsLoading] = useState(false)
 
   const validationSchema: SchemaOf<FormTypes> = object({
     email: string().required('Email is required'),
@@ -62,11 +63,13 @@ export const Form = () => {
     },
     validationSchema,
     onSubmit: async values => {
+      setIsLoading(true)
       const res = await clientPostApi('api/login', values)
 
       if (res.success === true) {
         router.push('dashboard')
       } else {
+        setIsLoading(false)
         dispatch(openSnackbar(res.message, SnackbarType.ERROR))
       }
     }
@@ -121,9 +124,9 @@ export const Form = () => {
           variant="contained"
           color="primary"
           className={button}
-          disabled={formik.isSubmitting}
+          disabled={isLoading}
         >
-          {formik.isSubmitting ? 'Loading...' : 'login'}
+          {isLoading ? 'Loading...' : 'login'}
         </Button>
       </Box>
       <FormLink href="/signup">

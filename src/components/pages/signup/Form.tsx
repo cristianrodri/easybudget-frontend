@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { TextField, Button, Box, Typography, useTheme } from '@mui/material'
 import { useFormik } from 'formik'
 import { object, string, SchemaOf, ref as yupRef } from 'yup'
@@ -24,6 +24,7 @@ export const Form = () => {
   const ref = useFocus()
   const router = useRouter()
   const { dispatch } = useContext(Context)
+  const [isLoading, setIsLoading] = useState(false)
 
   const validationSchema: SchemaOf<FormTypes> = object({
     username: string()
@@ -52,11 +53,14 @@ export const Form = () => {
       const submittedValues = { ...values }
       delete submittedValues.confirmPassword
 
+      setIsLoading(true)
+
       const res = await clientPostApi('api/register', submittedValues)
 
       if (res.success === true) {
         router.push('categories')
       } else {
+        setIsLoading(false)
         dispatch(openSnackbar(res.message, SnackbarType.ERROR))
       }
     }
@@ -139,14 +143,14 @@ export const Form = () => {
           type="submit"
           variant="contained"
           color="primary"
-          disabled={formik.isSubmitting}
+          disabled={isLoading}
           sx={{
             borderRadius: 24,
             padding: theme.spacing(1.5, 5),
             marginTop: theme.spacing(2)
           }}
         >
-          {formik.isSubmitting ? 'Loading...' : 'sign up'}
+          {isLoading ? 'Loading...' : 'sign up'}
         </Button>
       </Box>
       <Typography
