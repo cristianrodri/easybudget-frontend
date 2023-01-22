@@ -2,7 +2,7 @@ import { useContext, useState } from 'react'
 import { Context } from '@context/GlobalContext'
 import { clientDeleteApi, clientPostApi } from '@config/api_client'
 import { openSnackbar } from '@context/actions'
-import { SnackbarType } from '@utils/enums'
+import { SnackbarType, STORAGE } from '@utils/enums'
 import { useUserData } from '@hooks/useSWRUser'
 import { useInputText } from './useInputText'
 import { useLogout } from '@hooks/useLogout'
@@ -22,6 +22,7 @@ export const useDeleteUser = () => {
     })
 
     if (res.success === true) {
+      localStorage.setItem(STORAGE.USER_DELETE, JSON.stringify(true))
       logout()
     } else {
       setIsLoading(false)

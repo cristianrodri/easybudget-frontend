@@ -2,8 +2,12 @@ import Image from 'next/image'
 import { Box } from '@mui/material'
 import { Layout } from '@components/Layout'
 import { Form } from '@components/pages/login/Form'
+import { useUserDeletionValue } from '@hooks/useUserDeletionValue'
 
 const Login = () => {
+  // Show a message if this page was redirected from the user delete account action
+  useUserDeletionValue()
+
   return (
     <Layout title="Login" backgroundPage="login">
       <Box

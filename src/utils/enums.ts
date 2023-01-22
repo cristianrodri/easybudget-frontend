@@ -36,3 +36,7 @@ export enum SET {
 export enum CLOUDINARY {
   FOLDER = 'easy-budget'
 }
+
+export enum STORAGE {
+  USER_DELETE = 'user-deleted'
+}
