@@ -10,13 +10,19 @@ interface Props {
 }
 
 export const DatePickerBudget = ({ date, setFieldValue }: Props) => {
+  const handleChange = (date: Date) => {
+    if (date.toString() !== 'Invalid Date') {
+      setFieldValue('date', date.toISOString())
+    }
+  }
+
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <DateTimePicker
         label="Date and Time"
         inputFormat="dd-MMM-yyyy HH:mm"
         value={new Date(date)}
-        onChange={newDate => setFieldValue('date', newDate.toISOString())}
+        onChange={handleChange}
         renderInput={params => <TextField {...params} />}
       />
     </LocalizationProvider>
