@@ -10,7 +10,7 @@ enum Middleware {
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
-  // If the pathname is PRIVATE and there is no token in the cookies, redirect to login
+  // If the pathname belongs to PRIVATE and there is NO token in the cookies, redirect to login (public page)
   if (isAuthPath(pathname) && !request.cookies.has('token')) {
     request.nextUrl.pathname = '/login'
 
@@ -19,7 +19,7 @@ export function middleware(request: NextRequest) {
     return response
   }
 
-  // If the pathname is PUBLIC and there is token in the cookies, redirect to dashboard
+  // If the pathname belongs to PUBLIC and there IS token in the cookies, redirect to dashboard (private page)
   if (isPublicPath(pathname) && request.cookies.has('token')) {
     request.nextUrl.pathname = '/dashboard'
 

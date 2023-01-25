@@ -62,7 +62,13 @@ export const EditAvatar = ({ avatar }: Props) => {
     <>
       <Stack direction="row" justifyContent="center">
         <Stack direction="column" alignItems="center">
-          <Image src={avatarUrl} width={250} height={200} alt="User Avatar" />
+          <Image
+            src={avatarUrl}
+            priority
+            width={250}
+            height={200}
+            alt="User Avatar"
+          />
           <Stack
             direction="row"
             spacing={1}

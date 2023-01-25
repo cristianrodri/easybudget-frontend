@@ -31,7 +31,7 @@ export const addBudgetToCategory = (
   return category
 }
 
-// Update a budget into budgets property from category
+// Update a budget from "budgets property" into the category
 export const updateBudgetFromCategory = (
   category: CategoryTypes,
   prevBudget: Budget,
@@ -40,9 +40,7 @@ export const updateBudgetFromCategory = (
   category.budgets = category.budgets.map(b => {
     if (b.id === updatedBudget.id) {
       return {
-        ...updatedBudget,
-        id: b.id,
-        date: new Date(updatedBudget.date).toISOString()
+        ...updatedBudget
       }
     }
 
@@ -54,7 +52,7 @@ export const updateBudgetFromCategory = (
   return category
 }
 
-// Delete a budget into budgets property from category
+// Delete a budget from "budgets property" into the category
 export const deleteBudgetFromCategory = (
   category: CategoryTypes,
   budget: Budget

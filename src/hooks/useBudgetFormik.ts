@@ -15,11 +15,6 @@ export const useBudgetFormik = (
     formikHelpers?: FormikHelpers<BudgetFormTypes>
   ) => void
 ) => {
-  // If the parameter type is "update" the validation schema should have the date property, otherwise just is not included. Same applies to initialValues with the date property
-  const schemaDate =
-    type === 'update' ? { date: date().required('Date is required') } : {}
-  const dateValue = type === 'update' ? { date: null } : {}
-
   const validationSchema: SchemaOf<BudgetFormTypes> = object({
     description: string()
       .required('Description is required')
@@ -30,7 +25,8 @@ export const useBudgetFormik = (
       .required('Amount is required')
       .min(1, 'Amount must be greater than 0'),
     category: string().required('Category is required'),
-    ...schemaDate
+    // If the parameter type is "update" the validation schema should have the date property, otherwise just is not included. Same applies to initialValues with the date property
+    ...(type === 'update' ? { date: date().required('Date is required') } : {})
   })
 
   const formik = useFormik<BudgetFormTypes>({
@@ -38,7 +34,7 @@ export const useBudgetFormik = (
       description: '',
       money: null,
       category: '',
-      ...dateValue
+      ...(type === 'update' ? { date: null } : {})
     },
     validationSchema,
     onSubmit

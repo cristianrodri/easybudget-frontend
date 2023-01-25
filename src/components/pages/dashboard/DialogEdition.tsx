@@ -71,7 +71,7 @@ export const DialogEdition = () => {
       formik.setFieldValue('money', budget.money)
       formik.setFieldValue('category', budgetCategory.id)
       setBudgetType(budgetCategory.type)
-      formik.setFieldValue('date', new Date(budget.date))
+      formik.setFieldValue('date', new Date(budget.date).toISOString())
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [budget])

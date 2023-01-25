@@ -116,11 +116,8 @@ export const dateIsBetween = (walletDate: WalletDate, budgetDate: string) => {
   if (start === '' && end === '') return true
 
   // If the budget date is greater than or equal to the "start wallet date" and is less than or equal to "end wallet date" return true because the budget date matches the wallet date
-  if (
+  return (
     new Date(budgetDate).getTime() >= new Date(start).getTime() &&
     new Date(budgetDate).getTime() <= new Date(end).getTime()
   )
-    return true
-
-  return false
 }
