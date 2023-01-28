@@ -66,18 +66,6 @@ export const Category = ({ budgetType, categories }: Props) => {
               }}
             >
               <ListItemText primary={textCapitalize(category.name)} />
-              <ListItemSecondaryAction
-                sx={{ right: theme => theme.spacing(1) }}
-              >
-                <ActionData
-                  actionType="edit"
-                  handleClick={handleEdit(category)}
-                />
-                <ActionData
-                  actionType="delete"
-                  handleClick={handleDelete(category)}
-                />
-              </ListItemSecondaryAction>
               <Skeleton
                 variant="rectangular"
                 animation="wave"
@@ -94,6 +82,18 @@ export const Category = ({ budgetType, categories }: Props) => {
                   display: isDeletingCategory ? 'block' : 'none'
                 }}
               />
+              <ListItemSecondaryAction
+                sx={{ right: theme => theme.spacing(1) }}
+              >
+                <ActionData
+                  actionType="edit"
+                  handleClick={handleEdit(category)}
+                />
+                <ActionData
+                  actionType="delete"
+                  handleClick={handleDelete(category)}
+                />
+              </ListItemSecondaryAction>
             </ListItem>
           ))}
         </List>

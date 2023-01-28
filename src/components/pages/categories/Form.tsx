@@ -19,6 +19,7 @@ import { CategoryTypes, GetCategory } from '@custom-types'
 import { useSWRCategories } from '@hooks/useSWRCategories'
 import { openSnackbar } from '@context/actions'
 import { clientPostApi } from '@config/api_client'
+import { red } from '@mui/material/colors'
 
 interface Props {
   categories: GetCategory[]
@@ -113,7 +114,7 @@ export const Form = ({ categories }: Props) => {
             label="Expense"
           />
         </RadioGroup>
-        <FormHelperText style={{ color: '#f44336' }}>
+        <FormHelperText sx={{ color: red[500] }}>
           {formik.touched.type && formik.errors.type}
         </FormHelperText>
       </FormControl>
