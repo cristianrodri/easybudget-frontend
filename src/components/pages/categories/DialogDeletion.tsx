@@ -19,13 +19,15 @@ interface Props {
   handleClose: () => void
   category: GetCategory
   setCategory: Dispatch<SetStateAction<GetCategory>>
+  setIsDeletingCategory: Dispatch<SetStateAction<boolean>>
 }
 
 export const DialogDeletion = ({
   open,
   handleClose,
   category,
-  setCategory
+  setCategory,
+  setIsDeletingCategory
 }: Props) => {
   const { dispatch } = useContext(Context)
   const { data: categoriesData, mutate } = useSWRCategories()
@@ -33,10 +35,13 @@ export const DialogDeletion = ({
   const handleDeletion = async () => {
     // Close this dialog inmediately after a user clicked delete button
     handleClose()
+    setIsDeletingCategory(true)
 
     const res = await clientDeleteApi<CategoryApi>(
       `api/categories/delete/${category.id}`
     )
+
+    setIsDeletingCategory(false)
 
     if (res.success === true) {
       dispatch(openSnackbar(`${res.data.name} deleted!`, SnackbarType.SUCCESS))

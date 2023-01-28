@@ -3,7 +3,8 @@ import {
   List,
   ListItem,
   ListItemSecondaryAction,
-  ListItemText
+  ListItemText,
+  Skeleton
 } from '@mui/material'
 import { useState } from 'react'
 import { GetCategory } from '@custom-types'
@@ -23,28 +24,29 @@ export const Category = ({ budgetType, categories }: Props) => {
   const { data: categoriesData } = useSWRCategories(categories)
   const [openDialogDeletion, setOpenDialogDeletion] = useState(false)
   const [openDialogEdition, setOpenDialogEdition] = useState(false)
-  const [category, setCategory] = useState<GetCategory>(null)
+  const [chosenCategory, setChosenCategory] = useState<GetCategory>(null)
   const filteredCategories = categoriesData.filter(c => c.type === budgetType)
+  const [isDeletingCategory, setIsDeletingCategory] = useState(false)
 
   /* HANDLE DELETE DIALOG */
   const handleDelete = (category: GetCategory) => () => {
-    setCategory(category)
+    setChosenCategory(category)
     setOpenDialogDeletion(true)
   }
 
   const handleCloseDeletion = () => {
-    setCategory(null)
+    setChosenCategory(null)
     setOpenDialogDeletion(false)
   }
 
   /* HANDLE EDIT DIALOG */
   const handleEdit = (category: GetCategory) => () => {
-    setCategory(category)
+    setChosenCategory(category)
     setOpenDialogEdition(true)
   }
 
   const handleCloseEdition = () => {
-    setCategory(null)
+    setChosenCategory(null)
     setOpenDialogEdition(false)
   }
 
@@ -76,6 +78,22 @@ export const Category = ({ budgetType, categories }: Props) => {
                   handleClick={handleDelete(category)}
                 />
               </ListItemSecondaryAction>
+              <Skeleton
+                variant="rectangular"
+                animation="wave"
+                sx={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  width: '100%',
+                  height: '100%',
+                  backgroundColor: theme => theme.palette.grey[300],
+                  opacity: '0.6',
+                  display: isDeletingCategory ? 'block' : 'none'
+                }}
+              />
             </ListItem>
           ))}
         </List>
@@ -85,8 +103,9 @@ export const Category = ({ budgetType, categories }: Props) => {
         <DialogDeletion
           open={openDialogDeletion}
           handleClose={handleCloseDeletion}
-          category={category}
-          setCategory={setCategory}
+          category={chosenCategory}
+          setCategory={setChosenCategory}
+          setIsDeletingCategory={setIsDeletingCategory}
         />
       )}
 
@@ -94,8 +113,8 @@ export const Category = ({ budgetType, categories }: Props) => {
         <DialogEdition
           open={openDialogEdition}
           handleClose={handleCloseEdition}
-          category={category}
-          setCategory={setCategory}
+          category={chosenCategory}
+          setCategory={setChosenCategory}
         />
       )}
     </>
