@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   titles: {
     textAlign: 'left',
     marginBottom: theme.spacing(2),
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       textAlign: 'center'
     }
   },
@@ -69,7 +69,7 @@ const IndexPage = () => {
               flexWrap="wrap"
               gap={2}
               sx={{
-                [theme.breakpoints.down('sm')]: {
+                [theme.breakpoints.down('md')]: {
                   justifyContent: 'center'
                 }
               }}
@@ -79,7 +79,11 @@ const IndexPage = () => {
             </Box>
           </Box>
           {!matches && (
-            <Box className={presentation}>
+            <Box
+              className={presentation}
+              display="flex"
+              justifyContent="center"
+            >
               <Image
                 width={400}
                 height={300}
