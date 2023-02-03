@@ -1,10 +1,14 @@
 import { setupServer } from 'msw/node'
 import { DefaultRequestBody, rest } from 'msw'
 import { render, screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { Form } from './Form'
 import { GlobalContext } from '@context/GlobalContext'
 import { ThemeMuiProvider } from '@context/mui/ThemeMuiProvider'
+import userEvent from '@testing-library/user-event'
+
+jest.mock('next/router', () => ({
+  useRouter: jest.fn()
+}))
 
 const server = setupServer(
   rest.post<DefaultRequestBody, { success: boolean }>(
@@ -30,35 +34,39 @@ describe('Login Form', () => {
     )
   })
 
-  it('should render Loading... after submit the form', async () => {
-    userEvent.type(
-      screen.getByLabelText(/email or username/i),
-      'john.dee@someemail.com'
-    )
-    userEvent.type(screen.getByLabelText(/^password$/i), 'Dee123456')
+  it('should render email, password and Loading... as button text after submit the form', async () => {
+    const user = userEvent.setup()
+    const email = getEmail()
+    const password = getPassword()
+    const button = getButton()
 
-    submittingForm()
+    await user.type(email, 'john.dee@someemail.com')
+    await user.type(password, 'Dee123456')
 
-    // Check to see if the button text changes to Loading...
+    await user.click(button)
+
     await waitFor(() =>
       expect(
-        screen.getByRole('button', { name: 'Loading...' })
+        screen.getByRole('button', { name: /loading.../i })
       ).toBeInTheDocument()
     )
+
+    await waitFor(() => expect(email.value).toBe('john.dee@someemail.com'))
+    await waitFor(() => expect(password.value).toBe('Dee123456'))
   })
 
   describe('Show validation errors after submitting an empty form', () => {
-    it('should render "Email or username is required"', async () => {
-      submittingForm()
+    it('should render "Email is required"', async () => {
+      await submittingForm()
+
       await waitFor(() => {
-        expect(
-          screen.getByText(/Email or username is required/i)
-        ).toBeInTheDocument()
+        expect(screen.getByText(/Email is required/i)).toBeInTheDocument()
       })
     })
 
     it('should render "Password is required"', async () => {
-      submittingForm()
+      await submittingForm()
+
       await waitFor(() => {
         expect(screen.getByText(/password is required/i)).toBeInTheDocument()
       })
@@ -66,24 +74,33 @@ describe('Login Form', () => {
   })
 
   describe('Remove error messages after user types any words', () => {
-    it('should remove "Email or username is required"', async () => {
-      submittingForm()
-      await waitFor(() => {
-        userEvent.type(screen.getByLabelText(/email or username/i), 'c')
-      })
+    it('should remove "Email is required"', async () => {
+      const user = userEvent.setup()
+
+      await user.click(getButton())
+
+      await waitFor(() =>
+        expect(screen.getByText(/Email is required/i)).toBeInTheDocument()
+      )
+
+      await user.type(getEmail(), 'c')
 
       await waitFor(() => {
-        expect(
-          screen.queryByText(/^Email or username is required$/i)
-        ).not.toBeInTheDocument()
+        expect(screen.queryByText(/Email is required/i)).not.toBeInTheDocument()
       })
     })
 
     it('should remove "Password is required"', async () => {
       submittingForm()
-      await waitFor(() => {
-        userEvent.type(screen.getByLabelText(/Password/i), 'c')
-      })
+      const user = userEvent.setup()
+
+      await user.click(getButton())
+
+      await waitFor(() =>
+        expect(screen.getByText(/Password is required/i)).toBeInTheDocument()
+      )
+
+      await user.type(getPassword(), 'c')
 
       await waitFor(() => {
         expect(
@@ -94,6 +111,12 @@ describe('Login Form', () => {
   })
 })
 
-const submittingForm = () => {
-  userEvent.click(screen.getByRole('button', { name: 'login' }))
+const getEmail = () => screen.getByLabelText(/email/i) as HTMLInputElement
+const getPassword = () => screen.getByLabelText(/password/i) as HTMLInputElement
+const getButton = () => screen.getByRole('button', { name: /login/i })
+
+const submittingForm = async () => {
+  const user = userEvent.setup()
+
+  await user.click(getButton())
 }

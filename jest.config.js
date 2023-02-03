@@ -12,7 +12,8 @@ module.exports = {
     '@utils/(.*)': '<rootDir>/src/utils/$1',
     '@config/(.*)': '<rootDir>/src/config/$1',
     '@hooks/(.*)': '<rootDir>/src/hooks/$1',
-    '@context/(.*)': '<rootDir>/src/context/$1'
+    '@context/(.*)': '<rootDir>/src/context/$1',
+    '@db/(.*)': '<rootDir>/src/db/$1'
   },
   setupFilesAfterEnv: ['./jest.setup.ts']
 }
