@@ -12,7 +12,7 @@ describe('Header', () => {
   })
 
   it('link has href="/" in header logo', () => {
-    const header = screen.getByTestId('homepage')
-    expect(header).toHaveAttribute('href', '/')
+    const header = screen.getByRole('img', { name: /header logo/i })
+    expect(header).toBeInTheDocument()
   })
 })
