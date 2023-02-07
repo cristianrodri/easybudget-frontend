@@ -17,6 +17,7 @@ import Category from '@db/category/model'
 import { getUserId } from '@utils/api/token'
 import Budget from '@db/budget/model'
 import { connectDB } from '@db/mongoose'
+import { GetServerSideProps } from 'next'
 
 interface Props {
   categoriesCount: number
@@ -58,7 +59,7 @@ const Dashboard = ({ categoriesCount, oldestBudgetDate }: Props) => {
   )
 }
 
-export const getServerSideProps = async ({ req }) => {
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const userId = getUserId(req)
   await connectDB()
 

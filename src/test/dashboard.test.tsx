@@ -3,6 +3,30 @@ import { ThemeMuiProvider } from '@context/mui/ThemeMuiProvider'
 import { render, screen } from '@testing-library/react'
 import Dashboard from '../pages/dashboard'
 
+jest.mock('../db/mongoose', () => ({
+  __esModule: true
+}))
+
+jest.mock('../db/category/model', () => ({
+  __esModule: true
+}))
+
+jest.mock('../db/budget/model', () => ({
+  __esModule: true
+}))
+
+jest.mock('next/router', () => ({
+  useRouter: jest.fn()
+}))
+
+// jest.spyOn('../pages/dashboard', 'getServerSideProps')
+
+// jest.mock('../pages/dashboard', () => ({
+//   __esModule: true, // this property makes it work
+//   // default: 'mockedDashboard',
+//   getServerSideProps: jest.fn()
+// }))
+
 describe('Dashboard Page WITHOUT categories', () => {
   beforeEach(() => {
     render(

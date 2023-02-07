@@ -7,6 +7,9 @@ module.exports = {
       tsconfig: './tsconfig.jest.json'
     }
   },
+  // transform: {
+  //   '^.+\\.(t|j)sx?$': 'babel-jest'
+  // },
   moduleNameMapper: {
     '@components/(.*)': '<rootDir>/src/components/$1',
     '@utils/(.*)': '<rootDir>/src/utils/$1',

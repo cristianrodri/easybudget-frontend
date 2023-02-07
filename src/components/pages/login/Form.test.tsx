@@ -1,5 +1,3 @@
-import { setupServer } from 'msw/node'
-import { DefaultRequestBody, rest } from 'msw'
 import { render, screen, waitFor } from '@testing-library/react'
 import { Form } from './Form'
 import { GlobalContext } from '@context/GlobalContext'
@@ -9,19 +7,6 @@ import userEvent from '@testing-library/user-event'
 jest.mock('next/router', () => ({
   useRouter: jest.fn()
 }))
-
-const server = setupServer(
-  rest.post<DefaultRequestBody, { success: boolean }>(
-    '/api/login',
-    (req, res, ctx) => {
-      return res(ctx.delay(100), ctx.json({ success: true }))
-    }
-  )
-)
-
-beforeAll(() => server.listen())
-afterAll(() => server.close())
-afterEach(() => server.resetHandlers())
 
 describe('Login Form', () => {
   beforeEach(async () => {
