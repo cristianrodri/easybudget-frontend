@@ -124,7 +124,6 @@ export const AddBudgetDialog = ({ openDialog, handleClose }: Props) => {
           </Typography>
           <Button
             type="submit"
-            autoFocus
             color="inherit"
             form="add-budget-form"
             disabled={formik.isSubmitting}

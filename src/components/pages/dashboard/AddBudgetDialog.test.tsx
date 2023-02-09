@@ -101,9 +101,10 @@ describe('AddBudgetDialog form component', () => {
         description: 'apples'
       }
     })
+    const user = userEvent.setup()
 
     // Type the description
-    userEvent.type(
+    await user.type(
       screen.getByRole('textbox', {
         name: /description/i
       }),
@@ -111,7 +112,7 @@ describe('AddBudgetDialog form component', () => {
     )
 
     // Type the amount
-    userEvent.type(
+    await user.type(
       screen.getByRole('textbox', {
         name: /amount/i
       }),
@@ -119,28 +120,28 @@ describe('AddBudgetDialog form component', () => {
     )
 
     // Click the budget type radio
-    userEvent.click(
+    await user.click(
       screen.getByRole('radio', {
         name: /expense/i
       })
     )
 
     // Open category options by clicking the first option
-    userEvent.click(
+    await user.click(
       screen.getByRole('button', {
         name: /clothes/i
       })
     )
 
     // Select the fruits option
-    userEvent.click(
+    await user.click(
       screen.getByRole('option', {
         name: /fruits/i
       })
     )
 
     // Submit the form
-    userEvent.click(
+    await user.click(
       screen.getByRole('button', {
         name: /save/i
       })
