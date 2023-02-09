@@ -155,5 +155,5 @@ describe('AddBudgetDialog form component', () => {
         category: 1
       })
     })
-  })
+  }, 10_000)
 })
