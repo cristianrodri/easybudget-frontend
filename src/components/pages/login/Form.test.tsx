@@ -19,7 +19,7 @@ describe('Login Form', () => {
     )
   })
 
-  it('should render email, password and Loading... as button text after submit the form', async () => {
+  it('should check email and password values. Also Loading... as button text after submit the form', async () => {
     const user = userEvent.setup()
     const email = getEmail()
     const password = getPassword()

@@ -2,6 +2,12 @@ import { DefaultRequestBody, rest } from 'msw'
 
 const handlers = [
   rest.post<DefaultRequestBody, { success: boolean }>(
+    '/api/register',
+    (req, res, ctx) => {
+      return res(ctx.delay(100), ctx.json({ success: true }))
+    }
+  ),
+  rest.post<DefaultRequestBody, { success: boolean }>(
     '/api/login',
     (req, res, ctx) => {
       return res(ctx.delay(100), ctx.json({ success: true }))

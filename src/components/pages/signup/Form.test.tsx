@@ -1,23 +1,12 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Form } from './Form'
-import { setupServer } from 'msw/node'
-import { DefaultRequestBody, rest } from 'msw'
 import { GlobalContext } from '@context/GlobalContext'
 import { ThemeMuiProvider } from '@context/mui/ThemeMuiProvider'
 
-const server = setupServer(
-  rest.post<DefaultRequestBody, { success: boolean }>(
-    '/api/register',
-    (req, res, ctx) => {
-      return res(ctx.delay(100), ctx.json({ success: true }))
-    }
-  )
-)
-
-beforeAll(() => server.listen())
-afterAll(() => server.close())
-afterEach(() => server.resetHandlers())
+jest.mock('next/router', () => ({
+  useRouter: jest.fn()
+}))
 
 describe('Signup form', () => {
   beforeEach(async () => {
@@ -30,48 +19,62 @@ describe('Signup form', () => {
     )
   })
 
-  it('should render Loading... after submit the form', async () => {
-    userEvent.type(screen.getByLabelText(/username/i), 'John')
-    userEvent.type(screen.getByLabelText(/email/i), 'john.dee@someemail.com')
-    userEvent.type(screen.getByLabelText(/^password$/i), 'Dee123456')
-    userEvent.type(screen.getByLabelText(/^confirm password$/i), 'Dee123456')
+  it('should check username, email, password and confirm password values. Also Loading... as button text after submit the form', async () => {
+    const user = userEvent.setup()
 
-    submittingForm()
+    const username = getUsername()
+    const email = getEmail()
+    const password = getPassword()
+    const confirmPassword = getConfirmPassword()
+
+    await user.type(username, 'John')
+    await user.type(email, 'john.dee@someemail.com')
+    await user.type(password, 'Dee123456')
+    await user.type(confirmPassword, 'Dee123456')
+
+    await submittingForm()
 
     // Check to see if the button text changes to Loading...
     await waitFor(() =>
       expect(
-        screen.getByRole('button', { name: 'Loading...' })
+        screen.getByRole('button', { name: /loading.../i })
       ).toBeInTheDocument()
     )
-  })
+
+    await waitFor(() => expect(username.value).toBe('John'))
+    await waitFor(() => expect(email.value).toBe('john.dee@someemail.com'))
+    await waitFor(() => expect(password.value).toBe('Dee123456'))
+    await waitFor(() => expect(confirmPassword.value).toBe('Dee123456'))
+  }, 10_000)
 
   describe('Show validation errors after submitting an empty form', () => {
     it('should render "Name is required"', async () => {
-      submittingForm()
+      await submittingForm()
+
       await waitFor(() => {
         expect(screen.getByText(/name is required/i)).toBeInTheDocument()
       })
     })
 
     it('should render "Email is required"', async () => {
-      submittingForm()
+      await submittingForm()
+
       await waitFor(() => {
         expect(screen.getByText(/email is required/i)).toBeInTheDocument()
       })
     })
 
     it('should render "Password is required"', async () => {
-      submittingForm()
+      await submittingForm()
       await waitFor(() => {
         expect(screen.getByText(/password is required/i)).toBeInTheDocument()
       })
     })
 
     it('should render "Enter a valid email" after the user types any word on email input', async () => {
-      submittingForm()
+      await submittingForm()
       await waitFor(() => {
-        userEvent.type(screen.getByLabelText(/email/i), 'c')
+        userEvent.type(getEmail(), 'c')
       })
       await waitFor(() => {
         expect(screen.getByText(/enter a valid email/i)).toBeInTheDocument()
@@ -79,10 +82,12 @@ describe('Signup form', () => {
     })
 
     it('should render "Username should be of minimum 2 characters" after the user types one word on username input', async () => {
-      submittingForm()
-      await waitFor(() => {
-        userEvent.type(screen.getByLabelText(/username/i), 'c')
-      })
+      const user = userEvent.setup()
+
+      await submittingForm()
+
+      await user.type(getUsername(), 'c')
+
       await waitFor(() => {
         expect(
           screen.getByText(/^Username should be of minimum 2 characters$/i)
@@ -91,13 +96,11 @@ describe('Signup form', () => {
     })
 
     it('should render "Username should be of maximum 25 characters" after the user types more than 25 words on username input', async () => {
-      submittingForm()
+      const user = userEvent.setup()
 
-      await waitFor(() => {
-        fireEvent.change(screen.getByLabelText(/username/i), {
-          target: { value: 'usertypesmorethan25characters' }
-        })
-      })
+      await submittingForm()
+
+      await user.type(getUsername(), 'usertypesmorethan25characters')
 
       await waitFor(() => {
         expect(
@@ -107,10 +110,12 @@ describe('Signup form', () => {
     })
 
     it('should render "Password should be of minimum 8 characters"', async () => {
-      submittingForm()
-      await waitFor(() => {
-        userEvent.type(screen.getByLabelText(/^password$/i), 'cccyyy')
-      })
+      const user = userEvent.setup()
+
+      await submittingForm()
+
+      await user.type(getPassword(), 'cccyyy')
+
       await waitFor(() => {
         expect(
           screen.getByText(/^Password should be of minimum 8 characters$/i)
@@ -120,6 +125,18 @@ describe('Signup form', () => {
   })
 })
 
-const submittingForm = () => {
-  fireEvent.click(screen.getByRole('button', { name: /sign up/i }))
+const getUsername = () => screen.getByLabelText(/username/i) as HTMLInputElement
+
+const getEmail = () => screen.getByLabelText(/email/i) as HTMLInputElement
+
+const getPassword = () =>
+  screen.getByLabelText(/^password$/i) as HTMLInputElement
+
+const getConfirmPassword = () =>
+  screen.getByLabelText(/^confirm password$/i) as HTMLInputElement
+
+const submittingForm = async () => {
+  const user = userEvent.setup()
+
+  await user.click(screen.getByRole('button', { name: /sign up/i }))
 }
